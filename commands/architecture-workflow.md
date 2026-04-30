@@ -11,11 +11,9 @@ Use this command when the user wants one pass that covers architecture review, o
 The workflow is serial and ownership-aware:
 
 1. Read Memory Hub context and `specs/<feature>/memory-synthesis.md` if they are available.
-2. Normalize the command into `mode` (`architecture` or `performance`) and `focus` (`general`, `db`, `api`, or `async`).
-3. Run the architecture review against the Constitution, memory synthesis, and generic architecture principles.
-4. If `mode=performance`, emit advisory `Performance Insights` only for the architecture stage.
-5. Route security-first findings to Security Review instead of duplicating them here.
-6. Produce refactor tasks or an apply recommendation for architecture findings when `mode=architecture`.
+2. Run the architecture review against the Constitution, memory synthesis, and generic architecture principles.
+3. Route security-first findings to Security Review instead of duplicating them here.
+4. Produce refactor tasks or an apply recommendation for architecture findings.
 
 ## Goal
 
@@ -57,7 +55,6 @@ Review any available:
 - Do not duplicate Security Review findings in the architecture output unless the issue is specifically an architectural boundary problem.
 - Do not write security follow-up items into architecture tasks or plan updates.
 - Do not write memory conclusions into architecture follow-up items.
-- Do not treat performance insights as violations or refactor tasks.
 
 ## Output Format
 

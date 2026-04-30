@@ -1,6 +1,6 @@
 # 🛡️ spec-kit-architecture-guard
 
-[![Version](https://img.shields.io/badge/version-1.0.0-22c55e)](extension.yaml)
+[![Version](https://img.shields.io/badge/version-1.0.1-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Prompt-based](https://img.shields.io/badge/mode-prompt--based-f59e0b)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
@@ -10,7 +10,7 @@ A framework-agnostic Spec Kit extension for lightweight architecture review duri
 
 It helps teams validate implementation work against the project Constitution, detect architectural drift across modules and services, and produce structured, non-blocking refactor tasks when violations appear.
 
-Version `1.0.0` is the current release recorded in `extension.yaml`.
+Version `1.0.1` is the current release recorded in `extension.yml`.
 
 Architecture enforcement matters because systems usually degrade through small inconsistencies: one route bypasses a service boundary, one UI module invents a different response shape, one service talks directly to another module's persistence layer, and soon the codebase becomes harder to reason about than the original specification.
 
@@ -33,16 +33,21 @@ The extension ships its installable command files in `commands/` and its human-r
 
 ## Extension Manifest
 
-`extension.yaml` follows the Spec Kit extension manifest shape used by this package:
+`extension.yml` is the manifest file used by Spec Kit extension ZIP installs for this package:
 
-- `name`
-- `version`
-- `description`
-- `spec_kit_version`
-- `supported_agents`
+- `schema_version`
+- `extension.id`
+- `extension.name`
+- `extension.version`
+- `extension.description`
+- `extension.author`
+- `extension.repository`
+- `extension.license`
+- `requires.speckit_version`
 - `provides.commands`
+- `tags`
 
-The manifest also records compatibility notes for optional Memory Hub and Security Review context, plus adapter support metadata for framework-specific companion extensions.
+This is the only manifest file users need for installation. The release ZIP should include `extension.yml` at the repository root.
 
 ## What This Adds To Spec Kit
 
@@ -97,58 +102,17 @@ Example flow:
   -> apply approved plan/task updates when requested
 ```
 
-## Command Usage
+## Commands
 
-Use the semantic form first. It is the primary and most readable interface.
+This extension ships five commands:
 
-### Recommended
+- `architecture-workflow`: one pass that can also consider Memory Hub context and Security Review handoff.
+- `architecture-review`: direct architecture review for the current spec, plan, task list, or implementation.
+- `violation-detection`: focused drift detection during planning, tasks, or implementation review.
+- `refactor-generator`: turn violations into small, non-blocking refactor tasks.
+- `architecture-apply`: write approved architecture feedback back into plan or task artifacts.
 
-```text
-/architecture-review
-/architecture-review performance
-/architecture-review performance db
-```
-
-### Alternative
-
-```text
-/architecture-review.performance
-/architecture-review.performance.db
-```
-
-The command parser should normalize both styles into the same internal model:
-
-- `mode=architecture` by default
-- `mode=performance` when `performance` is present
-- `focus=general` by default
-- `focus=db` when `db` is present
-- `focus=api` when `api` is present
-- `focus=async` when `async` is present
-
-Dot-style aliases must map to the same normalized `mode + focus` model.
-
-## Performance Mode
-
-Performance mode is optional and advisory.
-
-Use it when you want architecture guidance that emphasizes performance trade-offs without turning the command into a benchmarking tool.
-
-Use it for:
-
-- data-access hot paths
-- API payload shaping
-- async versus blocking work placement
-
-Do not use it as a substitute for profiling, benchmarking, or runtime metrics.
-
-In performance mode:
-
-- `architecture-review` stays non-blocking
-- existing architecture sections remain unchanged
-- the command appends `Performance Insights` instead of `Violations`
-- the insights should be advisory only and should not claim measured results
-
-When performance mode is active, `architecture-workflow` should pass the normalized `mode` and `focus` through its serial flow.
+If you are new to the extension, start with `architecture-workflow`. It is the least surprising entry point.
 
 ## Installation
 
@@ -174,7 +138,7 @@ Use this path when you want to install from the GitHub repository, release artif
 ```text
 cd /path/to/spec-kit-project
 specify extension add spec-kit-architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.0.0.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.0.1.zip
 ```
 
 Replace the tag with the release you want to pin. If your installer uses a different GitHub source flag, keep the same idea and point it at the release archive.
@@ -266,6 +230,12 @@ Only one workflow should write a given follow-up item:
 - `spec-kit-memory-hub` writes durable memory and synthesis updates.
 
 This keeps Memory Hub, Security Review, and `spec-kit-architecture-guard` aligned without duplicating ownership.
+
+### Beginner Tip
+
+If you are unsure which command to use, start with `architecture-workflow`.
+
+It reads optional Memory Hub context, reviews architecture, and tells you whether Security Review should handle any part of the result.
 
 ## Framework-Agnostic Philosophy
 
@@ -409,7 +379,7 @@ The extension repository is organized like this:
 ```text
 spec-kit-architecture-guard/
 ├── README.md
-├── extension.yaml
+├── extension.yml
 ├── commands/
 │   ├── architecture-apply.md
 │   ├── architecture-review.md
@@ -430,7 +400,7 @@ spec-kit-architecture-guard/
 
 ## Spec Kit Compatibility
 
-This extension follows the current Spec Kit extension manifest shape shown in the extension proposal: `extension.yaml` includes `name`, `version`, `description`, `spec_kit_version`, `supported_agents`, and `provides`.
+This extension follows the current Spec Kit extension manifest shape shown in the extension proposal: `extension.yml` includes `schema_version`, `extension`, `requires`, `provides`, and `tags`.
 
 Installable command prompts live in `commands/`, which keeps the extension compatible with Spec Kit's command-based extension flow. The `prompts/` directory remains as a human-readable source layer for the prompt content.
 

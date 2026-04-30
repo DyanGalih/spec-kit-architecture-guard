@@ -1,0 +1,39 @@
+schema_version: "1.0"
+
+extension:
+  id: "spec-kit-architecture-guard"
+  name: "Spec Kit Architecture Guard"
+  version: "1.0.1"
+  description: "Framework-agnostic architecture review extension for validating implementation against Constitution, detecting architectural drift, and generating non-blocking refactor tasks."
+  author: "DyanGalih"
+  repository: "https://github.com/DyanGalih/spec-kit-architecture-guard"
+  license: "MIT"
+  homepage: "https://github.com/DyanGalih/spec-kit-architecture-guard"
+
+requires:
+  speckit_version: ">=0.9.0"
+
+provides:
+  commands:
+    - name: "speckit.architecture-workflow"
+      file: "commands/architecture-workflow.md"
+      description: "Run a single architecture workflow with optional Memory Hub and Security Review context."
+    - name: "speckit.architecture-review"
+      file: "commands/architecture-review.md"
+      description: "Review specs, plans, tasks, or implementation for architecture drift."
+    - name: "speckit.violation-detection"
+      file: "commands/violation-detection.md"
+      description: "Detect architecture violations in plans, tasks, and implementation summaries."
+    - name: "speckit.refactor-generator"
+      file: "commands/refactor-generator.md"
+      description: "Convert architecture violations into structured refactor tasks."
+    - name: "speckit.architecture-apply"
+      file: "commands/architecture-apply.md"
+      description: "Apply approved architecture refactors to plan and task artifacts."
+
+tags:
+  - architecture
+  - spec-kit
+  - review
+  - refactor
+  - workflow

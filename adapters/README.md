@@ -86,7 +86,7 @@ Recommended package structure:
 ```text
 spec-kit-architecture-guard-<framework>/
 ├── README.md
-├── extension.yaml
+├── extension.yml
 └── prompts/
     └── adapter-guidance.md
 ```
