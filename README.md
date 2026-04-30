@@ -1,6 +1,6 @@
 # 🛡️ spec-kit-architecture-guard
 
-[![Version](https://img.shields.io/badge/version-1.0.4-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.0.5-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Prompt-based](https://img.shields.io/badge/mode-prompt--based-f59e0b)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
@@ -10,7 +10,7 @@ A framework-agnostic Spec Kit extension for lightweight architecture review duri
 
 It helps teams validate implementation work against the project Constitution, detect architectural drift across modules and services, and produce structured, non-blocking refactor tasks when violations appear.
 
-Version `1.0.4` is the current release recorded in `extension.yml`.
+Version `1.0.5` is the current release recorded in `extension.yml`.
 
 Architecture enforcement matters because systems usually degrade through small inconsistencies: one route bypasses a service boundary, one UI module invents a different response shape, one service talks directly to another module's persistence layer, and soon the codebase becomes harder to reason about than the original specification.
 
@@ -150,7 +150,7 @@ Architecture mode is strict. Performance mode is advisory.
 
 ## Constitution Update Proposals
 
-When the review shows that the current Constitution is too narrow, contradictory, or repeatedly forcing cross-cutting refactors, it can surface a Constitution Update Proposal.
+When `mode=architecture` shows that the current Constitution is too narrow, contradictory, or repeatedly forcing cross-cutting refactors, it can surface a Constitution Update Proposal.
 
 Use this when:
 
@@ -204,7 +204,7 @@ Use this path when you want to install from the GitHub repository, release artif
 ```text
 cd /path/to/spec-kit-project
 specify extension add spec-kit-architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.0.4.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.0.5.zip
 ```
 
 Replace the tag with the release you want to pin. If your installer uses a different GitHub source flag, keep the same idea and point it at the release archive.
@@ -479,7 +479,7 @@ It does not depend on unsupported Spec Kit APIs, runtime hooks, custom analyzers
 Architecture reviews still return the standard sections. When relevant, they may also append:
 
 - `Performance Insights` for `mode=performance`
-- `Constitution Update Proposal` when the drift indicates a system-level rule change is needed
+- `Constitution Update Proposal` when `mode=architecture` shows a system-level rule change is needed
 
 ### `specify`
 

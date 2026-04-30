@@ -11,7 +11,7 @@ The workflow is serial and ownership-aware:
 3. Run the architecture review against the Constitution, memory synthesis, and generic architecture principles.
 4. If `mode=performance`, keep the pass advisory and route output to `Performance Insights` only.
 5. Route security-first findings to Security Review instead of duplicating them here.
-6. If a Constitution Update Proposal is warranted, surface it and leave application to `architecture-apply`.
+6. If `mode=architecture` and a Constitution Update Proposal is warranted, surface it and leave application to `architecture-apply`.
 7. Produce refactor tasks or an apply recommendation for architecture findings.
 
 ## Goal

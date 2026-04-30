@@ -42,7 +42,7 @@ When `mode=performance`, append only `Performance Insights`.
 
 ## Constitution Update Proposals
 
-When the current work indicates a system-level rule change rather than a local refactor, append a `Constitution Update Proposal` section after `Summary`.
+When `mode=architecture` and the current work indicates a system-level rule change rather than a local refactor, append a `Constitution Update Proposal` section after `Summary`.
 
 Use it when:
 
@@ -176,7 +176,7 @@ Performance Insights:
 - Trade-off:
 ```
 
-When a Constitution Update Proposal is warranted, append this block after `Summary`:
+When `mode=architecture` and a Constitution Update Proposal is warranted, append this block after `Summary`:
 
 ```text
 Constitution Update Proposal:
