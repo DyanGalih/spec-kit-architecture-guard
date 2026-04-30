@@ -2,12 +2,17 @@
 
 Use this prompt when you want one orchestration pass for architecture review with optional Memory Hub and Security Review context.
 
+This prompt accepts the same normalized command context as the review workflow, including semantic and dot-style aliases, plus optional performance mode.
+
 The workflow is serial and ownership-aware:
 
 1. Read Memory Hub context and `specs/<feature>/memory-synthesis.md` if they are available.
-2. Run the architecture review against the Constitution, memory synthesis, and generic architecture principles.
-3. Route security-first findings to Security Review instead of duplicating them here.
-4. Produce refactor tasks or an apply recommendation for architecture findings.
+2. Normalize `mode` and `focus` from the incoming command.
+3. Run the architecture review against the Constitution, memory synthesis, and generic architecture principles.
+4. If `mode=performance`, keep the pass advisory and route output to `Performance Insights` only.
+5. Route security-first findings to Security Review instead of duplicating them here.
+6. If a Constitution Update Proposal is warranted, surface it and leave application to `architecture-apply`.
+7. Produce refactor tasks or an apply recommendation for architecture findings.
 
 ## Goal
 
@@ -50,6 +55,8 @@ Review any available:
 - Do not write security follow-up items into architecture tasks or plan updates.
 - Do not write memory conclusions into architecture follow-up items.
 
+When `mode=performance`, do not produce violations or refactor tasks.
+
 ## Output Format
 
-Return the architecture review output, followed by a short workflow summary that notes any Memory Hub context used and any Security Review handoff that was identified.
+Return the architecture review output, followed by a short workflow summary that notes any Memory Hub context used, any Security Review handoff, and any Constitution Update Proposal that was surfaced.

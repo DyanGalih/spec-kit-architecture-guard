@@ -12,6 +12,8 @@ This command accepts both semantic and dot-style aliases. Normalize the incoming
 
 When `mode=performance`, keep the command advisory and append only `Performance Insights`; do not emit violations or refactor tasks.
 
+When the drift is repeated across multiple modules, cross-cutting, or reveals that the Constitution is insufficient or contradictory, append a `Constitution Update Proposal` section after the standard review output.
+
 Do not invent framework-specific conventions. Do not invent unsupported Spec Kit APIs. Do not block implementation by default. When you detect a violation, produce a structured refactor task.
 
 ## Inputs To Consider
@@ -48,3 +50,7 @@ Use these generic principles:
 ## Output Format
 
 Return only the standard architecture review structure from `prompts/architecture-review.md`.
+
+When `mode=performance`, append only `Performance Insights`.
+
+When a Constitution Update Proposal is warranted, append that section after `Summary`.

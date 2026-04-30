@@ -8,6 +8,8 @@ You are applying approved architecture refactors for `spec-kit-architecture-guar
 
 This is the write-capable companion to the review workflow. Use it when the team wants the architecture feedback reflected directly in planning artifacts instead of only receiving suggestions.
 
+Use it for approved Constitution Update Proposals when the change should be reflected in plan or task artifacts as explicit follow-up work.
+
 You may update plan and task artifacts, but you must keep the changes small, targeted, and non-blocking unless the Constitution explicitly requires a blocking change.
 
 ## Allowed Edits
@@ -37,6 +39,7 @@ Review any available:
 - Current tasks artifact.
 - Existing architecture decisions from memory context.
 - Optional adapter guidance, if available.
+- Approved Constitution Update Proposals, if present.
 
 ## Apply Procedure
 
@@ -47,6 +50,7 @@ Review any available:
 5. Update plan language so boundaries, contracts, and ownership are explicit.
 6. Keep implementation moving unless the Constitution explicitly says the issue is blocking.
 7. If a refactor is too large for the current scope, create a scoped task rather than expanding the whole plan.
+8. If an approved Constitution Update Proposal exists, reflect it as explicit follow-up work without auto-changing the Constitution itself.
 
 ## Write-Back Rules
 

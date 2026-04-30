@@ -19,6 +19,8 @@ Accept the same normalized command context as the review workflow:
 
 If `mode=performance`, do not create refactor tasks from performance guidance. That mode is advisory and belongs to `architecture-review` output only.
 
+If the input points to a Constitution Update Proposal, do not convert it into a normal refactor task. Leave it for `architecture-review` and `architecture-apply`.
+
 ## Inputs
 
 Use any available:
@@ -103,6 +105,8 @@ If no tasks are needed:
 Refactor Tasks:
 - None
 ```
+
+Constitution Update Proposals are not refactor tasks.
 
 ## Example
 

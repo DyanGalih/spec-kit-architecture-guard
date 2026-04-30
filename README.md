@@ -1,6 +1,6 @@
 # 🛡️ spec-kit-architecture-guard
 
-[![Version](https://img.shields.io/badge/version-1.0.3-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.0.4-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Prompt-based](https://img.shields.io/badge/mode-prompt--based-f59e0b)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
@@ -10,7 +10,7 @@ A framework-agnostic Spec Kit extension for lightweight architecture review duri
 
 It helps teams validate implementation work against the project Constitution, detect architectural drift across modules and services, and produce structured, non-blocking refactor tasks when violations appear.
 
-Version `1.0.3` is the current release recorded in `extension.yml`.
+Version `1.0.4` is the current release recorded in `extension.yml`.
 
 Architecture enforcement matters because systems usually degrade through small inconsistencies: one route bypasses a service boundary, one UI module invents a different response shape, one service talks directly to another module's persistence layer, and soon the codebase becomes harder to reason about than the original specification.
 
@@ -102,6 +102,70 @@ Example flow:
   -> apply approved plan/task updates when requested
 ```
 
+## Command Usage
+
+Use the semantic form first. It is the primary and most readable interface.
+
+### Recommended (Semantic)
+
+```text
+/architecture-review
+/architecture-review performance
+/architecture-review performance db
+```
+
+### Alternative (Dot-style)
+
+```text
+/architecture-review.performance
+/architecture-review.performance.db
+```
+
+Normalize both styles into the same internal model:
+
+- `mode=architecture` by default
+- `mode=performance` when `performance` is present
+- `focus=general` by default
+- `focus=db` when `db` is present
+- `focus=api` when `api` is present
+- `focus=async` when `async` is present
+
+Dot-style aliases map to the same normalized `mode + focus` model.
+
+## Performance Mode (Optional)
+
+Performance mode is advisory.
+
+Use it when you want architecture guidance that highlights likely performance trade-offs without turning the command into a benchmarking tool.
+
+Use it for:
+
+- data-access hot paths
+- API payload shaping
+- async versus blocking work placement
+
+Do not use it as a substitute for profiling, benchmarking, or runtime metrics.
+
+Architecture mode is strict. Performance mode is advisory.
+
+## Constitution Update Proposals
+
+When the review shows that the current Constitution is too narrow, contradictory, or repeatedly forcing cross-cutting refactors, it can surface a Constitution Update Proposal.
+
+Use this when:
+
+- the same drift appears across multiple modules
+- the refactor is cross-cutting rather than local
+- the current Constitution is insufficient or contradictory
+- a new pattern is consistently emerging
+
+Do not use it for:
+
+- single local issues
+- minor inconsistencies
+
+Constitution Update Proposals are non-blocking, require explicit approval, and are never auto-applied. Approved proposals can be carried forward with `architecture-apply`.
+
 ## Commands
 
 This extension ships five commands:
@@ -140,7 +204,7 @@ Use this path when you want to install from the GitHub repository, release artif
 ```text
 cd /path/to/spec-kit-project
 specify extension add spec-kit-architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.0.3.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.0.4.zip
 ```
 
 Replace the tag with the release you want to pin. If your installer uses a different GitHub source flag, keep the same idea and point it at the release archive.
@@ -410,6 +474,13 @@ Installable command prompts live in `commands/`, which keeps the extension compa
 
 It does not depend on unsupported Spec Kit APIs, runtime hooks, custom analyzers, or framework plugins.
 
+## Output Format Extension
+
+Architecture reviews still return the standard sections. When relevant, they may also append:
+
+- `Performance Insights` for `mode=performance`
+- `Constitution Update Proposal` when the drift indicates a system-level rule change is needed
+
 ### `specify`
 
 Use the review prompts to strengthen specs with:
@@ -460,6 +531,7 @@ This is the command to use when the architecture review should become an actual 
 - This is not a security review replacement.
 - Performance analysis is optional and advisory.
 - Performance analysis does not replace benchmarking or profiling.
+- Constitution updates are never automatic.
 - This is not framework-specific in the core package.
 - This is not read-only only, because `architecture-apply` can update planning artifacts when requested.
 - This is not a blocker by default.
@@ -566,7 +638,9 @@ Summary:
 This extension does not:
 
 - Duplicate `security-review`.
-- Enforce performance rules.
+- Make performance analysis mandatory.
+- Replace benchmarking or profiling.
+- Auto-update the Constitution.
 - Require runtime tools.
 - Act as a linter or static analyzer.
 - Enforce framework-specific conventions in the core package.

@@ -23,6 +23,8 @@ Normalize all inputs into:
 
 Map dot-style aliases such as `/architecture-review.performance.db` to the same normalized `mode + focus` model.
 
+If the command context includes `performance`, keep the review advisory and do not emit `Violations` or `Refactor Tasks`.
+
 ## Performance Mode
 
 When `mode=performance`:
@@ -35,6 +37,22 @@ When `mode=performance`:
 - do not replace profiling or benchmarking
 
 Use `focus=db` for data-access and query shape concerns, `focus=api` for payload and response-shaping concerns, `focus=async` for blocking-versus-background work concerns, and `focus=general` for broad performance guidance.
+
+When `mode=performance`, append only `Performance Insights`.
+
+## Constitution Update Proposals
+
+When the current work indicates a system-level rule change rather than a local refactor, append a `Constitution Update Proposal` section after `Summary`.
+
+Use it when:
+
+- the same drift appears across multiple modules
+- the refactor is cross-cutting rather than local
+- the current Constitution is insufficient or contradictory
+- a new pattern is consistently emerging
+
+Do not use it for single local issues or minor inconsistencies.
+Constitution Update Proposals are non-blocking, require explicit approval, and are never auto-applied.
 
 ## Inputs
 
@@ -156,6 +174,22 @@ Performance Insights:
 - Suggestion:
 - Context:
 - Trade-off:
+```
+
+When a Constitution Update Proposal is warranted, append this block after `Summary`:
+
+```text
+Constitution Update Proposal:
+
+[Proposal]
+Title:
+Current Rule:
+Proposed Change:
+Rationale:
+Impact Scope:
+Migration Strategy:
+Risk Level:
+Suggested Version Bump:
 ```
 
 If no violations are found, write:

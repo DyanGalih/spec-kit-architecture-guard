@@ -19,6 +19,8 @@ Accept the same normalized command context as the review workflow:
 
 If `mode=performance`, do not emit violations here. Let `architecture-review` own the advisory performance output.
 
+When the drift is repeated across multiple modules, cross-cutting, or indicates the Constitution may be insufficient or contradictory, surface that as proposal-worthy input for `architecture-review` and `architecture-apply`.
+
 ## Generic Architecture Model
 
 Use this model regardless of framework:
@@ -149,3 +151,4 @@ Violations:
 - Prefer "risk" language when the evidence is incomplete.
 - Keep findings small enough to become refactor tasks.
 - Do not duplicate `Performance Insights` from `architecture-review`.
+- If the same drift appears across multiple modules, flag it as potential proposal-worthy input rather than forcing only local findings.
