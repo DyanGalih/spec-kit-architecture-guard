@@ -47,10 +47,116 @@ Use these generic principles:
 - Architecture review should identify drift without converting style preferences into hard failures.
 - Security findings should be handed off to Security Review unless the issue is specifically an architectural boundary problem.
 
+## Detection Scope
+
+Detect violations such as:
+
+- Missing or inconsistent data contracts.
+- Business logic leaking into controllers, routes, handlers, UI components, or other entry points.
+- Tight coupling between modules.
+- Direct data access without an expected abstraction.
+- Inconsistent response, output, or error structure.
+- Missing validation boundaries.
+- Separation of concerns violations.
+- Contract mismatch between API, UI, service, event, or storage boundaries.
+- Similar modules using incompatible patterns without a documented reason.
+
+## Review Procedure
+
+1. Identify the architecture expectations from the Constitution and available context.
+2. Identify the implementation boundaries: input, output, application logic, domain logic, data access, integrations, UI state, and shared contracts.
+3. Compare current work against nearby or analogous modules.
+4. Detect violations using the generic principles above.
+5. Assign severity based on architectural risk and Constitution impact.
+6. Generate non-blocking refactor tasks for each meaningful violation.
+7. Summarize consistency across modules, services, handlers or controllers, and contracts.
+
+## Severity Guide
+
+- `Critical`: Violates a blocking Constitution rule or creates immediate architectural breakage.
+- `High`: Creates significant coupling, boundary erosion, or contract inconsistency.
+- `Medium`: Introduces local drift that may spread if repeated.
+- `Low`: Minor inconsistency or naming or shape drift worth cleaning up later.
+
 ## Output Format
 
-Return only the standard architecture review structure from `prompts/architecture-review.md`.
+Return only this structure:
 
-When `mode=performance`, append only `Performance Insights`.
+```text
+Architecture Review
 
-When `mode=architecture` and a Constitution Update Proposal is warranted, append that section after `Summary`.
+Constitution Alignment:
+- Status:
+- Notes:
+
+Violations:
+- Type:
+  Severity:
+  Location:
+  Description:
+  Evidence:
+  Principle:
+
+Refactor Tasks:
+[Refactor Task]
+Title:
+Reason:
+Scope:
+Priority:
+Suggested Fix:
+
+Consistency Notes:
+- Modules:
+- Services:
+- Handlers/Controllers:
+- Data Contracts:
+
+Summary:
+- Overall Risk:
+- Recommended Next Step:
+```
+
+When `mode=performance`, append only this block and omit `Violations` and `Refactor Tasks`:
+
+```text
+Performance Insights:
+- Suggestion:
+- Context:
+- Trade-off:
+```
+
+When `mode=architecture` and a Constitution Update Proposal is warranted, append this block after `Summary`:
+
+```text
+Constitution Update Proposal:
+
+[Proposal]
+Title:
+Current Rule:
+Proposed Change:
+Rationale:
+Impact Scope:
+Migration Strategy:
+Risk Level:
+Suggested Version Bump:
+```
+
+If no violations are found, write:
+
+```text
+Violations:
+- None detected
+
+Refactor Tasks:
+- None
+```
+
+## Rules
+
+- Be specific and actionable.
+- Prefer architectural evidence over speculation.
+- Do not block implementation unless the Constitution explicitly says the violation is blocking.
+- If a finding is uncertain, label it as a risk rather than a confirmed violation.
+- Keep framework-specific names descriptive, not prescriptive.
+- Preserve incremental adoption by suggesting small refactors.
+

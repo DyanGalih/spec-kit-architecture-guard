@@ -89,7 +89,7 @@ Recommended package structure:
 architecture-guard-<framework>/
 ├── README.md
 ├── extension.yml
-└── prompts/
+└── commands/
     └── adapter-guidance.md
 ```
 
@@ -147,11 +147,10 @@ Create a separate extension for the adapter with its own:
 
 - `extension.yml`
 - `commands/`
-- `prompts/`
 
 Then:
 
 - Set the adapter `id` to something framework-specific, like `architecture-guard-nestjs`.
 - Keep the core rules in `architecture-guard`.
-- Put framework-specific examples and conventions in the adapter prompts.
+- Put framework-specific examples and conventions in the adapter commands.
 - Make the adapter safe to remove so the core extension still works on its own.

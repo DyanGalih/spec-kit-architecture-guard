@@ -1,0 +1,19 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Spec Kit temp files
+.specify/tmp/
+*.log
+
+# Repo context
+.agents/
+.agent/
+_agents/
+_agent/

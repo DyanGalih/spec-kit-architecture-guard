@@ -1,6 +1,6 @@
 # 🛡️ Architecture Guard
 
-[![Version](https://img.shields.io/badge/version-1.0.8-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.0.9-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Optional adapters](https://img.shields.io/badge/adapters-optional-8b5cf6)](adapters/README.md)
@@ -305,7 +305,7 @@ specify extension add architecture-guard
 ```text
 cd /path/to/spec-kit-project
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.0.8.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.0.9.zip
 ```
 
 ### Local Development
