@@ -1,0 +1,61 @@
+name: spec-kit-architecture-guard
+version: 1.0.0
+description: Framework-agnostic architecture review extension for validating implementation against Constitution, detecting architectural drift, and generating non-blocking refactor tasks.
+spec_kit_version: ">=0.9.0"
+supported_agents: all
+
+provides:
+  commands:
+    - architecture-workflow
+    - architecture-review
+    - violation-detection
+    - refactor-generator
+    - architecture-apply
+
+compatibility_notes:
+  - Works as a prompt-based, AI-first extension.
+  - Does not require runtime hooks, custom analyzers, framework CLIs, or unsupported Spec Kit APIs.
+  - Core rules are framework-agnostic and may be refined by optional adapter extensions.
+  - Does not replace the Constitution, plan, tasks, or implement workflows; it augments them.
+
+integration:
+  phases:
+    - specify
+    - plan
+    - tasks
+    - implement
+
+extension_compatibility:
+  memory-hub:
+    usage: optional-context
+    notes:
+      - May provide architecture decisions, module boundaries, contract conventions, and accepted deviations.
+      - Must not be required for core operation.
+      - Is treated as read context in the orchestration workflow, including memory synthesis when present.
+      - Can be folded into the orchestration workflow when present.
+  security-review:
+    usage: separate-concern
+    notes:
+      - Security findings belong to security-review.
+      - Architecture review should only mention security when it affects architectural boundaries.
+      - Security-first findings should be routed there instead of duplicated in the architecture output.
+      - Can be referenced from the orchestration workflow for security-adjacent findings.
+  architecture-guard:
+    usage: separate-concern
+    notes:
+      - Architecture findings belong to architecture-guard.
+      - Architecture follow-up items should not be written into security-review or memory-hub workflows.
+      - Architecture review may consume memory-hub synthesis as input, but it should not write memory artifacts itself.
+
+adapter_support:
+  enabled: true
+  adapter_role:
+    - Add framework-specific vocabulary.
+    - Refine generic detection logic.
+    - Extend command guidance with framework-specific examples.
+    - Map generic concepts to framework primitives.
+  adapter_constraints:
+    - Core extension must work without adapters.
+    - Adapters must not duplicate core logic.
+    - Adapters must not replace Constitution rules.
+    - Adapters must remain non-blocking unless the Constitution says otherwise.
