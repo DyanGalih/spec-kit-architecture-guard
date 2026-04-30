@@ -1,6 +1,6 @@
 # 🛡️ spec-kit-architecture-guard
 
-[![Version](https://img.shields.io/badge/version-1.0.5-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.0.6-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Prompt-based](https://img.shields.io/badge/mode-prompt--based-f59e0b)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
@@ -10,7 +10,7 @@ A framework-agnostic Spec Kit extension for lightweight architecture review duri
 
 It helps teams validate implementation work against the project Constitution, detect architectural drift across modules and services, and produce structured, non-blocking refactor tasks when violations appear.
 
-Version `1.0.5` is the current release recorded in `extension.yml`.
+Version `1.0.6` is the current release recorded in `extension.yml`.
 
 Architecture enforcement matters because systems usually degrade through small inconsistencies: one route bypasses a service boundary, one UI module invents a different response shape, one service talks directly to another module's persistence layer, and soon the codebase becomes harder to reason about than the original specification.
 
@@ -95,7 +95,7 @@ If you want the shortest path for day-to-day use, start with the orchestration c
 Example flow:
 
 ```text
-/speckit.spec-kit-architecture-guard.architecture-workflow
+/speckit.architecture-guard.architecture-workflow
   -> read Memory Hub context if installed
   -> review spec, plan, tasks, or implementation
   -> route security-adjacent findings to Security Review
@@ -131,6 +131,7 @@ Normalize both styles into the same internal model:
 - `focus=async` when `async` is present
 
 Dot-style aliases map to the same normalized `mode + focus` model.
+ - Tip: Fully-qualified command names (for example `speckit.architecture-guard.architecture-review.performance`) are also accepted and normalized as aliases.
 
 ## Performance Mode (Optional)
 
@@ -170,13 +171,13 @@ Constitution Update Proposals are non-blocking, require explicit approval, and a
 
 This extension ships five commands:
 
-- `speckit.spec-kit-architecture-guard.architecture-workflow`: one pass that can also consider Memory Hub context and Security Review handoff.
-- `speckit.spec-kit-architecture-guard.architecture-review`: direct architecture review for the current spec, plan, task list, or implementation.
-- `speckit.spec-kit-architecture-guard.violation-detection`: focused drift detection during planning, tasks, or implementation review.
-- `speckit.spec-kit-architecture-guard.refactor-generator`: turn violations into small, non-blocking refactor tasks.
-- `speckit.spec-kit-architecture-guard.architecture-apply`: write approved architecture feedback back into plan or task artifacts.
+- `speckit.architecture-guard.architecture-workflow`: one pass that can also consider Memory Hub context and Security Review handoff.
+- `speckit.architecture-guard.architecture-review`: direct architecture review for the current spec, plan, task list, or implementation.
+- `speckit.architecture-guard.violation-detection`: focused drift detection during planning, tasks, or implementation review.
+- `speckit.architecture-guard.refactor-generator`: turn violations into small, non-blocking refactor tasks.
+- `speckit.architecture-guard.architecture-apply`: write approved architecture feedback back into plan or task artifacts.
 
-If you are unsure which command to use, start with `speckit.spec-kit-architecture-guard.architecture-workflow`.
+If you are unsure which command to use, start with `speckit.architecture-guard.architecture-workflow`.
 
 It is the least surprising entry point because it reads optional Memory Hub context, reviews architecture, and tells you whether Security Review should handle any part of the result.
 
@@ -204,7 +205,7 @@ Use this path when you want to install from the GitHub repository, release artif
 ```text
 cd /path/to/spec-kit-project
 specify extension add spec-kit-architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.0.5.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.0.6.zip
 ```
 
 Replace the tag with the release you want to pin. If your installer uses a different GitHub source flag, keep the same idea and point it at the release archive.
@@ -281,7 +282,7 @@ It should inform the architecture workflow, but it should not be required for th
 ### One-Command Workflow
 
 When both companion extensions are present, `architecture-workflow` is the recommended single entry point.
-When both companion extensions are present, `speckit.spec-kit-architecture-guard.architecture-workflow` is the recommended single entry point.
+When both companion extensions are present, `speckit.architecture-guard.architecture-workflow` is the recommended single entry point.
 
 It runs in serial order:
 
@@ -289,6 +290,10 @@ It runs in serial order:
 2. Run the architecture review against the Constitution, memory synthesis, and nearby patterns.
 3. Route security-first findings to Security Review.
 4. Emit architecture refactor tasks or an apply recommendation.
+
+#### Mode and Focus Propagation
+
+When `architecture-workflow` is invoked with a `mode` or `focus` (for example `performance` or `db`), the workflow normalizes and propagates those values to its internal commands (`architecture-review`, `violation-detection`, and `refactor-generator`). This ensures consistent behavior across the pass: `mode=performance` appends advisory Performance Insights while suppressing performance-only Violations and Refactor Tasks unless they also apply to architecture.
 
 Only one workflow should write a given follow-up item:
 
@@ -301,7 +306,7 @@ This keeps Memory Hub, Security Review, and `spec-kit-architecture-guard` aligne
 ### Beginner Tip
 
 If you are unsure which command to use, start with `architecture-workflow`.
-If you are unsure which command to use, start with `speckit.spec-kit-architecture-guard.architecture-workflow`.
+If you are unsure which command to use, start with `speckit.architecture-guard.architecture-workflow`.
 
 It reads optional Memory Hub context, reviews architecture, and tells you whether Security Review should handle any part of the result.
 
@@ -581,6 +586,15 @@ Performance Insights:
 - Suggestion:
 - Context:
 - Trade-off:
+```
+
+A concrete example might look like:
+
+```text
+Performance Insights:
+- Suggestion: Add an index on orders.user_id for the order-list read path.
+- Context: High-read endpoint with elevated 95th-percentile latency under load.
+- Trade-off: Improves read latency; increases write cost slightly.
 ```
 
 Severity values:
