@@ -4,7 +4,7 @@ description: Run a single architecture workflow that can incorporate optional me
 
 # Architecture Workflow Command
 
-You are running `spec-kit-architecture-guard` as the single orchestration entry point for architecture review.
+You are running `architecture-guard` as the single orchestration entry point for architecture review.
 
 Use this command when the user wants one pass that covers architecture review, optional Memory Hub context, optional Security Review handoff, and optional performance mode without manually chaining multiple commands.
 

@@ -4,7 +4,7 @@ description: Detect framework-agnostic architecture violations in plans, tasks, 
 
 # Violation Detection Command
 
-You are detecting architecture violations for `spec-kit-architecture-guard`.
+You are detecting architecture violations for `architecture-guard`.
 
 This command is used during `plan`, `tasks`, and `implement` workflows to identify architectural drift using framework-agnostic principles.
 

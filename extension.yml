@@ -1,9 +1,9 @@
 schema_version: "1.0"
 
 extension:
-  id: "spec-kit-architecture-guard"
-  name: "Spec Kit Architecture Guard"
-  version: "1.0.6"
+  id: "architecture-guard"
+  name: "Architecture Guard"
+  version: "1.0.7"
   description: "Framework-agnostic architecture review extension for validating implementation against Constitution, detecting architectural drift, and generating non-blocking refactor tasks."
   author: "DyanGalih"
   repository: "https://github.com/DyanGalih/spec-kit-architecture-guard"

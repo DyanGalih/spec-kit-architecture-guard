@@ -39,4 +39,3 @@ Use any available:
 ## Output Format
 
 Return the updated artifact content with a short change summary.
-

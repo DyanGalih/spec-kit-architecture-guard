@@ -1,6 +1,6 @@
 # Refactor Generator Prompt
 
-Use this prompt to turn architecture violations into non-blocking refactor tasks for `spec-kit-architecture-guard`.
+Use this prompt to turn architecture violations into non-blocking refactor tasks for `architecture-guard`.
 
 ## Goal
 

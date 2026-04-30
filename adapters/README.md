@@ -1,8 +1,10 @@
 # Architecture Review Adapters
 
-Adapters are optional companion extensions that refine `spec-kit-architecture-guard` for a specific framework, platform, or architectural style.
+Adapters are completely optional companion extensions that refine `architecture-guard` for a specific framework, platform, or architectural style.
 
-The core extension must work without adapters.
+You can use the core extension by itself. Add an adapter only when you want framework-specific vocabulary or conventions layered on top.
+
+`architecture-guard` is the generic core extension, and `architecture-guard-<framework>` is the optional framework-specific adapter layered on top of it.
 
 ## Adapter Scope
 
@@ -26,7 +28,7 @@ They must not:
 
 ## When To Add One
 
-Use an adapter when a rule depends on framework primitives.
+Use an adapter when a rule depends on framework primitives and the generic core rules are not specific enough.
 
 Examples:
 
@@ -75,16 +77,16 @@ Do not report a framework convention as a violation unless it conflicts with the
 
 Recommended adapter names:
 
-- `spec-kit-architecture-guard-laravel`
-- `spec-kit-architecture-guard-nestjs`
-- `spec-kit-architecture-guard-nextjs`
-- `spec-kit-architecture-guard-django`
-- `spec-kit-architecture-guard-express`
+- `architecture-guard-laravel`
+- `architecture-guard-nestjs`
+- `architecture-guard-nextjs`
+- `architecture-guard-django`
+- `architecture-guard-express`
 
 Recommended package structure:
 
 ```text
-spec-kit-architecture-guard-<framework>/
+architecture-guard-<framework>/
 ├── README.md
 ├── extension.yml
 └── prompts/
@@ -95,7 +97,7 @@ spec-kit-architecture-guard-<framework>/
 
 Adapters should declare compatibility with:
 
-- `spec-kit-architecture-guard`
+- `architecture-guard`
 - Spec Kit prompt-based workflows
 - The same phases: `specify`, `plan`, `tasks`, `implement`
 
@@ -120,3 +122,36 @@ Laravel refinement:
 ```text
 In Laravel, controllers should usually coordinate request validation, mapping, and response creation. Business workflows may live in actions, services, jobs, or domain classes depending on the project's Constitution.
 ```
+
+## How To Use One
+
+There are two common ways to use an adapter:
+
+1. Install an existing adapter extension alongside the core extension.
+2. Create your own adapter if your framework or team conventions are not covered yet.
+
+### Install An Existing Adapter
+
+Install the core extension first, then install the adapter extension for your framework.
+
+```text
+specify extension add architecture-guard
+specify extension add <adapter-name>
+```
+
+Use the adapter's own README or manifest to see the exact package name, namespace, and command set it provides.
+
+### Create Your Own Adapter
+
+Create a separate extension for the adapter with its own:
+
+- `extension.yml`
+- `commands/`
+- `prompts/`
+
+Then:
+
+- Set the adapter `id` to something framework-specific, like `architecture-guard-nestjs`.
+- Keep the core rules in `architecture-guard`.
+- Put framework-specific examples and conventions in the adapter prompts.
+- Make the adapter safe to remove so the core extension still works on its own.

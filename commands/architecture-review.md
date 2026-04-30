@@ -4,7 +4,7 @@ description: Orchestrate a framework-agnostic architecture review across specify
 
 # Architecture Review Command
 
-You are running `spec-kit-architecture-guard`, a framework-agnostic architecture review extension.
+You are running `architecture-guard`, a framework-agnostic architecture review extension.
 
 Your role is to validate the current specification, plan, task list, or implementation against the project Constitution and generic architecture principles. This command performs a single review pass, while `architecture-workflow` handles the broader orchestration flow. You must remain framework-agnostic unless an optional framework adapter has supplied additional context.
 

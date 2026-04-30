@@ -1,6 +1,6 @@
 # Violation Detection Prompt
 
-Use this prompt during `plan`, `tasks`, and `implement` workflows to detect framework-agnostic architecture drift for `spec-kit-architecture-guard`.
+Use this prompt during `plan`, `tasks`, and `implement` workflows to detect framework-agnostic architecture drift for `architecture-guard`.
 
 ## Goal
 

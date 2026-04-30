@@ -4,7 +4,7 @@ description: Convert architecture violations into non-blocking, structured refac
 
 # Refactor Generator Command
 
-You are generating non-blocking refactor tasks for `spec-kit-architecture-guard`.
+You are generating non-blocking refactor tasks for `architecture-guard`.
 
 Convert architecture violations into structured tasks that preserve delivery momentum while making architectural debt visible and actionable.
 

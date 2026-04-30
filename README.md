@@ -1,6 +1,6 @@
-# 🛡️ spec-kit-architecture-guard
+# 🛡️ Architecture Guard
 
-[![Version](https://img.shields.io/badge/version-1.0.6-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.0.7-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Prompt-based](https://img.shields.io/badge/mode-prompt--based-f59e0b)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
@@ -10,7 +10,7 @@ A framework-agnostic Spec Kit extension for lightweight architecture review duri
 
 It helps teams validate implementation work against the project Constitution, detect architectural drift across modules and services, and produce structured, non-blocking refactor tasks when violations appear.
 
-Version `1.0.6` is the current release recorded in `extension.yml`.
+Version `1.0.7` is the current release recorded in `extension.yml`.
 
 Architecture enforcement matters because systems usually degrade through small inconsistencies: one route bypasses a service boundary, one UI module invents a different response shape, one service talks directly to another module's persistence layer, and soon the codebase becomes harder to reason about than the original specification.
 
@@ -80,7 +80,7 @@ If you are new to this extension, this is the shortest accurate mental model:
 
 In one sentence:
 
-> Spec Kit drives delivery, and `spec-kit-architecture-guard` keeps the architecture honest while delivery moves forward.
+> Spec Kit drives delivery, and `architecture-guard` keeps the architecture honest while delivery moves forward.
 
 ## Best Workflow
 
@@ -193,7 +193,7 @@ Use this path when the extension has been published to your Spec Kit catalog or 
 
 ```text
 cd /path/to/spec-kit-project
-specify extension add spec-kit-architecture-guard
+specify extension add architecture-guard
 ```
 
 Use the extension slug registered in your catalog if it differs from the package name above.
@@ -204,8 +204,8 @@ Use this path when you want to install from the GitHub repository, release artif
 
 ```text
 cd /path/to/spec-kit-project
-specify extension add spec-kit-architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.0.6.zip
+specify extension add architecture-guard --from \
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.0.7.zip
 ```
 
 Replace the tag with the release you want to pin. If your installer uses a different GitHub source flag, keep the same idea and point it at the release archive.
@@ -265,13 +265,13 @@ The intended split is:
 
 - `spec-kit-memory-hub` provides repository-native memory, active feature synthesis, and durable project context.
 - `spec-kit-security-review` owns security findings such as authorization, secrets, injection, and authentication.
-- `spec-kit-architecture-guard` owns architecture drift, contract consistency, boundaries, and refactor task generation.
+- `architecture-guard` owns architecture drift, contract consistency, boundaries, and refactor task generation.
 
 ### Security Review
 
 If `spec-kit-security-review` is installed, use it as the dedicated place for authorization, secrets, injection, authentication, and other security findings.
 
-`spec-kit-architecture-guard` should only mention security when a security issue is also an architectural boundary problem, such as bypassing a shared access layer. Otherwise, route the finding to Security Review instead of duplicating it.
+`architecture-guard` should only mention security when a security issue is also an architectural boundary problem, such as bypassing a shared access layer. Otherwise, route the finding to Security Review instead of duplicating it.
 
 ### Memory Hub
 
@@ -297,11 +297,11 @@ When `architecture-workflow` is invoked with a `mode` or `focus` (for example `p
 
 Only one workflow should write a given follow-up item:
 
-- `spec-kit-architecture-guard` writes architecture findings into architecture tasks or plan updates.
+- `architecture-guard` writes architecture findings into architecture tasks or plan updates.
 - `spec-kit-security-review` writes security findings into security follow-up or backlog items.
 - `spec-kit-memory-hub` writes durable memory and synthesis updates.
 
-This keeps Memory Hub, Security Review, and `spec-kit-architecture-guard` aligned without duplicating ownership.
+This keeps Memory Hub, Security Review, and `architecture-guard` aligned without duplicating ownership.
 
 ### Beginner Tip
 
@@ -396,9 +396,9 @@ Framework adapters are optional companion extensions that refine the core review
 
 Examples:
 
-- `spec-kit-architecture-guard-laravel`
-- `spec-kit-architecture-guard-nestjs`
-- `spec-kit-architecture-guard-nextjs`
+- `architecture-guard-laravel`
+- `architecture-guard-nestjs`
+- `architecture-guard-nextjs`
 
 Adapters may:
 
@@ -424,7 +424,7 @@ Example:
 
 ## Integration Guide
 
-`spec-kit-architecture-guard` integrates with the following Spec Kit phases:
+`architecture-guard` integrates with the following Spec Kit phases:
 
 - `specify`: Capture architectural constraints, contracts, boundaries, module responsibilities, and Constitution expectations.
 - `plan`: Review the implementation plan for boundary violations, missing contracts, or coupling risks before tasks are generated.

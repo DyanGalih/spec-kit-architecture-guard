@@ -4,7 +4,7 @@ description: Apply approved architecture refactors by updating plan and task art
 
 # Architecture Apply Command
 
-You are applying approved architecture refactors for `spec-kit-architecture-guard`.
+You are applying approved architecture refactors for `architecture-guard`.
 
 This is the write-capable companion to the review workflow. Use it when the team wants the architecture feedback reflected directly in planning artifacts instead of only receiving suggestions.
 
@@ -63,4 +63,3 @@ Review any available:
 ## Output Format
 
 Return the changed artifact summary and the updated planning content in the standard Spec Kit artifact format.
-

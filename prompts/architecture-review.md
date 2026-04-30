@@ -1,6 +1,6 @@
 # Architecture Review Prompt
 
-Use this prompt when you need a framework-agnostic architecture review for `spec-kit-architecture-guard`.
+Use this prompt when you need a framework-agnostic architecture review for `architecture-guard`.
 
 ## Goal
 
