@@ -16,8 +16,8 @@ This command helps teams intentionally define:
 
 This command generates or refines:
 
-* `CONSTITUTION.md`
-* `ARCHITECTURE_CONSTITUTION.md`
+* `constitution.md`
+* `architecture_constitution.md`
 
 The goal is NOT to generate generic best practices.
 
@@ -129,8 +129,8 @@ This system separates:
 
 The system must maintain:
 
-* `CONSTITUTION.md`
-* `ARCHITECTURE_CONSTITUTION.md`
+* `constitution.md`
+* `architecture_constitution.md`
 
 Avoid duplication between both files.
 
@@ -140,7 +140,7 @@ Avoid duplication between both files.
 
 ---
 
-## `CONSTITUTION.md`
+## `constitution.md`
 
 Purpose:
 
@@ -165,7 +165,7 @@ Should NOT contain:
 
 ---
 
-## `ARCHITECTURE_CONSTITUTION.md`
+## `architecture_constitution.md`
 
 Purpose:
 
@@ -191,8 +191,8 @@ Should contain:
 
 Check for:
 
-* `CONSTITUTION.md`
-* `ARCHITECTURE_CONSTITUTION.md`
+* `constitution.md`
+* `architecture_constitution.md`
 
 ---
 
@@ -221,14 +221,14 @@ Would you like to:
 
 ---
 
-## If ONLY `CONSTITUTION.md` exists
+## If ONLY `constitution.md` exists
 
 1. Analyze architecture-related sections.
 
 2. Detect rules that should move into:
 
 ```text
-ARCHITECTURE_CONSTITUTION.md
+architecture_constitution.md
 ```
 
 3. Ask:
@@ -655,7 +655,7 @@ Before generating rules, classify them.
 
 ---
 
-## Global Governance Rules → `CONSTITUTION.md`
+## Global Governance Rules → `constitution.md`
 
 Examples:
 
@@ -668,7 +668,7 @@ Examples:
 
 ---
 
-## Architecture Enforcement Rules → `ARCHITECTURE_CONSTITUTION.md`
+## Architecture Enforcement Rules → `architecture_constitution.md`
 
 Examples:
 
@@ -689,13 +689,13 @@ DO NOT duplicate rules across both files.
 If a rule exists in:
 
 ```text
-ARCHITECTURE_CONSTITUTION.md
+architecture_constitution.md
 ```
 
 Then:
 
 ```text
-CONSTITUTION.md
+constitution.md
 ```
 
 should reference architecture rules instead of repeating implementation details.
@@ -705,12 +705,12 @@ should reference architecture rules instead of repeating implementation details.
 GOOD:
 
 ```text
-CONSTITUTION.md:
-- Architecture enforcement rules are defined in ARCHITECTURE_CONSTITUTION.md
+constitution.md:
+- Architecture enforcement rules are defined in architecture_constitution.md
 ```
 
 ```text
-ARCHITECTURE_CONSTITUTION.md:
+architecture_constitution.md:
 - Controllers must delegate business logic to Services or Actions
 ```
 
@@ -735,12 +735,12 @@ DO NOT generate final documents until:
 
 Generate or refine:
 
-* `CONSTITUTION.md`
-* `ARCHITECTURE_CONSTITUTION.md`
+* `constitution.md`
+* `architecture_constitution.md`
 
 ---
 
-## `CONSTITUTION.md` Structure
+## `constitution.md` Structure
 
 ```text
 1. Project Identity
@@ -755,7 +755,7 @@ Generate or refine:
 
 ---
 
-## `ARCHITECTURE_CONSTITUTION.md` Structure
+## `architecture_constitution.md` Structure
 
 ```text
 1. Architecture Style
@@ -780,8 +780,8 @@ Architecture rules may evolve over time.
 When repeated architecture drift is detected:
 
 * generate Constitution Update Proposals
-* target `ARCHITECTURE_CONSTITUTION.md` by default
-* only propose updates to `CONSTITUTION.md` for governance-level changes
+* target `architecture_constitution.md` by default
+* only propose updates to `constitution.md` for governance-level changes
 
 NEVER automatically modify either file.
 

@@ -111,7 +111,7 @@ into two different documents.
 
 ---
 
-## `CONSTITUTION.md`
+## `constitution.md`
 
 Defines:
 
@@ -126,7 +126,7 @@ This file should remain relatively stable.
 
 ---
 
-## `ARCHITECTURE_CONSTITUTION.md`
+## `architecture_constitution.md`
 
 Defines:
 
@@ -142,7 +142,7 @@ Defines:
 Architecture Guard primarily validates against:
 
 ```text
-ARCHITECTURE_CONSTITUTION.md
+architecture_constitution.md
 ```
 
 This separation prevents implementation-level architecture rules from polluting broader engineering governance.
@@ -243,8 +243,8 @@ This command can:
 It may generate:
 
 ```text
-CONSTITUTION.md
-ARCHITECTURE_CONSTITUTION.md
+constitution.md
+architecture_constitution.md
 ```
 
 ---
@@ -460,7 +460,7 @@ Recommended workflow:
 ```text
 New architecture standard
 ↓
-Update ARCHITECTURE_CONSTITUTION.md
+Update architecture_constitution.md
 ↓
 architecture-review detects drift
 ↓
@@ -557,7 +557,7 @@ Adapters do NOT replace architecture constitutions.
 Project-specific standards must always live in:
 
 ```text
-ARCHITECTURE_CONSTITUTION.md
+architecture_constitution.md
 ```
 
 Example adapters:

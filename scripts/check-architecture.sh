@@ -14,7 +14,7 @@ echo "Checking Architecture Guard prerequisites in: $PROJECT_ROOT"
 
 # --- 1. Constitution Check ---
 CONSTITUTION_FOUND=0
-for f in "CONSTITUTION.md" "docs/CONSTITUTION.md" "docs/PROJECT_CONTEXT.md"; do
+for f in "constitution.md" "docs/constitution.md" "docs/PROJECT_CONTEXT.md"; do
   if [ -f "$PROJECT_ROOT/$f" ]; then
     echo -e "  ${GREEN}✓${NC} Found $f"
     CONSTITUTION_FOUND=1
@@ -23,7 +23,7 @@ for f in "CONSTITUTION.md" "docs/CONSTITUTION.md" "docs/PROJECT_CONTEXT.md"; do
 done
 
 if [ $CONSTITUTION_FOUND -eq 0 ]; then
-  echo -e "  ${RED}✗${NC} No CONSTITUTION.md or PROJECT_CONTEXT.md found."
+  echo -e "  ${RED}✗${NC} No constitution.md or PROJECT_CONTEXT.md found."
   echo "    Architecture Guard needs a Constitution to validate against."
 fi
 

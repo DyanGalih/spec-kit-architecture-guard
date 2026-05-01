@@ -7,7 +7,7 @@ Thank you for your interest in contributing!
 ```
 extension.yml          ← extension manifest
 commands/              ← Spec Kit command definitions (single source of truth)
-templates/             ← Starter files for target projects (CONSTITUTION.md)
+templates/             ← Starter files for target projects (constitution.md)
 adapters/              ← Optional framework adapters (Currently README only)
 examples/              ← Usage examples for different architectures
 scripts/               ← Maintenance and verification scripts
