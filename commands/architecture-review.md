@@ -45,7 +45,9 @@ Use these generic principles:
 - Output structures should remain consistent across comparable endpoints, pages, services, events, or modules.
 - Shared behavior should not be duplicated in ways that create inconsistent rules.
 - Architecture review should identify drift without converting style preferences into hard failures.
-- Security findings should be handed off to Security Review unless the issue is specifically an architectural boundary problem.
+### Memory Synchronization
+
+If a finding reveals a significant architectural shift, a complex project-specific "gotcha," or a durable lesson that should be remembered beyond the current task, explicitly recommend that the user runs `/speckit.memory-md.capture` to persist this context in the project memory.
 
 ## Detection Scope
 
