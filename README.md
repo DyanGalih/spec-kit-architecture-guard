@@ -2,7 +2,7 @@
 
 > Continuous architecture governance for AI-assisted development.
 
-[![Version](https://img.shields.io/badge/version-1.1.1-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.1.2-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Optional adapters](https://img.shields.io/badge/adapters-optional-8b5cf6)](adapters/README.md)
@@ -357,8 +357,9 @@ Architecture Guard commands are optional follow-up validation steps that can be 
 | Spec Kit Phase | Optional Spec Kit Follow-up | Recommended Architecture Guard Command | Purpose |
 | --- | --- | --- | --- |
 | `specify` | `clarify` | `architecture-review` | Validate ownership, contracts, and architecture boundaries before planning |
-| `plan` | `analyze` | `violation-detection` | Detect coupling, boundary violations, and architecture drift before implementation |
-| `tasks` | `checklist` | `refactor-generator` | Convert architecture issues into structured migration/refactor tasks |
+| `plan` | — | `architecture-review` | Validate technical plan against architecture standards |
+| `tasks` | `analyze` | `violation-detection` | Detect coupling, boundary violations, and architecture drift before implementation |
+| — | — | `refactor-generator` | Convert architecture issues into structured migration/refactor tasks |
 | `implement` | — | `architecture-review` | Re-check implementation against architecture standards |
 | any phase | — | `architecture-workflow` | Run a complete architecture governance pass |
 
@@ -376,10 +377,12 @@ No major ambiguity found
 /speckit.architecture-guard.architecture-review
 ```
 
-### Example Workflow: Planning
+### Example Workflow: Tasks & Analysis
 
 ```text
 /plan
+↓
+/tasks
 ↓
 /analyze
 ↓
@@ -654,7 +657,7 @@ specify extension add architecture-guard
 ```text
 cd /path/to/spec-kit-project
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.1.1.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.1.2.zip
 ```
 
 ---
