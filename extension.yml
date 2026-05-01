@@ -3,7 +3,7 @@ schema_version: "1.0"
 extension:
   id: "architecture-guard"
   name: "Architecture Guard"
-  version: "1.0.9"
+  version: "1.1.0"
   description: "Framework-agnostic architecture review extension for validating implementation against Constitution, detecting architectural drift, and generating non-blocking refactor tasks."
   author: "DyanGalih"
   repository: "https://github.com/DyanGalih/spec-kit-architecture-guard"
@@ -30,6 +30,9 @@ provides:
     - name: "speckit.architecture-guard.architecture-apply"
       file: "commands/architecture-apply.md"
       description: "Apply approved architecture refactors to plan and task artifacts."
+    - name: "speckit.architecture-guard.init"
+      file: "commands/init.md"
+      description: "Initialize or update the Project Constitution for Architecture Guard."
 
 tags:
   - architecture
