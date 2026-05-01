@@ -2,7 +2,7 @@
 
 > Continuous architecture governance for AI-assisted development.
 
-[![Version](https://img.shields.io/badge/version-1.1.4-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.1.5-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Optional adapters](https://img.shields.io/badge/adapters-optional-8b5cf6)](adapters/README.md)
@@ -416,61 +416,51 @@ For most teams, `architecture-workflow` is the safest default because it runs th
 
 ---
 
-# Command Modes
+# Command Options: Modes & Focus
 
-Commands support optional modes and focus scopes.
+You can refine any Architecture Guard command using **Modes** and **Focus Areas** to target specific architectural concerns.
+
+| Option | Type | Default | Purpose |
+| --- | --- | --- | --- |
+| `architecture` | **Mode** | Yes | **Corrective**: Produces violations and refactor tasks. |
+| `performance` | **Mode** | No | **Advisory**: Produces high-level performance insights and trade-offs. |
+| `general` | **Focus** | Yes | Reviews all boundaries (Entry, Domain, Data, etc.). |
+| `db` | **Focus** | No | Targets database schema, query patterns, and persistence logic. |
+| `api` | **Focus** | No | Targets request/response contracts, versioning, and endpoint design. |
+| `async` | **Focus** | No | Targets jobs, events, broadcasting, and background processing. |
 
 ---
 
-## Architecture Mode (default)
+### Behavior Comparison
 
-Strict architecture review.
+| Feature | `mode=architecture` | `mode=performance` |
+| --- | --- | --- |
+| **Goal** | Governance & Drift Detection | Optimization & Scalability |
+| **Output** | Violations + Refactor Tasks | Performance Insights Only |
+| **Blocking** | Yes (if rule is P0) | No (Always advisory) |
 
-Produces:
+---
 
-* violations
-* refactor tasks
-* consistency analysis
+### Enterprise Examples
 
-Example:
-
+**1. Standard Architecture Review**
 ```text
-/architecture-review
+/speckit.architecture-guard.architecture-review
 ```
 
----
-
-## Performance Mode
-
-Advisory-only architecture performance review.
-
-Produces:
-
-* Performance Insights
-
-Does NOT produce:
-
-* violations
-* refactor tasks
-
-Example:
-
+**2. Deep Database Performance Audit**
 ```text
-/architecture-review performance
-/architecture-review performance db
+/speckit.architecture-guard.architecture-review performance db
 ```
 
----
-
-## Focus Areas
-
-Supported focus areas:
-
+**3. API Contract & Versioning Review**
 ```text
-- general
-- db
-- api
-- async
+/speckit.architecture-guard.architecture-review api
+```
+
+**4. Async Workflow Performance Check**
+```text
+/speckit.architecture-guard.architecture-review performance async
 ```
 
 ---
@@ -678,7 +668,7 @@ specify extension add architecture-guard
 ```text
 cd /path/to/spec-kit-project
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.1.4.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.1.5.zip
 ```
 
 ---
