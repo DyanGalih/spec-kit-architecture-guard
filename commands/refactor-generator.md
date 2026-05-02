@@ -89,6 +89,10 @@ Suggested fixes should be concrete:
 - Add validation at the external input boundary.
 - Document an accepted deviation if the current design is intentional.
 
+### Incremental Migration Strategy
+When generating refactor tasks based on architecture drift, you MUST avoid proposing full system rewrites. Prefer incremental, boundary-by-boundary, or module-by-module migrations.
+Output your phased migration strategy to `specs/<feature>/architecture-migration-plan.md`. Include coexistence strategies for old and new patterns.
+
 ## Output Format
 
 Return only:

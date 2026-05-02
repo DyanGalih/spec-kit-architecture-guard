@@ -2,7 +2,7 @@
 
 > Continuous architecture governance for AI-assisted development.
 
-[![Version](https://img.shields.io/badge/version-1.1.6-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.2.0-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Optional adapters](https://img.shields.io/badge/adapters-optional-8b5cf6)](adapters/README.md)
@@ -283,6 +283,21 @@ The initializer also supports:
 * architecture evolution
 * migration planning
 * architecture standard extraction
+
+---
+
+## Extension Interoperability (vNext)
+
+This extension acts as a cooperative citizen in the Spec Kit ecosystem by sharing context through explicit handoff artifacts in the `specs/<feature>/` directory.
+
+**The Governance Workflow:**
+1. `/specify` -> Write initial feature spec.
+2. `/speckit.memory-md.plan-with-memory` -> Emits `specs/<feature>/memory-synthesis.md` (Historical Context).
+3. `/speckit.security-review.specify` (or audit) -> Emits `specs/<feature>/security-constraints.md` (Trust Boundaries).
+4. `/speckit.architecture-guard.architecture-review` -> Validates the feature against the Constitution, Memory Synthesis, and Security Constraints. Emits `architecture-findings.md`.
+5. `/speckit.architecture-guard.refactor-generator` -> Creates an incremental `architecture-migration-plan.md` to resolve drift safely.
+
+By using explicit markdown files, extensions remain decoupled, and all constraints and decisions are fully reviewable in Git.
 
 ---
 
@@ -671,7 +686,7 @@ specify extension add architecture-guard
 ```text
 cd /path/to/spec-kit-project
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.1.6.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.2.0.zip
 ```
 
 ---

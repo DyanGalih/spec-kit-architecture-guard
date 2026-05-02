@@ -30,7 +30,8 @@ Review any available:
 - Existing validation patterns.
 - Existing response or output patterns.
 - Stored architecture decisions from memory context, if available.
-- `specs/<feature>/memory-synthesis.md`, if available.
+- `specs/<feature>/memory-synthesis.md`, if available (for accepted deviations and context).
+- `specs/<feature>/security-constraints.md`, if available (for security architecture rules).
 - Optional adapter guidance, if available.
 
 ## Review Principles
@@ -65,7 +66,8 @@ Detect violations such as:
 
 ## Review Procedure
 
-1. Identify the architecture expectations from the Constitution and available context.
+1. Identify the architecture expectations from the Constitution, `specs/<feature>/security-constraints.md`, `specs/<feature>/memory-synthesis.md`, and available context.
+2. If a constraint from `security-constraints.md` is breached (e.g., a business rule is delegated to an untrusted client boundary), log it under the "Security Constraint Violations" section.
 2. Identify the implementation boundaries: input, output, application logic, domain logic, data access, integrations, UI state, and shared contracts.
 3. Compare current work against nearby or analogous modules.
 4. Detect violations using the generic principles above.
@@ -98,6 +100,11 @@ Violations:
   Description:
   Evidence:
   Principle:
+
+Security Constraint Violations:
+- Violation:
+  Related Security Constraint:
+  Impact:
 
 Refactor Tasks:
 [Refactor Task]
