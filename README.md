@@ -2,7 +2,7 @@
 
 > Continuous architecture governance for AI-assisted development.
 
-[![Version](https://img.shields.io/badge/version-1.3.0-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.4.0-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Orchestration](https://img.shields.io/badge/role-governance--orchestrator-blue)](https://spec-kit.dev)
@@ -309,6 +309,34 @@ Architecture Guard can orchestrate planning workflows across Memory Hub, Securit
 /speckit.architecture-guard.governed-plan
 ```
 
+---
+
+## Governed Task and Implementation Workflows
+
+Architecture Guard can orchestrate governance checks throughout the implementation lifecycle when companion extensions are installed.
+
+### Governed Tasks
+
+Runs task generation with optional memory context, then checks whether security and architecture work are represented in the task list.
+
+**Flow:**
+memory synthesis → tasks → security task review → architecture refactor generation → task governance summary
+
+```text
+/speckit.architecture-guard.governed-tasks
+```
+
+### Governed Implement
+
+Runs implementation with optional memory context, then reviews the result against security and architecture constraints.
+
+**Flow:**
+memory synthesis → implement → security review → architecture review → refactor/fix recommendations
+
+```text
+/speckit.architecture-guard.governed-implement
+```
+
 > [!IMPORTANT]
 > **Companion extensions are optional.** Architecture Guard degrades gracefully and does not require Memory Hub or Security Review to function. It orchestrates workflows only when companion artifacts or extensions are available.
 
@@ -354,6 +382,8 @@ specify extension add architecture-guard
 | Command                 | Purpose                                                                              |
 | ----------------------- | ------------------------------------------------------------------------------------ |
 | `governed-plan`         | **Orchestrator**. Coordinates Memory, Planning, Security, and Architecture.           |
+| `governed-tasks`        | **Orchestrator**. Runs task generation with memory, security, and architecture.      |
+| `governed-implement`    | **Orchestrator**. Runs implementation then validates security and architecture.       |
 | `architecture-workflow` | Recommended entry point for general reviews. Runs review workflow end-to-end.        |
 | `architecture-review`   | Reviews specifications, plans, tasks, or implementations against architecture rules. |
 | `violation-detection`   | Detects architecture drift and boundary violations.                                  |
@@ -390,7 +420,9 @@ Architecture Guard commands are optional follow-up validation steps that can be 
 | Milestone | Recommended Command | Phase Integration | Purpose |
 | --- | --- | --- | --- |
 | **Milestone: Boundaries** | `architecture-review` | After `specify` | Validate ownership and contracts early before planning. |
-| **Milestone: Strategy** | `violation-detection` | After `tasks` / `analyze` | Combined check of Technical Plan and Task List for architectural drift. |
+| **Milestone: Strategy** | `governed-plan` | After `specify` | Orchestrated planning with memory, security, and architecture review. |
+| **Milestone: Execution** | `governed-tasks` | After `plan` | Generate tasks with governance checks and architecture migration awareness. |
+| **Milestone: Delivery** | `governed-implement` | After `tasks` | Implement and review output against memory, security, and architecture. |
 | **Milestone: Evolution** | **`architecture-apply`** | After review/detection | **Inject approved refactor tasks** into Plan and Task artifacts. |
 | **Milestone: Verification** | `architecture-review` | After `implement` | Final check of the actual code against architecture rules. |
 | **Milestone: Complete Pass** | `architecture-workflow` | Anytime | Run a complete review pass including evolution proposals. |
@@ -700,7 +732,7 @@ specify extension add architecture-guard
 ```text
 cd /path/to/spec-kit-project
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.3.0.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.4.0.zip
 ```
 
 ---
@@ -751,9 +783,12 @@ rather than replacing them.
 
 # Non-Goals
 
+Architecture Guard orchestration does not replace Spec Kit tasks or implement commands. It coordinates optional governance checks around them.
+
 Architecture Guard does NOT:
 
 * replace Spec Kit planning
+* replace Spec Kit tasks or implement commands
 * replace security review systems
 * replace memory systems
 * automatically enforce architecture rewrites

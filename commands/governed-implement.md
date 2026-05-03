@@ -1,0 +1,132 @@
+---
+description: Run implementation with memory context, then review the produced implementation against security and architecture constraints.
+---
+
+# Governed Implement Command
+
+You are orchestrating the `governed-implement` workflow for `architecture-guard`.
+
+This command coordinates implementation and post-implementation review to ensure the output respects architectural, historical, and security constraints.
+
+## Goal
+
+Provide a single command that ensures:
+1. Implementation is historical-context aware (Memory Hub).
+2. Implementation is performed (`/speckit.implement`).
+3. The output is reviewed for security vulnerabilities (Security Review).
+4. The output is reviewed for architectural drift (Architecture Guard).
+
+## Orchestration Flow
+
+### Step 1 — Detect Optional Extensions
+
+Check for the existence of:
+- `spec-kit-memory-hub`
+- `spec-kit-security-review`
+
+If they are missing, degrade gracefully by skipping their respective steps.
+
+### Step 2 — Memory Synthesis
+
+IF `spec-kit-memory-hub` is available:
+1. Consume or refresh `specs/<feature>/memory-synthesis.md`.
+2. For implementation, prioritize:
+    - Accepted architecture rules and task scope.
+    - Known deviations and prior implementation pitfalls.
+    - Security constraints and migration rules.
+
+### Step 3 — Run Spec Kit Implement
+
+Run or guide the user to run:
+```text
+/speckit.implement
+```
+
+The implementation MUST follow:
+- Current tasks and the Project Constitution.
+- `ARCHITECTURE_CONSTITUTION.md`.
+- `security-constraints.md` (if available).
+- Architecture migration plan (if available).
+
+### Step 4 — Security Review on Implementation
+
+IF `spec-kit-security-review` is available:
+1. Run security review against the produced implementation.
+2. Check for: authorization bypass, missing validation, secret leakage, injection risk, and insecure data exposure.
+3. If security findings are architecture-relevant, classify them as `Security-Architecture Conflict` for the architecture review.
+
+### Step 5 — Architecture Review on Implementation
+
+Run:
+```text
+/speckit.architecture-guard.architecture-review
+```
+
+Review implementation against:
+- `ARCHITECTURE_CONSTITUTION.md`.
+- Plan, tasks, and `security-constraints.md`.
+- Accepted deviations and `memory-synthesis.md`.
+
+### Step 6 — Generate Refactor Tasks
+
+IF architecture violations exist:
+1. Run `/speckit.architecture-guard.refactor-generator`.
+2. Generate non-blocking refactor, migration, or correction tasks.
+3. Skip performance refactors unless explicitly requested.
+
+### Step 7 — Implementation Governance Summary
+
+Produce a final `Governed Implementation Summary`.
+
+## Graceful Degradation
+
+- If **Memory Hub** is missing: Continue without memory synthesis.
+- If **Security Review** is missing: Continue without security implementation review.
+
+## Output Structure
+
+The command MUST return:
+
+```markdown
+# Governed Implementation Summary
+
+## Memory Context
+- **Status**: [Refreshed / Skipped / Missing]
+- **Relevant Decisions**: [Durable lessons applied during implementation]
+
+## Security Review
+- **Findings**: [List of security vulnerabilities found]
+- **Constraints**: [Trust boundaries validated]
+- **Blocking Concerns**: [Any P0 security risks]
+
+## Architecture Review
+- **Violations**: [Drift findings or Security-Architecture Conflicts]
+- **Refactor Tasks**: [Suggested corrections]
+- **Constitution Update Proposals**: [Proposed updates to ARCHITECTURE_CONSTITUTION.md]
+
+## Implementation Status
+- [Ready to merge / Needs security fix / Needs architecture refactor / Needs constitution update]
+
+## Recommended Next Step
+- [e.g., Merge changes]
+- [e.g., Revise implementation to address Security Conflict]
+- [e.g., Run /speckit.architecture-guard.architecture-apply]
+```
+
+## Security + Architecture Conflict Handling
+
+If Security Review finds an issue affecting architecture, classify it as a `Security-Architecture Conflict`.
+Example:
+- Violation: Pricing decision in client UI.
+- Security Constraint: Pricing authority must remain server-side.
+- Suggested Fix: Move pricing calculation to backend service.
+
+## Architecture Evolution Handling
+
+If implementation repeatedly violates a standard because the standard is outdated, generate a `Constitution Update Proposal` targeting `ARCHITECTURE_CONSTITUTION.md`.
+
+## Guardrails
+
+- **Modular**: Do not mix security findings into a generic architecture list.
+- **Framework-Agnostic**: Maintain boundary concepts (Entry, Domain, Data).
+- **Non-Blocking**: Adhere to the non-blocking philosophy for architecture findings.
