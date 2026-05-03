@@ -2,16 +2,17 @@
 
 > Continuous architecture governance for AI-assisted development.
 
-[![Version](https://img.shields.io/badge/version-1.2.0-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.3.0-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
+[![Orchestration](https://img.shields.io/badge/role-governance--orchestrator-blue)](https://spec-kit.dev)
 [![Optional adapters](https://img.shields.io/badge/adapters-optional-8b5cf6)](adapters/README.md)
 
 ---
 
 # What Is This?
 
-Architecture Guard is a Spec Kit extension for architecture governance.
+Architecture Guard is a modular **architecture governance orchestration layer** for Spec Kit.
 
 It reviews specifications, plans, task lists, and implementations against your project's architecture standards and produces:
 
@@ -286,18 +287,30 @@ The initializer also supports:
 
 ---
 
-## Extension Interoperability (vNext)
-
-This extension acts as a cooperative citizen in the Spec Kit ecosystem by sharing context through explicit handoff artifacts in the `specs/<feature>/` directory.
-
-**The Governance Workflow:**
-1. `/specify` -> Write initial feature spec.
-2. `/speckit.memory-md.plan-with-memory` -> Emits `specs/<feature>/memory-synthesis.md` (Historical Context).
-3. `/speckit.security-review.specify` (or audit) -> Emits `specs/<feature>/security-constraints.md` (Trust Boundaries).
-4. `/speckit.architecture-guard.architecture-review` -> Validates the feature against the Constitution, Memory Synthesis, and Security Constraints. Emits `architecture-findings.md`.
-5. `/speckit.architecture-guard.refactor-generator` -> Creates an incremental `architecture-migration-plan.md` to resolve drift safely.
-
 By using explicit markdown files, extensions remain decoupled, and all constraints and decisions are fully reviewable in Git.
+
+---
+
+# Governed Planning Workflow
+
+Architecture Guard can orchestrate planning workflows across Memory Hub, Security Review, and Architecture Guard validation when companion extensions are installed.
+
+**The Orchestrated Workflow:**
+
+1. **Memory Synthesis**: Scoped retrieval of historical decisions (`memory-synthesis.md`).
+2. **Plan Generation**: Spec Kit technical planning (`plan.md`).
+3. **Security Validation**: Review plan against trust boundaries (`security-constraints.md`).
+4. **Architecture Validation**: Detect drift and security-architecture conflicts (`architecture-findings.md`).
+5. **Governance Summary**: Final overview of architecture and security risks.
+
+### Example Orchestration
+
+```text
+/speckit.architecture-guard.governed-plan
+```
+
+> [!IMPORTANT]
+> **Companion extensions are optional.** Architecture Guard degrades gracefully and does not require Memory Hub or Security Review to function. It orchestrates workflows only when companion artifacts or extensions are available.
 
 ---
 
@@ -340,7 +353,8 @@ specify extension add architecture-guard
 
 | Command                 | Purpose                                                                              |
 | ----------------------- | ------------------------------------------------------------------------------------ |
-| `architecture-workflow` | Recommended entry point. Runs architecture review workflow end-to-end.               |
+| `governed-plan`         | **Orchestrator**. Coordinates Memory, Planning, Security, and Architecture.           |
+| `architecture-workflow` | Recommended entry point for general reviews. Runs review workflow end-to-end.        |
 | `architecture-review`   | Reviews specifications, plans, tasks, or implementations against architecture rules. |
 | `violation-detection`   | Detects architecture drift and boundary violations.                                  |
 | `refactor-generator`    | Converts violations into structured refactor tasks.                                  |
@@ -686,7 +700,7 @@ specify extension add architecture-guard
 ```text
 cd /path/to/spec-kit-project
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.2.0.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.3.0.zip
 ```
 
 ---
@@ -739,7 +753,10 @@ rather than replacing them.
 
 Architecture Guard does NOT:
 
-* replace security review
+* replace Spec Kit planning
+* replace security review systems
+* replace memory systems
+* automatically enforce architecture rewrites
 * replace profiling or benchmarking
 * act as a linter or static analyzer
 * auto-update constitutions

@@ -121,6 +121,16 @@ Detect when:
 - Shared types contain behavior that belongs in a module.
 - Domain logic depends on transport, UI, framework, or database concerns without an accepted reason.
 
+### Security-Architecture Conflict
+
+Detect when:
+
+- A technical decision contradicts a documented security constraint (e.g., in `security-constraints.md`).
+- Trust boundaries are bypassed by a new module or service interaction.
+- Authorization or data isolation logic is placed in an inappropriate boundary (e.g., in the Entry or Data boundary instead of Domain).
+- Sensitive state is exposed through a contract that lacks isolation.
+- Async or background workflows lack the security context required by the architecture.
+
 ## Severity Assignment
 
 Use:
@@ -154,9 +164,10 @@ Violations:
 ## Guardrails
 
 - Do not infer framework rules that were not provided.
-- Do not report security, performance, or formatting issues as architecture violations.
+- Do not report security, performance, or formatting issues as architecture violations unless they represent a conflict with an architectural boundary or a documented security constraint.
 - Do not block delivery by default.
 - Prefer "risk" language when the evidence is incomplete.
 - Keep findings small enough to become refactor tasks.
 - Do not duplicate `Performance Insights` from `architecture-review`.
 - If the same drift appears across multiple modules, flag it as potential proposal-worthy input rather than forcing only local findings.
+- **Prefer incremental migration suggestions** over large rewrite recommendations when drift is detected. Validate plans against the Constitution, security constraints, accepted deviations, and architecture evolution decisions.
