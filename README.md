@@ -2,7 +2,7 @@
 
 > Continuous architecture governance for AI-assisted development.
 
-[![Version](https://img.shields.io/badge/version-1.4.0-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.5.0-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Orchestration](https://img.shields.io/badge/role-governance--orchestrator-blue)](https://spec-kit.dev)
@@ -630,19 +630,20 @@ They provide:
 * stronger interpretation guidance
 * better support for smaller AI models
 
-Adapters do NOT replace architecture constitutions.
-
-Project-specific standards must always live in:
-
-```text
 architecture_constitution.md
 ```
 
-Example adapters:
+## Built-in Framework Presets
 
-* `architecture-guard-laravel`
-* `architecture-guard-nestjs`
-* `architecture-guard-nextjs`
+Architecture Guard now includes built-in framework presets (Adapters) that can be installed during the `init` phase. These presets automatically configure the engine with framework-specific knowledge, anti-pattern detection, and boundary mapping.
+
+Currently available presets:
+- **Laravel**: Full support for Controllers, Form Requests, Actions, API Resources, Eloquent, Inertia, and Livewire patterns.
+
+To use a preset:
+1. Run `/speckit.architecture-guard.init`.
+2. Follow the interview and select your framework when prompted.
+3. The preset will be installed to `.claude/prompts/architecture-guard-adapter.md`.
 
 ---
 
@@ -732,7 +733,7 @@ specify extension add architecture-guard
 ```text
 cd /path/to/spec-kit-project
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.4.0.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.5.0.zip
 ```
 
 ---

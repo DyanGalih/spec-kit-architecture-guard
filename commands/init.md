@@ -18,6 +18,7 @@ This command generates or refines:
 
 * `constitution.md`
 * `architecture_constitution.md`
+* `.claude/prompts/architecture-guard-adapter.md` (Optional Framework Preset)
 
 The goal is NOT to generate generic best practices.
 
@@ -276,6 +277,19 @@ Examples:
 - Next.js 15 App Router
 - Nuxt 3
 - Express + React
+```
+
+### Framework Preset (Adapter)
+
+If the technology stack matches a built-in preset (e.g., Laravel), ask:
+
+```text
+Would you like to install the [Framework] Architecture Adapter?
+
+This will:
+1. Install a framework-specific preset to .claude/prompts/architecture-guard-adapter.md
+2. Automatically configure the engine to be [Framework]-aware.
+3. Provide specialized detection for [Framework] anti-patterns.
 ```
 
 ---
@@ -737,6 +751,13 @@ Generate or refine:
 
 * `constitution.md`
 * `architecture_constitution.md`
+* `.claude/prompts/architecture-guard-adapter.md` (if preset selected)
+
+### Preset Installation
+
+If a preset was selected (e.g., Laravel):
+1. Copy `presets/[framework].md` from the extension directory to `.claude/prompts/architecture-guard-adapter.md` in the project.
+2. This ensures the core engine uses the framework-specific "Brain" during all architecture reviews.
 
 ---
 
