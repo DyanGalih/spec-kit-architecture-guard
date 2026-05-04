@@ -160,7 +160,17 @@ Refactor Tasks:
 - None
 ```
 
-## Rules
+## Framework Adapter Presets
+ 
+ If the file `.claude/prompts/architecture-guard-adapter.md` exists in the project:
+ 
+ 1.  Read it as a mandatory context provider.
+ 2.  Use it to map generic principles to specific framework primitives.
+ 3.  Follow its guidance on framework-specific anti-patterns and detection rules.
+ 
+ If no adapter file exists, continue using generic principles only.
+ 
+ ## Rules
 
 - Be specific and actionable.
 - Prefer architectural evidence over speculation.

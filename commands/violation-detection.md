@@ -161,7 +161,17 @@ Violations:
 - None detected
 ```
 
-## Guardrails
+## Framework Adapter Presets
+ 
+ If the file `.claude/prompts/architecture-guard-adapter.md` exists in the project:
+ 
+ 1.  Read it as a mandatory context provider.
+ 2.  Use it to map the Generic Architecture Model to specific framework primitives.
+ 3.  Follow its guidance on framework-specific anti-patterns and detection rules.
+ 
+ If no adapter file exists, continue using the generic model only.
+ 
+ ## Guardrails
 
 - Do not infer framework rules that were not provided.
 - Do not report security, performance, or formatting issues as architecture violations unless they represent a conflict with an architectural boundary or a documented security constraint.
