@@ -281,7 +281,7 @@ Examples:
 
 ### Framework Preset (Adapter)
 
-If the technology stack matches a built-in preset (e.g., Laravel, NestJS, Next.js, Nuxt.js, or Express), ask:
+If the technology stack matches a built-in preset (e.g., Laravel, NestJS, Next.js, Nuxt.js, Django, Spring Boot, React, Vue, or Express), ask:
 
 ```text
 Would you like to install the [Framework] Architecture Adapter?
