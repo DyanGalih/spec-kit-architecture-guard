@@ -35,17 +35,16 @@ IF `spec-kit-memory-hub` is available:
     - Scoped retrieval of architecture-relevant context.
     - Prioritizing active decisions and documented deviations.
 
-### Step 3 — Run Spec Kit Plan
+### Step 3 — Orchestrate Spec Kit Plan
 
-Run:
-```text
-/speckit.plan
-```
+You must orchestrate the `/speckit.plan` workflow directly.
 
-The planning process must incorporate:
-- The Project Constitution.
-- `ARCHITECTURE_CONSTITUTION.md`.
-- `memory-synthesis.md` (if available).
+**CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must generate the plan:
+1. Generate or update the `specs/<feature>/plan.md` artifact.
+2. The planning process must incorporate:
+   - The Project Constitution.
+   - `ARCHITECTURE_CONSTITUTION.md`.
+   - `memory-synthesis.md` (if available).
 
 ### Step 4 — Security Review (Optional)
 

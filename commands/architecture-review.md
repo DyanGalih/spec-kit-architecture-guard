@@ -68,12 +68,13 @@ Detect violations such as:
 
 1. Identify the architecture expectations from the Constitution, `specs/<feature>/security-constraints.md`, `specs/<feature>/memory-synthesis.md`, and available context.
 2. If a constraint from `security-constraints.md` is breached (e.g., a business rule is delegated to an untrusted client boundary), log it under the "Security Constraint Violations" section.
-2. Identify the implementation boundaries: input, output, application logic, domain logic, data access, integrations, UI state, and shared contracts.
-3. Compare current work against nearby or analogous modules.
-4. Detect violations using the generic principles above.
-5. Assign severity based on architectural risk and Constitution impact.
-6. Generate non-blocking refactor tasks for each meaningful violation.
-7. Summarize consistency across modules, services, handlers or controllers, and contracts.
+3. Sync and verify the implementation against `specs/<feature>/tasks.md`. Identify any discrepancies where tasks are marked complete but missing in implementation, or incomplete tasks that block architectural alignment.
+4. Identify the implementation boundaries: input, output, application logic, domain logic, data access, integrations, UI state, and shared contracts.
+5. Compare current work against nearby or analogous modules.
+6. Detect violations using the generic principles above.
+7. Assign severity based on architectural risk and Constitution impact.
+8. Generate non-blocking refactor tasks for each meaningful violation.
+9. Summarize consistency across modules, services, handlers or controllers, and contracts.
 
 ## Severity Guide
 
@@ -92,6 +93,10 @@ Architecture Review
 Constitution Alignment:
 - Status:
 - Notes:
+
+Task Synchronization Status:
+- Missing Implementations:
+- Pending Tasks:
 
 Violations:
 - Type:

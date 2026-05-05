@@ -35,18 +35,18 @@ IF `spec-kit-memory-hub` is available:
     - Known deviations and prior implementation pitfalls.
     - Security constraints and migration rules.
 
-### Step 3 — Run Spec Kit Implement
+### Step 3 — Orchestrate Spec Kit Implement
 
-Run or guide the user to run:
-```text
-/speckit.implement
-```
+You must orchestrate the `/speckit.implement` workflow directly.
 
-The implementation MUST follow:
-- Current tasks and the Project Constitution.
-- `ARCHITECTURE_CONSTITUTION.md`.
-- `security-constraints.md` (if available).
-- Architecture migration plan (if available).
+**CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must perform the implementation:
+1. Write the implementation code according to the current plan and tasks.
+2. **Sync the tasks**: You MUST update `specs/<feature>/tasks.md` to mark completed tasks with `[x]`, check them off, and add any new subtasks discovered during implementation.
+3. The implementation MUST follow:
+   - Current tasks and the Project Constitution.
+   - `ARCHITECTURE_CONSTITUTION.md`.
+   - `security-constraints.md` (if available).
+   - Architecture migration plan (if available).
 
 ### Step 4 — Security Review on Implementation
 

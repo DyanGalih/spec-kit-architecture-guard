@@ -3,7 +3,7 @@ schema_version: "1.0"
 extension:
   id: "architecture-guard"
   name: "Architecture Guard"
-  version: "1.6.1"
+  version: "1.6.2"
   description: "Framework-agnostic architecture review extension for validating implementation against Constitution, detecting architectural drift, and generating non-blocking refactor tasks."
   author: "DyanGalih"
   repository: "https://github.com/DyanGalih/spec-kit-architecture-guard"
@@ -12,6 +12,25 @@ extension:
 
 requires:
   speckit_version: ">=0.1.0"
+
+recommends:
+  extensions:
+    - "memory-md"
+    - "security-review"
+
+hooks:
+  after_plan:
+    command: "speckit.architecture-guard.violation-detection"
+    optional: true
+    prompt: "Would you like to scan the technical plan for architectural drift and Constitution violations?"
+  after_tasks:
+    command: "speckit.architecture-guard.refactor-generator"
+    optional: true
+    prompt: "Would you like to generate architectural refactor tasks before implementation?"
+  after_implement:
+    command: "speckit.architecture-guard.architecture-review"
+    optional: true
+    prompt: "Would you like to run a post-implementation architecture review?"
 
 provides:
   commands:
@@ -44,8 +63,10 @@ provides:
       description: "Initialize or update the Project Constitution for Architecture Guard."
 
 tags:
-  - architecture
-  - spec-kit
-  - review
-  - refactor
-  - workflow
+  - "architecture"
+  - "spec-kit"
+  - "review"
+  - "refactor"
+  - "workflow"
+  - "governance"
+  - "guardrails"

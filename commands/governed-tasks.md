@@ -35,18 +35,17 @@ IF `spec-kit-memory-hub` is available:
     - Affected modules and architecture decisions.
     - Accepted deviations and known risks.
 
-### Step 3 — Run Spec Kit Tasks
+### Step 3 — Orchestrate Spec Kit Tasks
 
-Run or guide the user to run:
-```text
-/speckit.tasks
-```
+You must orchestrate the `/speckit.tasks` workflow directly.
 
-The generated tasks MUST use:
-- Feature specification and technical plan.
-- The Project Constitution and `ARCHITECTURE_CONSTITUTION.md`.
-- `memory-synthesis.md` (if available).
-- `security-constraints.md` (if available).
+**CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must generate the tasks:
+1. Generate or update the `specs/<feature>/tasks.md` artifact.
+2. The generated tasks MUST use:
+   - Feature specification and technical plan.
+   - The Project Constitution and `ARCHITECTURE_CONSTITUTION.md`.
+   - `memory-synthesis.md` (if available).
+   - `security-constraints.md` (if available).
 
 ### Step 4 — Security Review on Tasks
 
