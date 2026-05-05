@@ -1,59 +1,164 @@
-# ⚛️ Next.js Architecture Adapter
+---
+description: Apply Next.js-specific architecture conventions during architecture review.
+---
 
-> Next.js-specific architectural rules and boundary mappings for Architecture Guard.
+# Architecture Guard — Next.js Architecture Adapter
 
-## Role in the Suite
-
-This adapter translates generic architecture principles into **Next.js (App Router)** primitives. It ensures that Architecture Guard understands the distinction between Server and Client boundaries, and the specific role of Server Actions and Route Handlers.
+Use the core architecture review rules first. This adapter refines generic architecture concepts with **Next.js (App Router)** conventions. It specifically focuses on the React Server Component (RSC) boundary, Server Action orchestration, and data fetching isolation.
 
 ---
 
-## Boundary Mapping Summary
+## Boundary Mapping
 
-| Generic Boundary | Next.js Equivalent |
+When reviewing a Next.js project, map generic architecture boundaries to Next.js primitives:
+
+### Entry Boundary
+
+| Generic Concept | Next.js Equivalent |
 | --- | --- |
-| **Entry** | Pages (`page.tsx`), Layouts, Server Actions, Route Handlers (`route.ts`) |
-| **Validation** | Zod schemas, `useActionState` validation, manual `parsedBody` checks |
-| **Contract** | TypeScript Interfaces/Types, Zod Schemas, Shared API types |
-| **Application** | Server Actions (as use-case coordinators), Service classes, helper utils |
-| **Domain** | Pure business logic, Entity classes, shared domain constants |
-| **Data** | Prisma/Drizzle models, `fetch` with Next.js cache, Server-only data access |
-| **Integration** | Route Handlers (webhooks), external fetch calls, 3rd party SDKs |
-| **Presentation** | React Server Components (RSC), Client Components (`'use client'`) |
+| Entry point for HTTP requests | Pages (`page.tsx`) |
+| Entry point for API / Webhooks | Route Handlers (`route.ts`) |
+| Entry point for user actions | Server Actions (`'use server'`) |
+| Entry point for layout/nesting | Layouts (`layout.tsx`) |
+| Global request filtering | Middleware (`middleware.ts`) |
+| Client-side entry points | Client Components (`'use client'`) |
+
+### Validation Boundary
+
+| Generic Concept | Next.js Equivalent |
+| --- | --- |
+| Input validation | Zod / Yup / Valibot schemas |
+| Server Action validation | Schema parsing inside the Action or `zsa` / `next-safe-action` |
+| Route Handler validation | Schema parsing of `request.json()` or `searchParams` |
+
+### Contract Boundary
+
+| Generic Concept | Next.js Equivalent |
+| --- | --- |
+| Stable request shapes | Zod Schemas or TypeScript Interfaces |
+| Stable response shapes | Route Handler return types or Server Action return types |
+| Component contracts | Component Props (TypeScript interfaces) |
+
+### Application Boundary
+
+| Generic Concept | Next.js Equivalent |
+| --- | --- |
+| Use case coordination | Service Layer (`lib/services/`) or Server Actions |
+| Data loading coordination | Server Components (calling data access layers) |
+| Revalidation logic | `revalidatePath`, `revalidateTag` |
+
+### Domain Boundary
+
+| Generic Concept | Next.js Equivalent |
+| --- | --- |
+| Business rules and decisions | Pure Domain Functions (agnostic of Next.js) |
+| Domain models | TypeScript Entities or Database Models |
+
+### Data Boundary
+
+| Generic Concept | Next.js Equivalent |
+| --- | --- |
+| Persistence abstraction | Data Access Layer (DAL - `lib/data/`) |
+| Query building | Prisma, Drizzle, or Kysely clients |
+| Cache management | `unstable_cache`, `fetch` cache options |
+
+### Presentation Boundary
+
+| Generic Concept | Next.js Equivalent |
+| --- | --- |
+| Server-rendered UI | React Server Components (RSC) |
+| Client-side interactivity | Client Components (`'use client'`) |
+| Global state | Context Providers or Zustand/Jotai stores |
+| Meta information | `metadata` exports or `generateMetadata()` |
 
 ---
 
-## Detection Rules & Anti-Patterns
+## Next.js-Specific Detection Rules
 
-### 1. Server Action Responsibility
-**Rule**: Server Actions should be thin coordinators.
-- **Violation**: Large business workflows, complex calculations, or direct third-party SDK orchestration inside a `'use server'` function.
-- **Recommendation**: Delegate to a Service or Domain function.
+### The RSC vs. Client Boundary
 
-### 2. Leaky Client Components
-**Rule**: Business logic and sensitive data fetching must stay on the server.
-- **Violation**: `fetch()` calls to internal databases or complex business decisions inside `'use client'` components.
-- **Recommendation**: Move data fetching to a parent Server Component and pass only necessary props.
+Detect when:
+- A Client Component (`'use client'`) contains heavy business logic or performs direct database queries (impossible by design, but check for "leaky" abstractions).
+- Sensitive data is passed from an RSC to a Client Component without filtering (e.g., passing a full `user` object with a hashed password).
+- An RSC is marked as `'use client'` unnecessarily, increasing bundle size.
 
-### 3. Missing Validation Boundary
-**Rule**: All Server Action and Route Handler inputs must be validated.
-- **Violation**: Directly using `formData.get()` or `request.json()` without a schema (e.g., Zod).
-- **Recommendation**: Use a Zod schema to parse and validate input at the very beginning of the entry point.
+### Server Action Responsibility
 
-### 4. Direct Data Access in Components
-**Rule**: Isolate data fetching logic.
-- **Violation**: Complex Prisma/SQL queries written directly inside a UI Component's body.
-- **Recommendation**: Extract queries into a dedicated `data/` or `lib/` layer to allow for reuse and easier testing.
+Detect when:
+- Server Actions contain massive business workflows (they should delegate to a Service layer).
+- Server Actions are used for "data fetching" instead of RSCs (Server Actions are for mutations).
+- Server Actions lack proper error handling, leaking raw server errors to the client.
+
+### Data Fetching Isolation [Focus: db]
+
+Detect when:
+- Components (RSC or Client) import database clients (Prisma/Drizzle) directly instead of using a Data Access Layer (DAL).
+- Database queries are duplicated across multiple `page.tsx` files instead of being in a shared `lib/data/` file.
+- `unstable_cache` is used without clear tags, making revalidation difficult.
+
+### Missing Validation Boundary [Focus: api]
+
+Detect when:
+- Server Actions use `formData.get()` directly without parsing via a schema (e.g., Zod).
+- Route Handlers process `request.json()` without validation.
+- `searchParams` are used in Pages without type-safe parsing.
 
 ---
 
-## Focus Areas
+## Common Next.js Anti-Patterns to Flag
 
-### `api` Focus
-Targets Route Handlers, Server Actions, and Zod schemas. Ensures that API responses are consistent and status codes are appropriate.
+### 1. Database Leak in Component
 
-### `db` Focus
-Targets Prisma/Drizzle/Kysely usage and Next.js caching strategies (`revalidatePath`, `unstable_cache`).
+```tsx
+// ❌ RSC handles raw DB query
+export default async function Page() {
+  const users = await prisma.user.findMany({ ... }); // Direct DB access
+  return <UserList users={users} />;
+}
+```
 
-### `general` Focus
-Full cross-boundary review (e.g., RSC → Server Action → Service → Database).
+```tsx
+// ✅ RSC calls DAL
+import { getUsers } from "@/lib/data/users";
+
+export default async function Page() {
+  const users = await getUsers();
+  return <UserList users={users} />;
+}
+```
+
+### 2. Massive Server Action
+
+```tsx
+// ❌ Action owns the entire workflow
+'use server'
+export async function updateProfile(data: any) {
+  const validated = schema.parse(data);
+  const user = await db.user.update({ ... });
+  await sendEmail(user.email);
+  await logAction(user.id);
+  revalidatePath('/profile');
+}
+```
+
+---
+
+## Output Format
+
+When this adapter is active, the architecture review should include a **Next.js Conventions** section:
+
+```text
+Next.js Conventions:
+- RSC Boundary: [Clean / Mixed / Leaky] — [prop check]
+- Data Fetching: [DAL-based / Component-based / Mixed]
+- Server Actions: [Coordinators / Logic-Heavy / Missing Validation]
+- Bundle Optimization: [Optimized / Heavy Client-side]
+```
+
+---
+
+## Guardrails
+
+- Do not flag Next.js-specific optimizations (cache, prefetch) as violations.
+- Do not require a separate Service layer if the project is a simple blog or marketing site.
+- The Constitution is the final authority. This adapter provides Next.js context, not overrides.

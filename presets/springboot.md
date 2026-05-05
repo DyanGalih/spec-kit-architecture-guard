@@ -1,59 +1,165 @@
-# 🍃 Spring Boot Architecture Adapter
+---
+description: Apply Spring Boot-specific architecture conventions during architecture review.
+---
 
-> Spring Boot-specific architectural rules and boundary mappings for Architecture Guard.
+# Architecture Guard — Spring Boot Architecture Adapter
 
-## Role in the Suite
-
-This adapter translates generic architecture principles into **Spring Boot** primitives. It enforces the standard **Controller-Service-Repository** pattern and ensures proper usage of the Spring IoC container.
+Use the core architecture review rules first. This adapter refines generic architecture concepts with **Spring Boot** conventions. It specifically focuses on Layered Architecture (Controller-Service-Repository), Dependency Injection (DI) discipline, and DTO isolation.
 
 ---
 
-## Boundary Mapping Summary
+## Boundary Mapping
 
-| Generic Boundary | Spring Equivalent |
+When reviewing a Spring Boot project, map generic architecture boundaries to Spring primitives:
+
+### Entry Boundary
+
+| Generic Concept | Spring Equivalent |
 | --- | --- |
-| **Entry** | Controllers (`@RestController`), Message Listeners (`@KafkaListener`), Filters |
-| **Validation** | Bean Validation (`@Valid`), custom `Validator` implementations |
-| **Contract** | DTOs, Request/Response Records, API Schemas (Swagger/OpenAPI) |
-| **Application** | Services (`@Service`), Use Case handlers, Facades |
-| **Domain** | Entities (`@Entity`), Value Objects, Domain Services |
-| **Data** | Repositories (`@Repository`), Spring Data JPA, QueryDSL |
-| **Integration** | Feign Clients, RestTemplate/WebClient, External SDK Beans |
-| **Presentation** | JSON/XML Serializers, Thymeleaf Templates (if used) |
+| Entry point for HTTP requests | Controllers (`@RestController` or `@Controller`) |
+| Entry point for Async Messages | Listeners (`@KafkaListener`, `@RabbitListener`, `@JmsListener`) |
+| Entry point for CLI / Tasks | `CommandLineRunner` or `@Scheduled` tasks |
+| Request/Response filtering | Filters (`implements Filter`) or Interceptors (`implements HandlerInterceptor`) |
+| Authentication / Authorization | Spring Security Filters and `@PreAuthorize` |
+
+### Validation Boundary
+
+| Generic Concept | Spring Equivalent |
+| --- | --- |
+| Input validation | Bean Validation (`@Valid`, `@Validated`) with JSR-303/JSR-380 |
+| Custom validation | `ConstraintValidator` implementations |
+
+### Contract Boundary
+
+| Generic Concept | Spring Equivalent |
+| --- | --- |
+| Stable request shapes | DTOs (Data Transfer Objects - `class` or `record`) |
+| Stable response shapes | DTOs or Records |
+| API Specification | OpenAPI / Swagger (`springdoc-openapi`) |
+
+### Application Boundary
+
+| Generic Concept | Spring Equivalent |
+| --- | --- |
+| Use case coordination | Services (`@Service`) |
+| Shared logic coordination | Components (`@Component`) |
+| Transaction orchestration | `@Transactional` (usually on Service layer) |
+
+### Domain Boundary
+
+| Generic Concept | Spring Equivalent |
+| --- | --- |
+| Business rules and decisions | Pure Domain Entities or Domain Services |
+| Domain models | JPA Entities (`@Entity`) or POJOs |
+
+### Data Boundary
+
+| Generic Concept | Spring Equivalent |
+| --- | --- |
+| Persistence abstraction | Repositories (`@Repository` / `extends JpaRepository`) |
+| Query building | QueryDSL, Specification API, or JPQL/Native queries |
+| Database Migration | Flyway or Liquibase |
 
 ---
 
-## Detection Rules & Anti-Patterns
+## Spring Boot-Specific Detection Rules
 
-### 1. Business Logic in Controllers
-**Rule**: Controllers should be restricted to request/response handling.
-- **Violation**: Using `@Autowired` repositories directly in a Controller or performing business calculations in a `@RequestMapping` method.
-- **Recommendation**: Inject and delegate to a **Service**.
+### Field Injection vs. Constructor Injection
 
-### 2. Leaking Entities to API
-**Rule**: Never expose `@Entity` classes directly through the API.
-- **Violation**: Returning an Entity class from a Controller method.
-- **Recommendation**: Map the Entity to a **DTO** or **Record** before returning it.
+Detect when:
+- A class uses `@Autowired` on private fields (Field Injection).
+- **Recommendation**: Use **Constructor Injection** (or `@RequiredArgsConstructor` with Lombok) to improve testability and ensure immutability.
 
-### 3. Missing Transaction Boundaries
-**Rule**: Use `@Transactional` at the Service (Application) layer.
-- **Violation**: Performing multiple database writes without an explicit transaction boundary or putting `@Transactional` on a Repository.
-- **Recommendation**: Place `@Transactional` on the Service method that coordinates the workflow.
+### Entity Leakage (Boundary Violation) [Focus: api]
 
-### 4. Direct Injection of Implementation
-**Rule**: Depend on abstractions.
-- **Violation**: Injecting a concrete class instead of an interface when multiple implementations are possible.
-- **Recommendation**: Inject the Interface and use `@Qualifier` or `@Primary` if necessary.
+Detect when:
+- A Controller method returns a class marked with `@Entity` directly.
+- A Controller method accepts an `@Entity` as a `@RequestBody`.
+- **Recommendation**: Map to a specialized **DTO** or **Record** using MapStruct or manual mapping.
+
+### Fat Controllers
+
+Detect when a controller:
+- Directly calls a Repository (e.g., `userRepository.save(user)`).
+- Contains business logic calculations or complex conditional routing.
+- Directly handles `EntityNotFoundException` instead of using an `@ExceptionHandler`.
+
+**Acceptable in controllers:**
+- Calling a single Service method.
+- Mapping DTOs to internal objects (though mapping logic is better in a Mapper).
+- Returning `ResponseEntity`.
+
+### Transaction Boundary Discipline [Focus: db]
+
+Detect when:
+- `@Transactional` is used on a Repository (it should be on the Service/Application layer).
+- A Service method calls another method in the same class marked with `@Transactional` (Self-invocation bypasses the proxy).
+- Heavy external calls (HTTP/Third-party) are performed inside a `@Transactional` block.
+
+### Bean Scoping and Global State
+
+Detect when:
+- A `@Service` or `@Component` maintains mutable instance variables (Beans are singletons by default and must be stateless).
+- Static utility classes are used for business logic that should be a Bean.
 
 ---
 
-## Focus Areas
+## Common Spring Boot Anti-Patterns to Flag
 
-### `api` Focus
-Targets Controllers and DTOs. Checks for proper HTTP status codes and API consistency.
+### 1. Field Injection (Hard to Test)
 
-### `db` Focus
-Targets JPA Entities and Repositories. Checks for N+1 query risks and proper relationship mapping.
+```java
+@Service
+public class UserService {
+    @Autowired
+    private UserRepository userRepository; // ❌ Field injection
+}
+```
 
-### `general` Focus
-Reviews the lifecycle: Filter → Controller → Service → Repository → Entity.
+```java
+@Service
+@RequiredArgsConstructor
+public class UserService {
+    private final UserRepository userRepository; // ✅ Constructor injection
+}
+```
+
+### 2. Leaking Entity to REST
+
+```java
+@GetMapping("/{id}")
+public User getUser(@PathVariable Long id) {
+    return userRepository.findById(id).get(); // ❌ Returns @Entity directly
+}
+```
+
+```java
+@GetMapping("/{id}")
+public UserResponseDTO getUser(@PathVariable Long id) {
+    User user = userService.findById(id);
+    return userMapper.toResponse(user); // ✅ Returns DTO
+}
+```
+
+---
+
+## Output Format
+
+When this adapter is active, the architecture review should include a **Spring Boot Conventions** section:
+
+```text
+Spring Boot Conventions:
+- Injection Pattern: [Constructor / Field / Mixed]
+- REST Boundary: [DTO-based / Entity-Leaky / Mixed]
+- Transactional Discipline: [Service-layer / Misplaced / Missing]
+- Bean State: [Stateless / Mutable-Beans / Mixed]
+- Controller Thickness: [Thin / Fat / Repository-Direct]
+```
+
+---
+
+## Guardrails
+
+- Do not flag standard Spring features (Spring Security, Spring Data) as violations.
+- Do not require a global ExceptionHandler for tiny projects.
+- The Constitution is the final authority. This adapter provides Spring Boot context, not overrides.

@@ -1,59 +1,147 @@
-# 🟢 Nuxt.js Architecture Adapter
+---
+description: Apply Nuxt-specific architecture conventions during architecture review.
+---
 
-> Nuxt-specific architectural rules and boundary mappings for Architecture Guard.
+# Architecture Guard — Nuxt.js Architecture Adapter
 
-## Role in the Suite
-
-This adapter translates generic architecture principles into **Nuxt 3** primitives, focusing on Nitro server routes, Composables, and the unique directory-based structure of Nuxt.
+Use the core architecture review rules first. This adapter refines generic architecture concepts with **Nuxt 3/4** conventions. It focuses on Nitro server boundaries, Composable discipline, and the unique directory-based auto-import system.
 
 ---
 
-## Boundary Mapping Summary
+## Boundary Mapping
 
-| Generic Boundary | Nuxt Equivalent |
+When reviewing a Nuxt project, map generic architecture boundaries to Nuxt primitives:
+
+### Entry Boundary
+
+| Generic Concept | Nuxt Equivalent |
 | --- | --- |
-| **Entry** | Pages, Server Routes (`server/api/`, `server/routes/`), Middleware |
-| **Validation** | `readBody` validation, h3 utilities, Zod schemas |
-| **Contract** | TypeScript Types, Nitro auto-generated types, Shared DTOs |
-| **Application** | Server-side logic, Composables (shared logic), Plugins |
-| **Domain** | `utils/` business logic, pure domain classes in `lib/` or `domain/` |
-| **Data** | Prisma/Drizzle, Nitro Storage, `$fetch` with interceptors |
-| **Integration** | Server routes (proxying), Nitro plugins, external API modules |
-| **Presentation** | Vue Components, Layouts, Composables (UI state) |
+| Entry point for HTTP requests | Pages (`pages/`) |
+| Entry point for API / Server Routes | Server Routes (`server/api/`, `server/routes/`) |
+| Entry point for Server Hooks | Nitro Tasks / Server Plugins |
+| Route request filtering | Middleware (`middleware/` or `server/middleware/`) |
+| Layout/Container entry | Layouts (`layouts/`) |
+
+### Validation Boundary
+
+| Generic Concept | Nuxt Equivalent |
+| --- | --- |
+| Server input validation | `readBody` validation in Nitro or `h3` utilities |
+| Frontend validation | Zod/VeeValidate in components or composables |
+| Server query validation | `getQuery` validation in Nitro |
+
+### Contract Boundary
+
+| Generic Concept | Nuxt Equivalent |
+| --- | --- |
+| Stable request/response shapes | TypeScript Interfaces (often shared via `types/` or `server/utils`) |
+| Auto-generated types | Nitro `internal` types (ensure they aren't leaked improperly) |
+
+### Application Boundary
+
+| Generic Concept | Nuxt Equivalent |
+| --- | --- |
+| Shared logic coordination | Composables (`composables/`) or Plugins |
+| Server-side coordination | Server Utils (`server/utils/`) |
+| Use case orchestration | Server Routes (delegating to server utils) |
+
+### Domain Boundary
+
+| Generic Concept | Nuxt Equivalent |
+| --- | --- |
+| Business rules and decisions | Utilities (`utils/`) or specialized domain folders |
+| Domain models | TypeScript Entities |
+
+### Data Boundary
+
+| Generic Concept | Nuxt Equivalent |
+| --- | --- |
+| Persistence abstraction | Server-side Data Access (calling DB from `server/utils`) |
+| Server storage | Nitro Storage layer |
+| Fetching client | `$fetch` or `useFetch` with interceptors |
 
 ---
 
-## Detection Rules & Anti-Patterns
+## Nuxt-Specific Detection Rules
 
-### 1. Nitro Route Logic
-**Rule**: Server routes (`server/api`) should handle request/response and delegate business logic.
-- **Violation**: Massive database queries or complex domain workflows inside an `defineEventHandler`.
-- **Recommendation**: Extract logic into a `server/utils` or a dedicated business layer.
+### Nitro Server Discipline (The Server/Client Boundary)
 
-### 2. Over-reliance on Global Composables
-**Rule**: Composables should be scoped and focused.
-- **Violation**: A single "god-composable" that manages everything from auth to complex product math.
-- **Recommendation**: Split into specialized composables (e.g., `useCart`, `useAuth`).
+Detect when:
+- A frontend component or Composable attempts to import from `server/` (this is impossible at runtime but check for shared type leakage).
+- Sensitive logic (secret keys, complex permissions) is placed in `composables/` or `utils/` (which are bundled to the client) instead of `server/utils/`.
+- Large business workflows are implemented directly inside an `eventHandler` in `server/api/`.
 
-### 3. Missing Server Validation
-**Rule**: All input to `server/api` must be validated on the server.
-- **Violation**: Assuming the frontend has already validated the data and using `readBody()` directly.
-- **Recommendation**: Use `zod` or `h3` validation helpers at the start of the event handler.
+### Composable Discipline
 
-### 4. Client-only Boundary Leaks
-**Rule**: Sensitive logic must remain in Nitro (server).
-- **Violation**: Storing secret keys or performing sensitive permission checks inside a frontend Vue component.
-- **Recommendation**: Move the sensitive logic to a Nuxt server route.
+Detect when:
+- A Composable is "Fat" (e.g., handles Auth, Data Fetching, and UI state all in one `useAuth()` hook).
+- Composables are used to store global state instead of using **Pinia** (if Pinia is adopted in the Constitution).
+- Composables have side effects that aren't properly cleaned up (e.g., event listeners without `onUnmounted`).
+
+### Auto-Import Clarity
+
+Detect when:
+- Multiple functions with the same name exist in different directories (e.g., `utils/format.ts` and `composables/format.ts`), causing auto-import confusion.
+- Third-party libraries are used without proper Nuxt plugin integration when the Constitution requires it.
+
+### Missing Validation Boundary [Focus: api]
+
+Detect when:
+- Nitro routes use `readBody(event)` without immediate validation via a schema (e.g., Zod).
+- Server routes return raw Database objects instead of transformed Response shapes.
 
 ---
 
-## Focus Areas
+## Common Nuxt Anti-Patterns to Flag
 
-### `api` Focus
-Targets `server/api` routes and h3 event handlers. Ensures proper error handling and consistent JSON shapes.
+### 1. Fat Server Route (Logic Leakage)
 
-### `db` Focus
-Targets database integration within Nitro and usage of `useStorage` for server-side persistence.
+```typescript
+// ❌ Server route handles DB and logic
+export default defineEventHandler(async (event) => {
+  const body = await readBody(event)
+  const user = await db.user.create({ data: body })
+  await sendEmail(user.email)
+  return user
+})
+```
 
-### `general` Focus
-Reviews the flow from Vue Component → Composable → Nitro API → Database.
+```typescript
+// ✅ Server route delegates to server util
+export default defineEventHandler(async (event) => {
+  const body = await readValidatedBody(event, userSchema.parse)
+  return userService.register(body)
+})
+```
+
+### 2. Leaky Utils
+
+```typescript
+// ❌ Sensitive logic in utils/ (bundled to client)
+export const calculateTaxSecretly = (amount: number) => {
+  const secretKey = '12345' // LEAKED
+  return amount * 0.2
+}
+```
+
+---
+
+## Output Format
+
+When this adapter is active, the architecture review should include a **Nuxt Conventions** section:
+
+```text
+Nuxt Conventions:
+- Nitro Separation: [Clear / Leaky / Fat Routes]
+- Composable Logic: [Focused / God-Composables / State-Heavy]
+- Directory Discipline: [Standard / Non-standard / Tangled]
+- Server-side Validation: [Strict / Weak / Missing]
+```
+
+---
+
+## Guardrails
+
+- Do not flag auto-imports as "missing imports" (this is the Nuxt way).
+- Do not require a separate Service layer for simple Nitro endpoints.
+- The Constitution is the final authority. This adapter provides Nuxt context, not overrides.

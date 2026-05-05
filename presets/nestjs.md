@@ -1,59 +1,167 @@
-# 🦁 NestJS Architecture Adapter
+---
+description: Apply NestJS-specific architecture conventions during architecture review.
+---
 
-> NestJS-specific architectural rules and boundary mappings for Architecture Guard.
+# Architecture Guard — NestJS Architecture Adapter
 
-## Role in the Suite
-
-This adapter translates generic architecture principles into **NestJS** primitives. It leverages NestJS's opinionated Module system to enforce strict boundary isolation and dependency injection patterns.
+Use the core architecture review rules first. This adapter refines generic architecture concepts with **NestJS** conventions. It specifically focuses on Module-based encapsulation, Dependency Injection (DI) discipline, and the clear separation of Controllers, Providers, and Middlewares.
 
 ---
 
-## Boundary Mapping Summary
+## Boundary Mapping
 
-| Generic Boundary | NestJS Equivalent |
+When reviewing a NestJS project, map generic architecture boundaries to NestJS primitives:
+
+### Entry Boundary
+
+| Generic Concept | NestJS Equivalent |
 | --- | --- |
-| **Entry** | Controllers (`@Controller()`), Resolvers (`@Resolver()`), Gateways (`@WebSocketGateway()`) |
-| **Validation** | Pipes (`@UsePipes(ValidationPipe)`), `class-validator` decorators |
-| **Contract** | DTOs (`Data Transfer Objects`), TypeScript Interfaces, GraphQL Schemas |
-| **Application** | Services (`@Injectable()`), Command/Query Handlers (CQRS) |
-| **Domain** | Entities, Value Objects, Domain Services (agnostic providers) |
-| **Data** | TypeORM/Prisma/Mongoose Entities and Repositories |
-| **Integration** | Custom Providers (wrappers for external SDKs), Clients |
-| **Presentation** | Controllers (for REST), Resolvers (for GraphQL), Microservice Handlers |
+| Entry point for HTTP requests | Controllers (`@Controller()`) |
+| Entry point for GraphQL | Resolvers (`@Resolver()`) |
+| Entry point for WebSockets | Gateways (`@WebSocketGateway()`) |
+| Entry point for Microservices | Message Handlers (`@MessagePattern()`, `@EventPattern()`) |
+| Request/Response transformation | Interceptors (`@Injectable() implements NestInterceptor`) |
+| Global/Route request filtering | Middlewares (`implements NestMiddleware`) |
+| Authentication / Authorization | Guards (`@Injectable() implements CanActivate`) |
+
+### Validation Boundary
+
+| Generic Concept | NestJS Equivalent |
+| --- | --- |
+| Input validation and transformation | Pipes (`@Injectable() implements PipeTransform`) |
+| Standard Validation | `ValidationPipe` (using `class-validator`) |
+| Schema-based validation | Joi or Zod Pipes |
+
+### Contract Boundary
+
+| Generic Concept | NestJS Equivalent |
+| --- | --- |
+| Stable request shapes | DTOs (Data Transfer Objects - `class` based) |
+| Stable response shapes | DTOs or GraphQL Object Types |
+| Shared interfaces | TypeScript Interfaces or Abstract Classes |
+| Microservice message shapes | DTOs or Protobuf definitions |
+
+### Application Boundary
+
+| Generic Concept | NestJS Equivalent |
+| --- | --- |
+| Use case coordination | Services / Providers (`@Injectable()`) |
+| Business logic orchestration | CQRS Command/Query Handlers (`@CommandHandler()`) |
+| Event coordination | Event Emitter (`@OnEvent()`) |
+
+### Domain Boundary
+
+| Generic Concept | NestJS Equivalent |
+| --- | --- |
+| Business rules and decisions | Pure Domain Classes (agnostic of NestJS) |
+| Domain models | Entities (TypeORM, Prisma, or Sequelize) |
+| Access control logic | Domain Services or Guard logic |
+
+### Data Boundary
+
+| Generic Concept | NestJS Equivalent |
+| --- | --- |
+| Persistence abstraction | Repositories (Standard or Custom `@EntityRepository()`) |
+| Query building | Query Builders or Prisma Clients |
+| Persistence orchestration | Modules wrapping Database Clients |
 
 ---
 
-## Detection Rules & Anti-Patterns
+## NestJS-Specific Detection Rules
 
-### 1. Module Boundary Leaks
-**Rule**: Modules should only communicate through exported Providers.
-- **Violation**: Importing a class from another module that is not listed in its `exports` array.
-- **Recommendation**: Ensure the provider is exported by its parent module and imported via the `imports` array.
+### Module Encapsulation (The "Exports" Rule)
 
-### 2. Fat Controllers
-**Rule**: Controllers must only handle request mapping and delegation.
-- **Violation**: Business logic, database queries, or complex data transformations inside a `@Get()` or `@Post()` method.
-- **Recommendation**: Delegate all business logic to an injected **Service**.
+Detect when:
+- A service from `Module A` is injected into `Module B` without being listed in `Module A`'s `exports` array.
+- Circular dependencies are handled via `forwardRef()` without a documented architectural reason (this often indicates poor boundary design).
+- Global modules (`@Global()`) are used excessively to bypass explicit importing.
 
-### 3. Bypassing Dependency Injection
-**Rule**: Use NestJS DI for all service-to-service communication.
-- **Violation**: Using `new ServiceName()` or global singletons instead of injecting the provider via the constructor.
-- **Recommendation**: Register the class as a Provider and inject it.
+### Fat Controllers
 
-### 4. Missing DTO Enforcement
-**Rule**: All external inputs must use a DTO with validation decorators.
-- **Violation**: Using `@Body() body: any` or raw interfaces without `class-validator` decorators.
-- **Recommendation**: Create a class-based DTO and use `ValidationPipe`.
+Detect when a controller:
+- Directly performs database operations (e.g., using `this.repo.save()`).
+- Coordinates complex business logic across multiple services.
+- Manually handles HTTP status codes and error messages based on business logic (this should be in Interceptors or Exceptions).
+
+**Acceptable in controllers:**
+- Using `@Body()`, `@Query()`, `@Param()` to extract data.
+- Calling a single Service/Handler method.
+- Using `@UseGuards()`, `@UseInterceptors()`, or `@UsePipes()`.
+
+### Dependency Injection Discipline
+
+Detect when:
+- A service uses `new ServiceName()` to instantiate another service instead of using constructor injection.
+- Providers are "leaked" via global variables or static methods.
+- Services are injected with a broader scope than necessary (e.g., Request scope when Singleton is sufficient).
+
+### DTO and Validation Discipline [Focus: api]
+
+Detect when:
+- `@Body()` is typed as `any`, `Record<string, any>`, or a raw interface (Interfaces are removed at runtime, making `ValidationPipe` ineffective).
+- DTO classes lack `class-validator` decorators (e.g., `@IsString()`, `@IsEmail()`).
+- The API returns raw Database Entities instead of specialized Response DTOs.
+
+### Exception Handling Boundary
+
+Detect when:
+- Business logic throws raw `Error` objects instead of specialized `HttpException` or `RpcException` classes.
+- Controllers use `try/catch` for flow control instead of using global **Exception Filters**.
 
 ---
 
-## Focus Areas
+## Common NestJS Anti-Patterns to Flag
 
-### `api` Focus
-Targets Controllers, Resolvers, and DTOs. Ensures consistent status codes, versioning, and validation.
+### 1. Fat Controller (Logic Leakage)
 
-### `db` Focus
-Targets TypeORM/Prisma entities and Repository patterns.
+```typescript
+// ❌ Controller handles business decisions
+@Post()
+async create(@Body() dto: CreateUserDto) {
+  const existing = await this.userRepo.findOne({ email: dto.email });
+  if (existing) throw new BadRequestException('User exists');
+  // ... more logic
+  return this.userRepo.save(dto);
+}
+```
 
-### `general` Focus
-Reviews the full NestJS lifecycle: Guard → Interceptor → Pipe → Controller → Service → Repository.
+```typescript
+// ✅ Controller delegates
+@Post()
+async create(@Body() dto: CreateUserDto) {
+  return this.userService.register(dto);
+}
+```
+
+### 2. DI Bypass
+
+```typescript
+// ❌ Creating instances manually
+@Injectable()
+export class OrderService {
+  private readonly logger = new MyLogger(); // Bypasses DI
+}
+```
+
+---
+
+## Output Format
+
+When this adapter is active, the architecture review should include a **NestJS Conventions** section:
+
+```text
+NestJS Conventions:
+- Encapsulation: [Strict / Leaky / Global] — [exports/imports check]
+- Controller Responsibility: [Delegated / Fat / Mixed]
+- DI Pattern: [Constructor-based / Bypassed / Static]
+- DTO Discipline: [Strict / Weak / Missing]
+- Module Boundaries: [Clear / Circular / Tangled]
+```
+
+---
+
+## Guardrails
+
+- Do not flag standard NestJS patterns (Guards, Interceptors) as violations unless they contradict the Constitution.
+- Do not require CQRS unless the Constitution adopts it.
+- The Constitution is the final authority. This adapter provides NestJS context, not overrides.
