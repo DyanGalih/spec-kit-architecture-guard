@@ -740,7 +740,7 @@ specify extension add architecture-guard
 
 ```text
   specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.6.4.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.6.5.zip
 ```
 
 ---
