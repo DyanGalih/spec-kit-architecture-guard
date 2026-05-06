@@ -8,7 +8,7 @@ Thank you for your interest in contributing!
 extension.yml          ← extension manifest
 commands/              ← Spec Kit command definitions (single source of truth)
 templates/             ← Starter files for target projects (constitution.md)
-adapters/              ← Optional framework adapters (Currently README only)
+presets/               ← Framework-specific presets (Django, Express, Laravel, etc.)
 examples/              ← Usage examples for different architectures
 scripts/               ← Maintenance and verification scripts
 ```

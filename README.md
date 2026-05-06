@@ -6,7 +6,6 @@
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Orchestration](https://img.shields.io/badge/role-governance--orchestrator-blue)](https://spec-kit.dev)
-[![Optional adapters](https://img.shields.io/badge/adapters-optional-8b5cf6)](adapters/README.md)
 
 ---
 
@@ -665,25 +664,12 @@ Architecture Guard uses architecture concepts instead of framework-specific impl
 
 ---
 
-# Optional Adapters
+# Framework Support via Built-in Presets
 
-Adapters are optional enhancement layers.
+Architecture Guard is framework-agnostic by design, but includes built-in framework presets that automatically configure the engine with framework-specific knowledge, anti-pattern detection, and boundary mapping during the `init` phase.
 
-They provide:
+## Available Framework Presets
 
-* framework-specific vocabulary
-* framework-aware examples
-* stronger interpretation guidance
-* better support for smaller AI models
-
-architecture_constitution.md
-```
-
-## Built-in Framework Presets
-
-Architecture Guard now includes built-in framework presets (Adapters) that can be installed during the `init` phase. These presets automatically configure the engine with framework-specific knowledge, anti-pattern detection, and boundary mapping.
-
-Currently available presets:
 - **Laravel**: Full support for Controllers, Form Requests, Actions, API Resources, Eloquent, Inertia, and Livewire patterns.
 - **NestJS**: Specialized for Module boundaries, Dependency Injection, and DTO enforcement.
 - **Next.js**: Optimized for App Router, Server Components, and Server Actions.
@@ -694,10 +680,13 @@ Currently available presets:
 - **Vue**: Focus on Composition API standards, Composables, and Pinia store boundaries.
 - **Express.js**: Enforces basic Controller-Service-Repository patterns in Node.js.
 
-To use a preset:
-1. Run `/speckit.architecture-guard.init`.
-2. Follow the interview and select your framework when prompted.
-3. The preset will be installed to `.claude/prompts/architecture-guard-adapter.md`.
+## Using a Preset
+
+1. Run `/speckit.architecture-guard.init`
+2. Follow the interview and select your framework when prompted
+3. The preset will be installed to `.claude/prompts/architecture-guard-adapter.md`
+
+The preset provides framework-specific vocabulary, examples, and stronger interpretation guidance for your AI assistant.
 
 ---
 

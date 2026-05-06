@@ -279,12 +279,12 @@ Examples:
 - Express + React
 ```
 
-### Framework Preset (Adapter)
+### Framework Preset
 
 If the technology stack matches a built-in preset (e.g., Laravel, NestJS, Next.js, Nuxt.js, Django, Spring Boot, React, Vue, or Express), ask:
 
 ```text
-Would you like to install the [Framework] Architecture Adapter?
+Would you like to install the [Framework] Architecture Preset?
 
 This will:
 1. Install a framework-specific preset to .claude/prompts/architecture-guard-adapter.md
@@ -751,13 +751,13 @@ Generate or refine:
 
 * `constitution.md`
 * `architecture_constitution.md`
-* `.claude/prompts/architecture-guard-adapter.md` (if preset selected)
+* `.claude/prompts/architecture-guard-adapter.md` (if framework preset selected)
 
 ### Preset Installation
 
-If a preset was selected (e.g., Laravel):
+If a framework preset was selected (e.g., Laravel):
 1. Copy `presets/[framework].md` from the extension directory to `.claude/prompts/architecture-guard-adapter.md` in the project.
-2. This ensures the core engine uses the framework-specific "Brain" during all architecture reviews.
+2. This ensures the core engine uses the framework-specific context during all architecture reviews.
 
 ---
 
