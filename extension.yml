@@ -3,7 +3,7 @@ schema_version: "1.0"
 extension:
   id: "architecture-guard"
   name: "Architecture Guard"
-  version: "1.6.2"
+  version: "1.6.3"
   description: "Framework-agnostic architecture review extension for validating implementation against Constitution, detecting architectural drift, and generating non-blocking refactor tasks."
   author: "DyanGalih"
   repository: "https://github.com/DyanGalih/spec-kit-architecture-guard"
@@ -12,6 +12,10 @@ extension:
 
 requires:
   speckit_version: ">=0.1.0"
+  commands:
+    - "speckit.plan"
+    - "speckit.tasks"
+    - "speckit.implement"
 
 recommends:
   extensions:

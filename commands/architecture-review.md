@@ -1,186 +1,132 @@
 ---
-description: Orchestrate a framework-agnostic architecture review across specify, plan, tasks, and implement.
+description: Perform a framework-agnostic architecture review validating implementation against spec.md, plan.md, tasks.md, and constitution.md.
+scripts:
+  sh: ../../scripts/bash/detect-changed-files.sh
+  ps: ../../scripts/powershell/detect-changed-files.ps1
 ---
 
 # Architecture Review Command
 
-You are running `architecture-guard`, a framework-agnostic architecture review extension.
+You are running `architecture-guard`, a framework-agnostic architecture review extension designed for high-integrity governance.
 
-Your role is to validate the current specification, plan, task list, or implementation against the project Constitution and generic architecture principles. This command performs a single review pass, while `architecture-workflow` handles the broader orchestration flow. You must remain framework-agnostic unless an optional framework adapter has supplied additional context.
+## Operating Constraints
 
-This command accepts both semantic and dot-style aliases. Normalize the incoming command into `mode` (`architecture` or `performance`) and `focus` (`general`, `db`, `api`, or `async`) before reviewing.
+- **STRICTLY READ-ONLY**: This command is analytical. Do **not** modify any files. Output a structured report and non-blocking refactor tasks.
+- **Progressive Disclosure**: Load context incrementally. Start with manifests and design artifacts before deep-diving into implementation code.
+- **Evidence-Based**: Every violation must cite specific "Implementation Evidence" (file paths, line numbers, or code patterns) or its absence.
 
-When `mode=performance`, keep the command advisory and append only `Performance Insights`; do not emit violations or refactor tasks.
+## Determine Review Scope
 
-When `mode=architecture` and the drift is repeated across multiple modules, cross-cutting, or reveals that the Constitution is insufficient or contradictory, append a `Constitution Update Proposal` section after the standard review output.
+1. **Normalize Arguments**: Parse "$ARGUMENTS" to identify the `mode` (`architecture` or `performance`) and `focus` aspects (`general`, `db`, `api`, or `async`).
+2. **Identify Changed Files**:
+   - If the user provided a file list or explicit instructions, follow them.
+   - Otherwise, you **MUST** execute the `{SCRIPT}` with `--json` to detect changed files since the merge-base or in the working directory.
+   - Use the `changed_files` list as the primary review set.
 
-Do not invent framework-specific conventions. Do not invent unsupported Spec Kit APIs. Do not block implementation by default. When you detect a violation, produce a structured refactor task.
+## Input & Context Loading
 
-## Inputs To Consider
+Review any available artifacts:
+- **Constitution**: `.specify/memory/constitution.md` (Non-negotiable authority).
+- **Security Constraints**: `specs/<feature>/security-constraints.md`.
+- **Memory Context**: `specs/<feature>/memory-synthesis.md`.
+- **Feature Design**: `spec.md`, `plan.md`, `tasks.md`, `data-model.md`.
+- **Implementation**: The detected `changed_files` and their respective directories.
 
-Review any available:
+## Semantic Modeling
 
-- Constitution rules.
-- Feature specification.
-- Implementation plan.
-- Task list.
-- Code changes or implementation summary.
-- Module/service boundaries.
-- Existing contract conventions.
-- Existing validation patterns.
-- Existing response or output patterns.
-- Stored architecture decisions from memory context, if available.
-- `specs/<feature>/memory-synthesis.md`, if available (for accepted deviations and context).
-- `specs/<feature>/security-constraints.md`, if available (for security architecture rules).
-- Optional adapter guidance, if available.
+Before analysis, build internal representations (do not output these):
+1. **Boundary Model**: Map the expected boundaries (Entry, Application, Domain, Data, External) vs. actual directory structure.
+2. **Contract Inventory**: Identify shared data shapes, API signatures, and event structures.
+3. **Task-Implementation Map**: Map `tasks.md` IDs to specific code files and check completion status.
+4. **Dependency Graph**: Map module-to-module dependencies to detect coupling or layering violations.
 
 ## Review Principles
 
-Use these generic principles:
-
-- External input should cross a validation boundary before reaching application or domain logic.
-- Request, response, event, command, and data shapes should be expressed through contracts when the system already uses contracts or when the boundary is shared.
-- Entry points such as controllers, routes, handlers, resolvers, actions, pages, or components should delegate business decisions to application/domain logic.
-- Modules should depend on stable abstractions instead of reaching into another module's internals.
-- Data access should be isolated behind a repository, gateway, service, client, query abstraction, or equivalent when the architecture expects abstraction.
-- Output structures should remain consistent across comparable endpoints, pages, services, events, or modules.
-- Shared behavior should not be duplicated in ways that create inconsistent rules.
-- Architecture review should identify drift without converting style preferences into hard failures.
-### Memory Synchronization
-
-If a finding reveals a significant architectural shift, a complex project-specific "gotcha," or a durable lesson that should be remembered beyond the current task, explicitly recommend that the user runs `/speckit.memory-md.capture` to persist this context in the project memory.
+Use these core principles to detect drift:
+- **Validation Boundaries**: External input must be validated before reaching core logic.
+- **Contract Fidelity**: Shapes should be expressed through contracts at shared boundaries.
+- **Entry Point Delegation**: Controllers/Handlers must delegate business logic to services/domain.
+- **Stable Abstractions**: Modules should depend on interfaces/abstractions, not internals.
+- **Isolation**: Data access, external APIs, and infrastructure must be isolated.
+- **Consistency**: Comparable endpoints or modules must use compatible patterns.
+- **Non-Blocking**: Identify drift without converting style preferences into hard failures.
 
 ## Detection Scope
 
 Detect violations such as:
-
-- Missing or inconsistent data contracts.
-- Business logic leaking into controllers, routes, handlers, UI components, or other entry points.
-- Tight coupling between modules.
-- Direct data access without an expected abstraction.
-- Inconsistent response, output, or error structure.
-- Missing validation boundaries.
-- Separation of concerns violations.
-- Contract mismatch between API, UI, service, event, or storage boundaries.
-- Similar modules using incompatible patterns without a documented reason.
+- **Intent Divergence**: Implementation deviates fundamentally from `spec.md` or `plan.md` intent.
+- **Hallucinated Abstractions**: Plan mentions an abstraction (e.g., Repository) that is missing in code.
+- **Boundary Erosion**: Business logic leaking into entry points or UI.
+- **Tight Coupling**: Circular dependencies or cross-module leakage.
+- **Contract Mismatch**: Mismatch between API, UI, or service shapes.
+- **Constitution Breach**: Any conflict with a "MUST" principle in the Constitution.
 
 ## Review Procedure
 
-1. Identify the architecture expectations from the Constitution, `specs/<feature>/security-constraints.md`, `specs/<feature>/memory-synthesis.md`, and available context.
-2. If a constraint from `security-constraints.md` is breached (e.g., a business rule is delegated to an untrusted client boundary), log it under the "Security Constraint Violations" section.
-3. Sync and verify the implementation against `specs/<feature>/tasks.md`. Identify any discrepancies where tasks are marked complete but missing in implementation, or incomplete tasks that block architectural alignment.
-4. Identify the implementation boundaries: input, output, application logic, domain logic, data access, integrations, UI state, and shared contracts.
-5. Compare current work against nearby or analogous modules.
-6. Detect violations using the generic principles above.
-7. Assign severity based on architectural risk and Constitution impact.
-8. Generate non-blocking refactor tasks for each meaningful violation.
-9. Summarize consistency across modules, services, handlers or controllers, and contracts.
+1. **Identify Scope**: Run `{SCRIPT}` or use user-provided files.
+2. **Model Context**: Load artifacts and build the Semantic Models for the identified scope.
+3. **Verify Evidence**: Check if task-referenced files exist and contain expected implementation logic.
+4. **Analyze Alignment**: Compare `spec.md` intent vs. `plan.md` architecture vs. implementation behavior.
+5. **Scan Principles**: Apply Review Principles across the implemented boundaries.
+6. **Security Cross-Check**: If `security-constraints.md` is breached, log it as a critical violation.
+7. **Performance Scan (if mode=performance)**: Skip violations; focus on optimizations.
+8. **Generate Refactors**: Produce structured tasks for each confirmed violation.
 
 ## Severity Guide
 
-- `Critical`: Violates a blocking Constitution rule or creates immediate architectural breakage.
-- `High`: Creates significant coupling, boundary erosion, or contract inconsistency.
-- `Medium`: Introduces local drift that may spread if repeated.
-- `Low`: Minor inconsistency or naming or shape drift worth cleaning up later.
+- **CRITICAL**: Violates Constitution MUST, breaches Security Constraint, or has zero implementation evidence for a required boundary.
+- **HIGH**: Significant boundary erosion, contract inconsistency, or fundamental intent divergence.
+- **MEDIUM**: Pattern drift or local inconsistency that creates technical debt.
+- **LOW**: Minor naming, shape, or structure drift.
 
 ## Output Format
 
 Return only this structure:
 
-```text
-Architecture Review
+# Architecture Review Report
 
-Constitution Alignment:
-- Status:
-- Notes:
+| ID | Category | Severity | Location(s) | Summary | Evidence/Rationale |
+|:---|:---|:---|:---|:---|:---|
+| V1 | Constitution | CRITICAL | `.specify/memory/constitution.md` | Violation of [Principle Name] | [Evidence from code/plan] |
 
-Task Synchronization Status:
-- Missing Implementations:
-- Pending Tasks:
+### Task Synchronization
+- **Status**: [Synced / Drifted]
+- **Missing Implementations**: [Files referenced in tasks but missing/empty]
+- **Pending Tasks**: [Incomplete tasks blocking architecture]
 
-Violations:
-- Type:
-  Severity:
-  Location:
-  Description:
-  Evidence:
-  Principle:
+### Metrics
+- **Constitution Compliance**: [e.g. 90%]
+- **Boundary Integrity**: [e.g. Strong / Eroded]
+- **Architectural Risk**: [LOW / MEDIUM / HIGH / CRITICAL]
 
-Security Constraint Violations:
-- Violation:
-  Related Security Constraint:
-  Impact:
-
-Refactor Tasks:
+### Refactor Tasks
 [Refactor Task]
-Title:
-Reason:
-Scope:
-Priority:
-Suggested Fix:
+- **Title**: 
+- **Priority**: [Based on Severity]
+- **Reason**: 
+- **Suggested Fix**: 
 
-Consistency Notes:
-- Modules:
-- Services:
-- Handlers/Controllers:
-- Data Contracts:
+---
 
-Summary:
-- Overall Risk:
-- Recommended Next Step:
-```
+(Only if `mode=performance`)
+### Performance Insights
+- **Suggestion**: 
+- **Trade-off**: 
 
-When `mode=performance`, append only this block and omit `Violations` and `Refactor Tasks`:
+(Only if `mode=architecture` and Constitution drift is cross-cutting)
+### Constitution Update Proposal
+- **Current Rule**: 
+- **Proposed Change**: 
+- **Rationale**: 
 
-```text
-Performance Insights:
-- Suggestion:
-- Context:
-- Trade-off:
-```
-
-When `mode=architecture` and a Constitution Update Proposal is warranted, append this block after `Summary`:
-
-```text
-Constitution Update Proposal:
-
-[Proposal]
-Title:
-Current Rule:
-Proposed Change:
-Rationale:
-Impact Scope:
-Migration Strategy:
-Risk Level:
-Suggested Version Bump:
-```
-
-If no violations are found, write:
-
-```text
-Violations:
-- None detected
-
-Refactor Tasks:
-- None
-```
+---
+### Action Plan
+1. **Critical Fixes**: Address Constitution and Security violations first.
+2. **Architecture Alignment**: Resolve boundary erosion and contract mismatches.
+3. **Next Step**: [e.g. Run /speckit.architecture-guard.architecture-apply]
+4. **Remediation**: "Would you like me to suggest concrete remediation edits for the top issues?"
 
 ## Framework Adapter Presets
- 
- If the file `.claude/prompts/architecture-guard-adapter.md` exists in the project:
- 
- 1.  Read it as a mandatory context provider.
- 2.  Use it to map generic principles to specific framework primitives.
- 3.  Follow its guidance on framework-specific anti-patterns and detection rules.
- 
- If no adapter file exists, continue using generic principles only.
- 
- ## Rules
 
-- Be specific and actionable.
-- Prefer architectural evidence over speculation.
-- Do not block implementation unless the Constitution explicitly says the violation is blocking.
-- If a finding is uncertain, label it as a risk rather than a confirmed violation.
-- Keep framework-specific names descriptive, not prescriptive.
-- Preserve incremental adoption by suggesting small refactors.
+If `.claude/prompts/architecture-guard-adapter.md` exists, it is **mandatory** to use it to map generic principles to framework primitives and detect stack-specific anti-patterns.
 

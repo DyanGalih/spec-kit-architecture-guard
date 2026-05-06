@@ -37,16 +37,19 @@ IF `spec-kit-memory-hub` is available:
 
 ### Step 3 — Orchestrate Spec Kit Implement
 
-You must orchestrate the `/speckit.implement` workflow directly.
+You must orchestrate the `/speckit.implement` (core implementation) workflow directly. 
 
-**CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must perform the implementation:
-1. Write the implementation code according to the current plan and tasks.
-2. **Sync the tasks**: You MUST update `specs/<feature>/tasks.md` to mark completed tasks with `[x]`, check them off, and add any new subtasks discovered during implementation.
-3. The implementation MUST follow:
+**CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must perform the implementation by following the `tasks.md` breakdown:
+1. **Execute Tasks**: Sequentially or in parallel (as marked) execute the tasks defined in `specs/<feature>/tasks.md`.
+2. **Write Code**: Perform the actual coding work (writing files, running tests) required by the tasks.
+3. **Sync the tasks**: You MUST update `specs/<feature>/tasks.md` to mark completed tasks with `[x]`, check them off, and add any new subtasks discovered during implementation.
+4. The implementation MUST follow:
    - Current tasks and the Project Constitution.
    - `ARCHITECTURE_CONSTITUTION.md`.
    - `security-constraints.md` (if available).
    - Architecture migration plan (if available).
+
+NOTE: The core Spec Kit command is `speckit.implement`. Do not use `speckit.implementation` as it is not a registered command.
 
 ### Step 4 — Security Review on Implementation
 

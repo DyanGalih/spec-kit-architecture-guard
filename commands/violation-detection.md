@@ -4,141 +4,67 @@ description: Detect framework-agnostic architecture violations in plans, tasks, 
 
 # Violation Detection Command
 
-You are detecting architecture violations for `architecture-guard`.
+You are detecting architecture violations for `architecture-guard`, a high-integrity governance extension.
 
-This command is used during `plan`, `tasks`, and `implement` workflows to identify architectural drift using framework-agnostic principles.
+Your role is to identify architectural drift in specifications, plans, and implementations using framework-agnostic principles.
 
-It accepts the same normalized command context as the review workflow. When `mode=performance`, treat that context as advisory input only and do not emit performance findings here; `architecture-review` owns the `Performance Insights` output.
+## Operating Constraints
 
-## Goal
-
-Answer one question: does the current work preserve the architecture described by the Constitution, the specification, existing module patterns, and documented decisions?
+- **STRICTLY READ-ONLY**: This command is analytical. Do **not** modify any files.
+- **Progressive Disclosure**: Load context incrementally. Start with design artifacts before deep-diving into code.
+- **Evidence-Based**: Every violation must cite specific "Implementation Evidence" (file paths, line numbers, or code patterns) or its absence.
 
 ## Command Normalization
 
 Accept the same normalized command context as the review workflow:
-
-- `mode=architecture` by default
-- `mode=performance` when the command includes `performance`
-- `focus=general` by default
-- `focus=db` when the command includes `db`
-- `focus=api` when the command includes `api`
-- `focus=async` when the command includes `async`
+- `mode=architecture` (default)
+- `focus=general` (default), `db`, `api`, or `async`.
 
 If `mode=performance`, do not emit violations here. Let `architecture-review` own the advisory performance output.
 
-When the drift is repeated across multiple modules, cross-cutting, or indicates the Constitution may be insufficient or contradictory, surface that as proposal-worthy input for `architecture-review` and `architecture-apply`.
+## Semantic Modeling
 
-## Generic Architecture Model
+Before analysis, build internal representations (do not output these):
+1. **Boundary Model**: Map expected vs. actual boundaries (Entry, App, Domain, Data, External).
+2. **Contract Inventory**: Identify shared shapes and interface signatures.
+3. **Dependency Graph**: Map module-to-module dependencies to detect coupling/layering issues.
 
-Use this model regardless of framework:
+## Detection Scope
 
-- Entry boundary: receives input from users, clients, jobs, events, CLI commands, routes, controllers, handlers, pages, or components.
-- Validation boundary: validates and normalizes external input.
-- Contract boundary: defines stable request, response, event, command, DTO, schema, interface, or shared type shapes.
-- Application boundary: coordinates use cases and workflows.
-- Domain boundary: owns business rules and decisions.
-- Data boundary: reads and writes persistence through an approved abstraction.
-- Integration boundary: communicates with external systems.
-- Presentation boundary: renders UI, formats output, or maps view state.
+### A. Intent & Alignment
+- **Intent Divergence**: Implementation deviates fundamentally from `spec.md` or `plan.md` intent.
+- **Hallucinated Abstractions**: Plan mentions an abstraction (e.g., Repository) that is missing in code.
+- **Spec-Code Mismatch**: Functional requirements from spec are implemented in the wrong architectural layer.
 
-## Violation Categories
+### B. Boundaries & Layering
+- **Boundary Erosion**: Business logic leaking into Entry boundaries (Controllers/Handlers) or UI.
+- **Isolation Breach**: Data access or external API calls bypassing expected abstractions.
+- **Separation of Concerns**: Infrastructure or transport concerns polluting domain logic.
 
-### Missing Data Contract
+### C. Contracts & Consistency
+- **Missing/Inconsistent Contracts**: Shared boundaries lacking DTOs, schemas, or stable interfaces.
+- **Contract Mismatch**: Shapes differing between UI, API, service, or event boundaries.
+- **Response Drift**: Incompatible success/error shapes across comparable endpoints or modules.
 
-Detect when:
+### D. Coupling & Dependencies
+- **Tight Coupling**: Circular dependencies or one module reaching into another's internals.
+- **Hidden Coordination**: Shared utilities acting as implicit coordination layers for business rules.
 
-- Shared or external input lacks a DTO, schema, interface, type, request object, command object, or equivalent.
-- Output shape is implied by inline literals only.
-- UI and API use different names or shapes for the same concept.
-- Events or messages are not documented as contracts.
+### E. Constitution & Security
+- **Constitution Breach**: Conflict with a "MUST" principle in the Constitution.
+- **Security-Architecture Conflict**: Decisions contradicting `security-constraints.md` or trust boundaries.
 
-Do not require contracts for trivial private helper functions unless the Constitution requires it.
+## Review Procedure
 
-### Inconsistent Data Contract
-
-Detect when:
-
-- Similar modules expose different field names for the same concept.
-- Response structures differ without a documented reason.
-- Validation schema and implementation shape disagree.
-- Frontend assumptions do not match backend outputs.
-- API, event, or service contracts drift between producer and consumer.
-
-### Business Logic In Entry Boundary
-
-Detect when:
-
-- Controllers, routes, handlers, actions, resolvers, pages, or UI components make core business decisions.
-- Entry points perform multi-step domain workflows instead of delegating.
-- Validation, orchestration, persistence, and business rules are mixed in one boundary function.
-
-Mapping, authentication context extraction, simple validation calls, and delegation are acceptable.
-
-### Tight Module Coupling
-
-Detect when:
-
-- One module imports another module's internal implementation.
-- Services bypass public APIs or contracts.
-- A feature reaches into another feature's persistence models, private helpers, or internal state.
-- Shared utilities become hidden coordination layers for business behavior.
-
-### Direct Data Access Without Abstraction
-
-Detect when:
-
-- Business logic, UI logic, or entry points query persistence directly despite an established data abstraction.
-- Multiple layers construct raw queries or persistence payloads inconsistently.
-- External API calls bypass a shared client or gateway expected by the architecture.
-
-Do not flag direct data access if the Constitution explicitly allows active-record-style or direct query patterns for that layer.
-
-### Inconsistent Response Or Output Structure
-
-Detect when:
-
-- Comparable endpoints, handlers, pages, events, or services return incompatible success, error, or result shapes.
-- Error handling or result wrapping differs without a documented reason.
-- Pagination, metadata, status fields, or envelope conventions drift.
-
-### Missing Validation Boundary
-
-Detect when:
-
-- External input reaches application or domain logic without validation or normalization.
-- Validation is duplicated inconsistently across entry points.
-- Validation happens after side effects.
-- Consumer-side assumptions replace producer-side validation.
-
-### Separation Of Concerns Violation
-
-Detect when:
-
-- UI presentation owns domain rules.
-- Persistence models own workflow orchestration.
-- Integration clients contain product decisions.
-- Shared types contain behavior that belongs in a module.
-- Domain logic depends on transport, UI, framework, or database concerns without an accepted reason.
-
-### Security-Architecture Conflict
-
-Detect when:
-
-- A technical decision contradicts a documented security constraint (e.g., in `security-constraints.md`).
-- Trust boundaries are bypassed by a new module or service interaction.
-- Authorization or data isolation logic is placed in an inappropriate boundary (e.g., in the Entry or Data boundary instead of Domain).
-- Sensitive state is exposed through a contract that lacks isolation.
-- Async or background workflows lack the security context required by the architecture.
-
-## Severity Assignment
-
-Use:
-
-- `Critical` when a Constitution rule makes the violation blocking.
-- `High` when the issue crosses module or service boundaries or will be hard to unwind.
-- `Medium` when the issue is local but repeatable.
-- `Low` when the issue is minor drift.
+1. **Model Context**: Load artifacts and build the Semantic Models.
+2. **Verify Evidence**: Check if task-referenced files exist and contain expected implementation logic.
+3. **Analyze Alignment**: Compare `spec.md` intent vs. `plan.md` architecture vs. actual behavior.
+4. **Scan Principles**: Apply detection scope across boundaries and contracts.
+5. **Assign Severity**:
+   - `Critical`: Constitution MUST breach, Security Constraint violation, or zero evidence for a required boundary.
+   - `High`: Significant boundary erosion, contract inconsistency, or intent divergence.
+   - `Medium`: Local drift or debt.
+   - `Low`: Minor shape or naming drift.
 
 ## Output Format
 
@@ -162,22 +88,5 @@ Violations:
 ```
 
 ## Framework Adapter Presets
- 
- If the file `.claude/prompts/architecture-guard-adapter.md` exists in the project:
- 
- 1.  Read it as a mandatory context provider.
- 2.  Use it to map the Generic Architecture Model to specific framework primitives.
- 3.  Follow its guidance on framework-specific anti-patterns and detection rules.
- 
- If no adapter file exists, continue using the generic model only.
- 
- ## Guardrails
 
-- Do not infer framework rules that were not provided.
-- Do not report security, performance, or formatting issues as architecture violations unless they represent a conflict with an architectural boundary or a documented security constraint.
-- Do not block delivery by default.
-- Prefer "risk" language when the evidence is incomplete.
-- Keep findings small enough to become refactor tasks.
-- Do not duplicate `Performance Insights` from `architecture-review`.
-- If the same drift appears across multiple modules, flag it as potential proposal-worthy input rather than forcing only local findings.
-- **Prefer incremental migration suggestions** over large rewrite recommendations when drift is detected. Validate plans against the Constitution, security constraints, accepted deviations, and architecture evolution decisions.
+If `.claude/prompts/architecture-guard-adapter.md` exists, use it to map the Generic Architecture Model to framework primitives and detect stack-specific anti-patterns.
