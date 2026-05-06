@@ -739,9 +739,8 @@ specify extension add architecture-guard
 ## GitHub Installation
 
 ```text
-cd /path/to/spec-kit-project
-specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.6.3.zip
+  specify extension add architecture-guard --from \
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.6.4.zip
 ```
 
 ---
