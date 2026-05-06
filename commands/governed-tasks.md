@@ -29,7 +29,8 @@ If they are missing, degrade gracefully by skipping their respective steps.
 ### Step 2 — Memory Synthesis
 
 IF `spec-kit-memory-hub` is available:
-1. Consume or generate `specs/<feature>/memory-synthesis.md`.
+1. **Execute Synthesis**: Read `../spec-kit-memory-hub/commands/speckit.memory-md.plan-with-memory.md` to understand the memory synthesis workflow, then execute its logic.
+2. **Save Artifact**: Produce the `specs/<feature>/memory-synthesis.md` artifact and write it to the filesystem.
 2. Ensure synthesis is scoped to:
     - Current feature and plan.
     - Affected modules and architecture decisions.
@@ -39,9 +40,10 @@ IF `spec-kit-memory-hub` is available:
 
 You must orchestrate the `/speckit.tasks` workflow directly.
 
-**CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must generate the tasks:
-1. Generate or update the `specs/<feature>/tasks.md` artifact.
-2. The generated tasks MUST use:
+**CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must actually generate the tasks:
+1. **Read Core Command**: If you need instructions on how to create a Spec Kit task list, read `.specify/commands/speckit.tasks.md`.
+2. **Save Artifact**: Generate the `specs/<feature>/tasks.md` artifact and write it to the filesystem.
+3. The generated tasks MUST use:
    - Feature specification and technical plan.
    - The Project Constitution and `ARCHITECTURE_CONSTITUTION.md`.
    - `memory-synthesis.md` (if available).
@@ -50,11 +52,11 @@ You must orchestrate the `/speckit.tasks` workflow directly.
 ### Step 4 — Security Review on Tasks
 
 IF `spec-kit-security-review` is available:
-1. Run security review against the generated task list.
+1. **Execute Review**: Read `../security-review-extension/prompts/security-review-tasks.prompt.md` to understand the task review logic, then execute it.
 2. Check for missing tasks related to:
     - Validation, authorization, and trust boundaries.
     - Secure integration and audit/logging.
-3. Emit or update `specs/<feature>/security-constraints.md` if findings exist.
+3. **Save Artifact**: Emit or update `specs/<feature>/security-constraints.md` with a file-writing tool if findings exist.
 
 ### Step 5 — Architecture Refactor Generation
 

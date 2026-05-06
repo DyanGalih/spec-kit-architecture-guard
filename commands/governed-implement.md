@@ -29,7 +29,7 @@ If they are missing, degrade gracefully by skipping their respective steps.
 ### Step 2 — Memory Synthesis
 
 IF `spec-kit-memory-hub` is available:
-1. Consume or refresh `specs/<feature>/memory-synthesis.md`.
+1. **Execute Synthesis**: Read `../spec-kit-memory-hub/commands/speckit.memory-md.plan-with-memory.md` to understand the memory synthesis workflow, then execute its logic to refresh `specs/<feature>/memory-synthesis.md`.
 2. For implementation, prioritize:
     - Accepted architecture rules and task scope.
     - Known deviations and prior implementation pitfalls.
@@ -37,7 +37,7 @@ IF `spec-kit-memory-hub` is available:
 
 ### Step 3 — Orchestrate Spec Kit Implement
 
-You must orchestrate the `/speckit.implement` (core implementation) workflow directly. 
+You must orchestrate the `/speckit.implement` (core implementation) workflow directly. Read `.specify/commands/speckit.implement.md` if you need instructions on how this is usually done.
 
 **CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must perform the implementation by following the `tasks.md` breakdown:
 1. **Execute Tasks**: Sequentially or in parallel (as marked) execute the tasks defined in `specs/<feature>/tasks.md`.
@@ -54,7 +54,7 @@ NOTE: The core Spec Kit command is `speckit.implement`. Do not use `speckit.impl
 ### Step 4 — Security Review on Implementation
 
 IF `spec-kit-security-review` is available:
-1. Run security review against the produced implementation.
+1. **Execute Review**: Read `../security-review-extension/prompts/security-review-branch.prompt.md` to understand the review logic, then run security review against the produced implementation.
 2. Check for: authorization bypass, missing validation, secret leakage, injection risk, and insecure data exposure.
 3. If security findings are architecture-relevant, classify them as `Security-Architecture Conflict` for the architecture review.
 
