@@ -29,9 +29,8 @@ If they are missing, degrade gracefully by skipping their respective steps.
 ### Step 2 — Memory Synthesis (Optional)
 
 IF `spec-kit-memory-hub` is available:
-1. **Execute Synthesis**: Read `../spec-kit-memory-hub/commands/speckit.memory-md.plan-with-memory.md` to understand the memory synthesis workflow, then execute its logic.
-2. **Save Artifact**: Produce the `specs/<feature>/memory-synthesis.md` artifact and write it to the filesystem. Do not just assume it exists or ask the user to run it.
-3. Focus on:
+1. **Execute Synthesis**: Run `/speckit.memory-md.plan-with-memory` to synthesize and save `specs/<feature>/memory-synthesis.md`.
+2. Focus on:
     - Scoped retrieval of architecture-relevant context.
     - Prioritizing active decisions and documented deviations.
 
@@ -40,9 +39,8 @@ IF `spec-kit-memory-hub` is available:
 You must orchestrate the `/speckit.plan` workflow directly.
 
 **CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must actually generate the plan:
-1. **Read Core Command**: If you need instructions on how to create a Spec Kit plan, read `.specify/commands/speckit.plan.md`.
-2. **Save Artifact**: Generate the `specs/<feature>/plan.md` artifact and write it to the filesystem.
-3. The planning process must incorporate:
+1. **Execute Plan**: Run `/speckit.plan` to generate and save `specs/<feature>/plan.md`.
+2. The planning process must incorporate:
    - The Project Constitution.
    - `ARCHITECTURE_CONSTITUTION.md`.
    - `memory-synthesis.md` (if available).
@@ -50,9 +48,8 @@ You must orchestrate the `/speckit.plan` workflow directly.
 ### Step 4 — Security Review (Optional)
 
 IF `spec-kit-security-review` is available:
-1. **Execute Review**: Read `../security-review-extension/prompts/security-review-plan.prompt.md` to understand the security review logic, then execute it against the generated plan.
-2. **Save Artifact**: Produce the `specs/<feature>/security-constraints.md` artifact and write it to the filesystem.
-3. Focus on:
+1. **Execute Review**: Run `/speckit.security-review.plan` to review the plan and save `specs/<feature>/security-constraints.md`.
+2. Focus on:
     - Trust boundaries and authorization assumptions.
     - Data isolation and validation risks.
     - Async security context.
