@@ -346,8 +346,10 @@ memory synthesis → implement → security review → architecture review → r
 
 ## 1. Install
 
+See [Installation](#installation) section for all methods (Registry, GitHub, Local Development).
+
+Basic:
 ```text
-cd /path/to/spec-kit-project
 specify extension add architecture-guard
 ```
 
@@ -355,44 +357,88 @@ specify extension add architecture-guard
 
 ## 2. Initialize Constitutions
 
+Run the initializer once to create or refine your architecture and governance standards:
+
 ```text
 /speckit.architecture-guard.init
 ```
+
+This creates or updates:
+- `constitution.md` — governance and engineering standards
+- `architecture_constitution.md` — architecture rules and boundaries
 
 ---
 
 ## 3. Run Architecture Workflow
 
+Review your current architecture and identify drift:
+
 ```text
 /speckit.architecture-guard.architecture-workflow
 ```
 
+Outputs:
+- Architecture alignment status
+- Detected violations (with severity and priority)
+- Suggested refactor tasks
+- Evolution proposals
+
 ---
 
-## 4. Review Violations and Refactor Tasks
+## 4. Review Violations and Apply Fixes
+
+If violations are found, apply approved refactors into your plan and task artifacts:
 
 ```text
 /speckit.architecture-guard.architecture-apply
 ```
 
+This injects refactor tasks into `plan.md` and `tasks.md` so the AI has explicit guidance to fix architectural debt while implementing features.
+
 ---
 
 # Commands
 
-| Command                 | Purpose                                                                              |
-| ----------------------- | ------------------------------------------------------------------------------------ |
-| `governed-plan`         | **Orchestrator**. Coordinates Memory, Planning, Security, and Architecture.           |
-| `governed-tasks`        | **Orchestrator**. Runs task generation with memory, security, and architecture.      |
-| `governed-implement`    | **Orchestrator**. Runs implementation then validates security and architecture.       |
-| `architecture-workflow` | Recommended entry point for general reviews. Runs review workflow end-to-end.        |
-| `architecture-review`   | Reviews specifications, plans, tasks, or implementations against architecture rules. |
-| `violation-detection`   | Detects architecture drift and boundary violations.                                  |
-| `refactor-generator`    | Converts violations into structured refactor tasks.                                  |
-| `architecture-apply`    | Applies approved architecture changes into planning artifacts.                       |
-| `init`                  | Initializes or refines architecture and governance constitutions.                    |
+| Command | Phase | Output | When To Use |
+| --- | --- | --- | --- |
+| `init` | Setup | `constitution.md`, `architecture_constitution.md` | Once at project start; rerun to refine standards |
+| `architecture-workflow` | General Review | Violations, severity/priority, refactor tasks, evolution proposals | Entry point for end-to-end review; good for dashboards |
+| `architecture-review` | Validation | Alignment status, boundary issues, contract drift | After `/specify`, `/plan`, or `/implement` |
+| `violation-detection` | Detection | Drift summary, boundary violations, module coupling | Focus on specific architecture problems |
+| `refactor-generator` | Planning | Structured refactor tasks (P0-P3) with guidance | Convert violations into actionable tasks |
+| `architecture-apply` | Integration | Updated `plan.md`, `tasks.md` with refactor tasks | Apply approved refactors into artifacts |
+| `governed-plan` | Orchestration | Plan with memory synthesis + security + architecture | Use when Memory Hub and Security Review are installed |
+| `governed-tasks` | Orchestration | Tasks with memory context + security + architecture refactors | Use when companion extensions are installed |
+| `governed-implement` | Orchestration | Implementation validation with full governance context | Use for end-to-end implementation with governance |
+
+> [!TIP]
+> Most projects use `architecture-workflow` or `architecture-review` directly. Orchestrator commands (`governed-*`) are advanced and optional when companion extensions are available.
 
 > [!TIP]
 > `architecture-apply` targets `plan.md` and `tasks.md`. If architectural issues are found in the specification stage, refine the specification before generating a technical plan.
+
+---
+
+# Installation
+
+### From Registry
+
+```text
+specify extension add architecture-guard
+```
+
+### From GitHub
+
+```text
+specify extension add architecture-guard --from \
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.6.6.zip
+```
+
+### Local Development
+
+```text
+specify extension add --dev /path/to/spec-kit-architecture-guard
+```
 
 ---
 
@@ -722,35 +768,6 @@ Summary:
 | P1       | Should resolve soon         |
 | P2       | Safe as technical debt      |
 | P3       | Opportunistic cleanup       |
-
----
-
-# Installation
-
-## Registry Installation
-
-```text
-cd /path/to/spec-kit-project
-specify extension add architecture-guard
-```
-
----
-
-## GitHub Installation
-
-```text
-  specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.6.6.zip
-```
-
----
-
-## Local Development
-
-```text
-cd /path/to/spec-kit-project
-specify extension add --dev /path/to/spec-kit-architecture-guard
-```
 
 ---
 
