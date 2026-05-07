@@ -1,8 +1,6 @@
-# `init.md`
-
 ---
-
-## description: Initialize or refine the project governance and architecture constitutions for Architecture Guard.
+description: Initialize or refine the project governance and architecture constitutions for Architecture Guard.
+---
 
 # Purpose
 
@@ -16,8 +14,8 @@ This command helps teams intentionally define:
 
 This command generates or refines:
 
-* `constitution.md`
-* `architecture_constitution.md`
+* `.specify/memory/constitution.md`
+* `.specify/memory/architecture_constitution.md`
 
 The goal is NOT to generate generic best practices.
 
@@ -151,8 +149,8 @@ This system separates:
 
 The system must maintain:
 
-* `constitution.md`
-* `architecture_constitution.md`
+* `.specify/memory/constitution.md`
+* `.specify/memory/architecture_constitution.md`
 
 Avoid duplication between both files.
 
@@ -191,7 +189,7 @@ technology_stack: [answer if provided]
 
 ---
 
-## `constitution.md`
+## `.specify/memory/constitution.md`
 
 Purpose:
 
@@ -216,7 +214,7 @@ Should NOT contain:
 
 ---
 
-## `architecture_constitution.md`
+## `.specify/memory/architecture_constitution.md`
 
 Purpose:
 
@@ -242,8 +240,8 @@ Should contain:
 
 Check for:
 
-* `constitution.md`
-* `architecture_constitution.md`
+* `.specify/memory/constitution.md`
+* `.specify/memory/architecture_constitution.md`
 
 ---
 
@@ -272,14 +270,14 @@ Would you like to:
 
 ---
 
-## If ONLY `constitution.md` exists
+## If ONLY the governance Constitution exists
 
 1. Analyze architecture-related sections.
 
 2. Detect rules that should move into:
 
 ```text
-architecture_constitution.md
+.specify/memory/architecture_constitution.md
 ```
 
 3. Ask:
@@ -719,7 +717,7 @@ Before generating rules, classify them.
 
 ---
 
-## Global Governance Rules → `constitution.md`
+## Global Governance Rules → `.specify/memory/constitution.md`
 
 Examples:
 
@@ -732,7 +730,7 @@ Examples:
 
 ---
 
-## Architecture Enforcement Rules → `architecture_constitution.md`
+## Architecture Enforcement Rules → `.specify/memory/architecture_constitution.md`
 
 Examples:
 
@@ -753,13 +751,13 @@ DO NOT duplicate rules across both files.
 If a rule exists in:
 
 ```text
-architecture_constitution.md
+.specify/memory/architecture_constitution.md
 ```
 
 Then:
 
 ```text
-constitution.md
+.specify/memory/constitution.md
 ```
 
 should reference architecture rules instead of repeating implementation details.
@@ -769,12 +767,12 @@ should reference architecture rules instead of repeating implementation details.
 GOOD:
 
 ```text
-constitution.md:
-- Architecture enforcement rules are defined in architecture_constitution.md
+.specify/memory/constitution.md:
+- Architecture enforcement rules are defined in `.specify/memory/architecture_constitution.md`
 ```
 
 ```text
-architecture_constitution.md:
+.specify/memory/architecture_constitution.md:
 - Controllers must delegate business logic to Services or Actions
 ```
 
@@ -799,12 +797,12 @@ DO NOT generate final documents until:
 
 Generate or refine:
 
-* `constitution.md`
-* `architecture_constitution.md`
+* `.specify/memory/constitution.md`
+* `.specify/memory/architecture_constitution.md`
 
 ---
 
-## `constitution.md` Structure
+## `.specify/memory/constitution.md` Structure
 
 ```text
 1. Project Identity
@@ -819,7 +817,7 @@ Generate or refine:
 
 ---
 
-## `architecture_constitution.md` Structure
+## `.specify/memory/architecture_constitution.md` Structure
 
 ```text
 1. Architecture Style
@@ -844,8 +842,8 @@ Architecture rules may evolve over time.
 When repeated architecture drift is detected:
 
 * generate Constitution Update Proposals
-* target `architecture_constitution.md` by default
-* only propose updates to `constitution.md` for governance-level changes
+* target `.specify/memory/architecture_constitution.md` by default
+* only propose updates to `.specify/memory/constitution.md` for governance-level changes
 
 NEVER automatically modify either file.
 

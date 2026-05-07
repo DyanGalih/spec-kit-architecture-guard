@@ -30,6 +30,8 @@ echo "Test: Hub repo structure is valid"
 assert_file_exists "$HUB_ROOT/extension.yml" "extension.yml exists at root"
 assert_file_exists "$HUB_ROOT/README.md" "README.md exists at root"
 assert_file_exists "$HUB_ROOT/LICENSE" "LICENSE exists at root"
+assert_file_exists "$HUB_ROOT/templates/constitution.md" "governance constitution template exists"
+assert_file_exists "$HUB_ROOT/templates/architecture_constitution.md" "architecture constitution template exists"
 
 EXPECTED_COMMANDS=(
   "architecture-workflow.md"

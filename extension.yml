@@ -4,7 +4,7 @@ extension:
   id: "architecture-guard"
   name: "Architecture Guard"
   version: "1.7.0"
-  description: "Framework-agnostic architecture review extension for validating implementation against Constitution, detecting architectural drift, and generating non-blocking refactor tasks."
+  description: "Framework-agnostic architecture review extension for validating implementation against governance and architecture constitutions, detecting architectural drift, and generating non-blocking refactor tasks."
   author: "DyanGalih"
   repository: "https://github.com/DyanGalih/spec-kit-architecture-guard"
   license: "MIT"

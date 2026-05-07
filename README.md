@@ -109,7 +109,7 @@ Throughout Architecture Guard commands, complex analysis steps offer **optional 
 When a command encounters analysis marked `[OPTIONAL SUB-AGENT DELEGATION]`:
 - LLM assesses complexity (file count, lines, decision count, etc.)
 - LLM **automatically decides**: Inline execution (fast) OR delegate to sub-agent (thorough)
-- **You don't control it** — LLM chooses based on context
+- The default is automatic, but explicit `--inline` or `--delegate` flags override the decision
 
 ## Decision Criteria
 
@@ -149,7 +149,7 @@ into two different documents.
 
 ---
 
-## `constitution.md`
+## `.specify/memory/constitution.md`
 
 Defines:
 
@@ -164,7 +164,7 @@ This file should remain relatively stable.
 
 ---
 
-## `architecture_constitution.md`
+## `.specify/memory/architecture_constitution.md`
 
 Defines:
 
@@ -180,12 +180,10 @@ Defines:
 Architecture Guard primarily validates against:
 
 ```text
-architecture_constitution.md
+.specify/memory/architecture_constitution.md
 ```
 
 This separation prevents implementation-level architecture rules from polluting broader engineering governance.
-
----
 
 # Benefits
 
@@ -281,8 +279,8 @@ This command can:
 It may generate:
 
 ```text
-constitution.md
-architecture_constitution.md
+.specify/memory/constitution.md
+.specify/memory/architecture_constitution.md
 ```
 
 ---
@@ -401,8 +399,8 @@ Run the initializer once to create or refine your architecture and governance st
 ```
 
 This creates or updates:
-- `constitution.md` — governance and engineering standards
-- `architecture_constitution.md` — architecture rules and boundaries
+- `.specify/memory/constitution.md` — governance and engineering standards
+- `.specify/memory/architecture_constitution.md` — architecture rules and boundaries
 
 ---
 
@@ -438,7 +436,7 @@ This injects refactor tasks into `plan.md` and `tasks.md` so the AI has explicit
 
 | Command | Phase | Output | When To Use |
 | --- | --- | --- | --- |
-| `init` | Setup | `constitution.md`, `architecture_constitution.md` | Once at project start; rerun to refine standards |
+| `init` | Setup | `.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md` | Once at project start; rerun to refine standards |
 | `architecture-workflow` | General Review | Violations, severity/priority, refactor tasks, evolution proposals | Entry point for end-to-end review; good for dashboards |
 | `architecture-review` | Validation | Alignment status, boundary issues, contract drift | After `/specify`, `/plan`, or `/implement` |
 | `violation-detection` | Detection | Drift summary, boundary violations, module coupling | Focus on specific architecture problems |
@@ -665,7 +663,7 @@ Recommended workflow:
 ```text
 New architecture standard
 ↓
-Update architecture_constitution.md
+Update `.specify/memory/architecture_constitution.md`
 ↓
 architecture-review detects drift
 ↓
@@ -766,7 +764,7 @@ Architecture Guard is framework-agnostic by design, but includes built-in framew
 
 1. Run `/speckit.architecture-guard.init`
 2. Follow the interview and select your framework when prompted
-3. The preset will be installed to `.claude/prompts/architecture-guard-adapter.md` (internal filename kept for backward compatibility; referred to as "preset" throughout)
+3. The preset is stored in the tool-agnostic project path `.specify/presets/architecture-guard-preset.md`.
 
 The preset provides framework-specific vocabulary, examples, and stronger interpretation guidance for your AI assistant.
 
@@ -851,7 +849,7 @@ Recommended adoption strategy:
 3. Use refactor tasks instead of blocking delivery.
 4. Promote repeated patterns into architecture standards.
 5. Evolve architecture intentionally.
-6. Add adapters only when framework-specific guidance becomes necessary.
+6. Add presets only when framework-specific guidance becomes necessary.
 
 ---
 

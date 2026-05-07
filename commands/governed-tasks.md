@@ -64,7 +64,8 @@ You must orchestrate the `/speckit.tasks` workflow directly.
 1. **Execute Tasks**: Run `/speckit.tasks` to generate and save `specs/<feature>/tasks.md`.
 2. The generated tasks MUST use:
    - Feature specification and technical plan.
-   - The Project Constitution and `architecture_constitution.md`.
+   - The Project Constitution (`.specify/memory/constitution.md`).
+   - `.specify/memory/architecture_constitution.md`.
    - `memory-synthesis.md` (if available).
    - `security-constraints.md` (if available).
 
@@ -135,7 +136,7 @@ The command MUST return:
 - **Architecture Risks**: [Drift or conflicts detected in the task list]
 
 ## Recommended Next Step
-- [e.g., Continue to /speckit.governed-implement]
+- [e.g., Continue to /speckit.architecture-guard.governed-implement]
 - [e.g., Revise tasks to address missing security items]
 - [e.g., Update architecture constitution if standard is outdated]
 ```

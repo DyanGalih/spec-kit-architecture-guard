@@ -62,8 +62,8 @@ You must orchestrate the `/speckit.plan` workflow directly.
 **CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must actually generate the plan:
 1. **Execute Plan**: Run `/speckit.plan` to generate and save `specs/<feature>/plan.md`.
 2. The planning process must incorporate:
-   - The Project Constitution.
-   - `architecture_constitution.md`.
+   - The Project Constitution (`.specify/memory/constitution.md`).
+   - `.specify/memory/architecture_constitution.md`.
    - `memory-synthesis.md` (if available).
 
 ### Step 4 — Security Review (Optional)
@@ -84,7 +84,7 @@ Run:
 
 Inputs to consider:
 - The generated `plan.md`.
-- `ARCHITECTURE_CONSTITUTION.md`.
+- `.specify/memory/architecture_constitution.md`.
 - `memory-synthesis.md` (if available).
 - `security-constraints.md` (if available).
 
@@ -144,7 +144,7 @@ The command MUST return:
 
 ## Guardrails
 
-- **Framework-Agnostic**: Do not assume specific framework conventions unless provided via an adapter.
+- **Framework-Agnostic**: Do not assume specific framework conventions unless provided via a preset.
 - **Non-Blocking**: Findings should be advisory by default unless they violate a P0 rule in the Constitution.
 - **Incremental**: Prefer suggestions for incremental migration over full rewrites.
 - **Decoupled**: Do not tightly couple the logic to the internals of other extensions; rely on documented artifact names (`memory-synthesis.md`, `security-constraints.md`).

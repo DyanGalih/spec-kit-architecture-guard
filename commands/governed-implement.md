@@ -65,8 +65,8 @@ You must orchestrate the `/speckit.implement` (core implementation) workflow dir
 2. **Write Code**: Perform the actual coding work (writing files, running tests) required by the tasks.
 3. **Sync the tasks**: You MUST update `specs/<feature>/tasks.md` to mark completed tasks with `[x]`, check them off, and add any new subtasks discovered during implementation.
 4. The implementation MUST follow:
-   - Current tasks and the Project Constitution.
-   - `ARCHITECTURE_CONSTITUTION.md`.
+   - Current tasks and the Project Constitution (`.specify/memory/constitution.md`).
+   - `.specify/memory/architecture_constitution.md`.
    - `security-constraints.md` (if available).
    - Architecture migration plan (if available).
 
@@ -87,7 +87,7 @@ Run:
 ```
 
 Review implementation against:
-- `architecture_constitution.md`.
+- `.specify/memory/architecture_constitution.md`.
 - Plan, tasks, and `security-constraints.md`.
 - Accepted deviations and `memory-synthesis.md`.
 
@@ -171,7 +171,7 @@ The command MUST return:
 ## Architecture Review
 - **Violations**: [Drift findings or Security-Architecture Conflicts]
 - **Refactor Tasks**: [Suggested corrections]
-- **Constitution Update Proposals**: [Proposed updates to `architecture_constitution.md`]
+- **Constitution Update Proposals**: [Proposed updates to `.specify/memory/architecture_constitution.md`]
 
 ## Implementation Status
 - [Ready to merge / Needs security fix / Needs architecture refactor / Needs constitution update]
@@ -192,7 +192,7 @@ Example:
 
 ## Architecture Evolution Handling
 
-If implementation repeatedly violates a standard because the standard is outdated, generate a `Constitution Update Proposal` targeting `architecture_constitution.md`.
+If implementation repeatedly violates a standard because the standard is outdated, generate a `Constitution Update Proposal` targeting `.specify/memory/architecture_constitution.md`.
 
 ## Guardrails
 

@@ -138,4 +138,7 @@ Violations:
 
 ## Framework Preset Guidance
 
-If `.claude/prompts/architecture-guard-preset.md` exists, use it to map the Generic Architecture Model to framework primitives and detect stack-specific anti-patterns.
+If framework preset guidance exists, use it to map the Generic Architecture Model to framework primitives and detect stack-specific anti-patterns.
+
+Preset path:
+- `.specify/presets/architecture-guard-preset.md`

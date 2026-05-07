@@ -13,18 +13,27 @@ NC='\033[0m'
 echo "Checking Architecture Guard prerequisites in: $PROJECT_ROOT"
 
 # --- 1. Constitution Check ---
-CONSTITUTION_FOUND=0
-for f in "constitution.md" "docs/constitution.md" "docs/PROJECT_CONTEXT.md"; do
-  if [ -f "$PROJECT_ROOT/$f" ]; then
-    echo -e "  ${GREEN}✓${NC} Found $f"
-    CONSTITUTION_FOUND=1
-    break
-  fi
-done
+GOVERNANCE_CONSTITUTION_FOUND=0
+if [ -f "$PROJECT_ROOT/.specify/memory/constitution.md" ]; then
+  echo -e "  ${GREEN}✓${NC} Found .specify/memory/constitution.md"
+  GOVERNANCE_CONSTITUTION_FOUND=1
+fi
 
-if [ $CONSTITUTION_FOUND -eq 0 ]; then
-  echo -e "  ${RED}✗${NC} No constitution.md or PROJECT_CONTEXT.md found."
-  echo "    Architecture Guard needs a Constitution to validate against."
+ARCHITECTURE_CONSTITUTION_FOUND=0
+if [ -f "$PROJECT_ROOT/.specify/memory/architecture_constitution.md" ]; then
+  echo -e "  ${GREEN}✓${NC} Found .specify/memory/architecture_constitution.md"
+  ARCHITECTURE_CONSTITUTION_FOUND=1
+fi
+
+if [ $GOVERNANCE_CONSTITUTION_FOUND -eq 0 ]; then
+  echo -e "  ${RED}✗${NC} No governance Constitution found."
+  echo "    Expected .specify/memory/constitution.md."
+fi
+
+if [ $ARCHITECTURE_CONSTITUTION_FOUND -eq 0 ]; then
+  echo -e "  ${YELLOW}!${NC} No architecture Constitution found."
+  echo "    Expected .specify/memory/architecture_constitution.md."
+  echo "    Run /speckit.architecture-guard.init to create architecture-specific rules."
 fi
 
 # --- 2. Module Boundaries Check ---
@@ -51,7 +60,7 @@ else
 fi
 
 echo ""
-if [ $CONSTITUTION_FOUND -eq 1 ]; then
+if [ $GOVERNANCE_CONSTITUTION_FOUND -eq 1 ]; then
   echo -e "${GREEN}Prerequisites check complete.${NC}"
   exit 0
 else

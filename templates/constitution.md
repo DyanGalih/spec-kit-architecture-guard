@@ -1,7 +1,7 @@
 # Project Constitution
 
-> This is the foundational document that Architecture Guard reviews against.
-> Fill in each section with the architectural rules for your project.
+> This is the governance document that Architecture Guard reads alongside the architecture constitution.
+> Fill in each section with project-level engineering standards.
 > If a section does not apply, mark it as "Not applicable" rather than deleting it.
 
 ## Project Identity
@@ -10,63 +10,68 @@
 - **Type**: [Monolith / Modular Monolith / Microservices / Full-stack / Library / Other]
 - **Primary Stack**: [e.g., Laravel + Vue, NestJS + React, Django + HTMX]
 
-## Architectural Principles
+## Engineering Philosophy
 
-> List the non-negotiable rules that shape how the system is structured.
+> List the non-negotiable principles that shape engineering decisions.
 
-1. [e.g., Business logic must not live in controllers, routes, or UI components.]
-2. [e.g., All external input must cross a validation boundary before reaching application logic.]
-3. [e.g., Modules must not depend on another module's internal implementation.]
-4. [e.g., All API responses must use the standard envelope: `{ data, meta, errors }`.]
-5. [e.g., Data access must go through a repository or gateway abstraction.]
+1. [e.g., Prefer small, reviewable changes over large rewrites.]
+2. [e.g., Decisions with long-term impact must be documented.]
+3. [e.g., User-facing behavior must remain traceable to the feature specification.]
 
-## Module Boundaries
+## Security Expectations
 
-> Define which modules exist and what they own.
+- [e.g., Public entry points must validate and authorize access before processing.]
+- [e.g., Secrets must never be committed or exposed to client-side code.]
+- [e.g., Security-sensitive changes require explicit review.]
 
-| Module | Owns | Must Not |
-| --- | --- | --- |
-| [e.g., Orders] | [Order creation, pricing, fulfillment] | [Access billing tables directly] |
-| [e.g., Billing] | [Invoicing, payment processing] | [Own order business rules] |
-| [e.g., Auth] | [Authentication, session management] | [Own product authorization rules] |
+## Testing Expectations
 
-## Contract Conventions
+- [e.g., New behavior must include automated tests at the right level.]
+- [e.g., Regression fixes must include a failing test when practical.]
+- [e.g., Architecture refactors should preserve existing behavior.]
 
-> Define what contracts look like in your project.
+## Documentation Standards
 
-- **Request contracts**: [e.g., DTOs / Form Requests / Zod schemas / interfaces]
-- **Response contracts**: [e.g., Resource classes / response DTOs / typed interfaces]
-- **Event contracts**: [e.g., Event classes / message schemas]
-- **Shared types**: [e.g., enums for status values, shared value objects]
+- [e.g., Architectural decisions are documented before they become standards.]
+- [e.g., Public APIs and cross-team contracts must be documented.]
+- [e.g., Known deviations must include rationale and review date.]
 
-## Layering Rules
+## Review Process
 
-> Define which layers exist and what they may depend on.
+- [e.g., P0 findings block release until resolved or explicitly waived.]
+- [e.g., Non-blocking architecture drift becomes tracked refactor work.]
+- [e.g., Changes to governance standards require team review.]
 
-| Layer | May Depend On | Must Not Depend On |
-| --- | --- | --- |
-| [Entry / Controller] | [Application, Contracts] | [Domain internals, Persistence] |
-| [Application / Service] | [Domain, Contracts, Data abstractions] | [Entry points, UI] |
-| [Domain] | [Nothing external] | [Framework, Database, HTTP] |
-| [Data / Repository] | [Domain contracts, Persistence drivers] | [Entry points, Application logic] |
+## High-Level Architecture Intent
+
+Detailed architecture enforcement rules live in `.specify/memory/architecture_constitution.md`.
+
+- **Architecture style**: [Monolith / Modular Monolith / Microservices / Full-stack / Library / Other]
+- **Consistency goal**: [e.g., Keep feature modules independently understandable.]
+- **Evolution policy**: [e.g., Use Constitution Update Proposals for new architecture standards.]
 
 ## Accepted Deviations
 
-> List intentional exceptions to the rules above. Without this section, Architecture Guard will flag them as violations.
+> List intentional governance-level exceptions. Architecture-specific deviations belong in `.specify/memory/architecture_constitution.md`.
 
-- [e.g., The `reports` module uses direct SQL queries because the ORM cannot express the required aggregations. This is accepted.]
-- [e.g., The `admin` module bypasses the standard response envelope for CSV exports.]
+- [e.g., The reporting module is exempt from the current documentation standard until Q3 migration.]
+
+## Governance and Evolution Policy
+
+- [e.g., Governance changes require explicit approval.]
+- [e.g., Architecture enforcement changes should target `.specify/memory/architecture_constitution.md`.]
+- [e.g., Repeated drift should trigger an Architecture Constitution Update Proposal.]
 
 ## Blocking vs Non-Blocking Rules
 
-> By default, all architecture violations are non-blocking (they generate refactor tasks, not errors).
-> List any rules that MUST block implementation:
+> By default, architecture violations are non-blocking and generate refactor tasks.
+> List governance-level rules that MUST block release:
 
-- [e.g., P0: No module may directly access another module's database tables.]
-- [e.g., P0: All public API endpoints must validate input before processing.]
+- [e.g., P0: Security-sensitive changes cannot merge without review.]
+- [e.g., P0: Public API behavior must be tested before release.]
 
 ## Notes
 
 - This Constitution is versioned alongside the codebase.
 - Update it through a Constitution Update Proposal when patterns evolve.
-- Architecture Guard uses this document as its primary source of truth.
+- Architecture Guard uses this document for governance and `.specify/memory/architecture_constitution.md` for architecture enforcement.

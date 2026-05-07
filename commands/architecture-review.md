@@ -1,5 +1,5 @@
 ---
-description: Perform a framework-agnostic architecture review validating implementation against spec.md, plan.md, tasks.md, and constitution.md.
+description: Perform a framework-agnostic architecture review validating implementation against spec.md, plan.md, tasks.md, and the governance and architecture constitutions.
 scripts:
   sh: ../../scripts/bash/detect-changed-files.sh
   ps: ../../scripts/powershell/detect-changed-files.ps1
@@ -30,13 +30,13 @@ When you see this marker in a step:
 - Sub-agent preferred: Large codebases, complex analysis, refactors, deep synthesis
 
 **Decision criteria:**
-- Inline: < 50 files OR < 10,000 lines
+- Inline: < 50 files AND < 10,000 lines
 - Sub-agent: ≥ 50 files OR ≥ 10,000 lines OR > 20 memory documents
 - LLM override: Explicit `--inline` or `--delegate` flags override auto-detection
 
-**Sub-agents available:**
+**Sub-agents available when provided by the host environment or project:**
 - `/speckit.memory-md.plan-with-memory` — Memory synthesis and filtering
-- Custom sub-agents defined in project (e.g., `/analyze-sonar-violations` for SonarLint scanning)
+- Custom project commands such as `/analyze-sonar-violations` for SonarLint scanning
 
 This pattern enables flexibility: fast execution for typical PRs, powerful execution for large refactors.
 
@@ -58,7 +58,7 @@ This pattern enables flexibility: fast execution for typical PRs, powerful execu
 
 **Coexistence Model**:
 - Review always starts framework-agnostic
-- If preset detected in `.specify/preset/` or Constitution: Enhance with framework vocabulary
+- If preset detected in `.specify/presets/` or the Constitution: Enhance with framework vocabulary
 - Violations list remains the same; explanation becomes framework-native
 - Example: "Entry boundary contamination" (agnostic) → "Controller mixing HTTP and business logic" (Laravel-aware)
 
@@ -75,7 +75,8 @@ This pattern enables flexibility: fast execution for typical PRs, powerful execu
 ## Input & Context Loading
 
 Review any available artifacts:
-- **Constitution**: `.specify/memory/constitution.md` (Non-negotiable authority).
+- **Governance Constitution**: `.specify/memory/constitution.md`.
+- **Architecture Constitution**: `.specify/memory/architecture_constitution.md`.
 - **Security Constraints**: `specs/<feature>/security-constraints.md`.
 - **Memory Context**: `specs/<feature>/memory-synthesis.md`.
 - **Feature Design**: `spec.md`, `plan.md`, `tasks.md`, `data-model.md`.
@@ -144,7 +145,7 @@ This step runs code quality checks using bundled SonarLint rules. It is **option
 **[OPTIONAL SUB-AGENT DELEGATION]**:
 - If changed files ≥ 50 OR total lines ≥ 10,000:
   - Consider delegating to sub-agent for parallel rule scanning
-  - Suggested sub-agent: Custom `/analyze-sonar-violations` (if defined) or `Explore` agent
+  - Suggested sub-agent: Custom `/analyze-sonar-violations` if the project defines it; otherwise use inline scanning
   - Sub-agent benefits: Parallelized rule evaluation, detailed categorization
   - LLM decides: Inline for fast path, sub-agent for thorough path
 
@@ -218,7 +219,7 @@ Return only this structure:
 
 | ID | Category | Severity | Location(s) | Summary | Evidence/Rationale |
 |:---|:---|:---|:---|:---|:---|
-| V1 | Constitution | CRITICAL | `.specify/memory/constitution.md` | Violation of [Principle Name] | [Evidence from code/plan] |
+| V1 | Constitution | CRITICAL | `.specify/memory/architecture_constitution.md` | Violation of [Principle Name] | [Evidence from code/plan] |
 
 ### Task Synchronization
 - **Status**: [Synced / Drifted]
@@ -270,9 +271,11 @@ Findings that correlate with architecture concerns:
 2. **Architecture Alignment**: Resolve boundary erosion and contract mismatches.
 3. **Code Quality**: Address SonarLint findings that map to architectural concerns (if any).
 4. **Next Step**: [e.g. Run /speckit.architecture-guard.architecture-apply]
-5. **Remediation**: "Would you like me to suggest concrete remediation edits for the top issues?"
+5. **Remediation**: [Concrete remediation direction for the top issues, or "None needed"]
 
 ## Framework Preset Guidance
 
-If `.claude/prompts/architecture-guard-preset.md` exists, it is **mandatory** to use it to map generic principles to framework primitives and detect stack-specific anti-patterns.
+If framework preset guidance exists, it is **mandatory** to use it to map generic principles to framework primitives and detect stack-specific anti-patterns.
 
+Preset path:
+- `.specify/presets/architecture-guard-preset.md`

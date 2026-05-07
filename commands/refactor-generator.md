@@ -36,7 +36,7 @@ Use any available:
 - Task list.
 - Existing architecture decisions.
 - Existing module patterns.
-- Optional framework adapter guidance.
+- Optional framework preset guidance.
 
 ## Refactor Task Rules
 
@@ -48,7 +48,7 @@ Each task must:
 - Define a concrete scope.
 - Assign a priority.
 - Suggest a small, practical fix.
-- Avoid framework-specific requirements unless adapter guidance is present.
+- Avoid framework-specific requirements unless preset guidance is present.
 - Avoid security or performance remediation unless it is strictly architectural.
 - Do not duplicate `Performance Insights` into refactor tasks.
 
