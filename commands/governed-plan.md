@@ -29,6 +29,13 @@ If they are missing, degrade gracefully by skipping their respective steps.
 ### Step 2 — Memory Synthesis (Optional)
 
 IF `spec-kit-memory-hub` is available:
+
+**[OPTIONAL SUB-AGENT DELEGATION]**
+- If memory hub has ≥ 20 decision documents: Consider sub-agent for synthesis
+- Sub-agent command: `/speckit.memory-md.plan-with-memory`
+- Sub-agent benefits: Faster traversal, better filtering, detailed synthesis
+- LLM decides: Inline for quick decisions, sub-agent for complex memory
+
 1. **Execute Synthesis**: Run `/speckit.memory-md.plan-with-memory` to synthesize and save `specs/<feature>/memory-synthesis.md`.
 2. Focus on:
     - Scoped retrieval of architecture-relevant context.

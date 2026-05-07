@@ -17,6 +17,32 @@ You are running `architecture-guard`, a framework-agnostic architecture review e
 
 ---
 
+## Sub-Agent Delegation (Hybrid Model)
+
+Throughout this command, complex analysis steps offer **optional sub-agent delegation**:
+
+**Syntax: `[OPTIONAL SUB-AGENT DELEGATION]`**
+
+When you see this marker in a step:
+- LLM assesses complexity: file count, lines of code, decision count, etc.
+- LLM decides: Handle inline (fast path) OR delegate to sub-agent (thorough path)
+- Inline preferred: Simple codebases, small changes, quick turnaround
+- Sub-agent preferred: Large codebases, complex analysis, refactors, deep synthesis
+
+**Decision criteria:**
+- Inline: < 50 files OR < 10,000 lines
+- Sub-agent: ≥ 50 files OR ≥ 10,000 lines OR > 20 memory documents
+- LLM override: Explicit `--inline` or `--delegate` flags override auto-detection
+
+**Sub-agents available:**
+- `/analyze-sonar-violations` — Parallel SonarLint rule scanning
+- `/speckit.memory-md.plan-with-memory` — Memory synthesis and filtering
+- Custom sub-agents defined in project
+
+This pattern enables flexibility: fast execution for typical PRs, powerful execution for large refactors.
+
+---
+
 ## Framework-Agnostic vs Framework-Aware Review
 
 **Framework-Agnostic Foundation** (always applied):
@@ -109,14 +135,34 @@ This step runs code quality checks using bundled SonarLint rules. It is **option
 - Skip if user explicitly disables with `--no-sonarlint`
 - Skip if `.github/sonar-rules/sonarlint-rules.json` is missing or empty
 
+### Scope-Based Delegation (Hybrid Model)
+
+**Inline Execution** (default for small codebases):
+- Changed files < 50 files
+- Total lines < 10,000
+- Process directly, no sub-agent
+
+**[OPTIONAL SUB-AGENT DELEGATION]**:
+- If changed files ≥ 50 OR total lines ≥ 10,000:
+  - Consider delegating to sub-agent for parallel rule scanning
+  - Sub-agent command: `/analyze-sonar-violations`
+  - Sub-agent benefits: Parallelized rule evaluation, detailed categorization
+  - LLM decides: Inline for fast path, sub-agent for thorough path
+
 ### Procedure
 
+**If inline**:
 1. **Load Rules**: Read `.github/sonar-rules/sonarlint-rules.json` (architecture-relevant rules only)
 2. **Scan Changed Files**: Simulate or invoke SonarLint logic on `changed_files` list
 3. **Filter Results**: Keep only CRITICAL/HIGH severity findings related to complexity, coupling, structure
 4. **Map to Boundaries**: Correlate findings with architecture boundaries (Entry/App/Domain/Data/External)
 5. **Deduplicate**: If a violation is already in architecture violations list, suppress from SonarLint output
 6. **Categorize**: Group findings by rule category (Brain Overload, Dependency Coupling, Structure Drift, Performance Anti-patterns)
+
+**If delegated to sub-agent**:
+- Sub-agent receives rules JSON + changed files list
+- Returns structured violations (organized by category and severity)
+- Main agent integrates into architecture report
 
 ### Interpretation Guide
 

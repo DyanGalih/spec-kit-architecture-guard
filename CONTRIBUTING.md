@@ -51,6 +51,46 @@ git add .github/sonar-rules/ && git commit -m "chore: update SonarLint rules bun
 
 See `.github/sonar-rules/README.md` for details.
 
+### Sub-Agent Delegation Pattern
+
+Commands in `commands/` can optionally delegate complex analysis to sub-agents using a hybrid model.
+
+**When to mark a step for optional delegation:**
+- Memory synthesis (traversing 20+ decision documents)
+- Large codebase scanning (50+ files or 10,000+ lines)
+- Parallel analysis (rule evaluation, filtering, categorization)
+- Complex decision trees (framework detection, multi-stage interviews)
+
+**Syntax in commands:**
+```markdown
+### Step X — [Task Name]
+
+**[OPTIONAL SUB-AGENT DELEGATION]**
+- If [condition] (e.g., file_count ≥ 50):
+  - Consider delegating to sub-agent
+  - Sub-agent command: `/command-name`
+  - Sub-agent benefits: [parallelization, speed, etc.]
+  - LLM decides: Inline for [quick case], sub-agent for [complex case]
+
+[Inline procedure steps...]
+
+**If delegated to sub-agent:**
+- Sub-agent receives [inputs]
+- Returns [structured output]
+- Main agent integrates [how to integrate]
+```
+
+**Decision logic for LLM:**
+- Complexity < threshold → Handle inline (fast)
+- Complexity ≥ threshold → Delegate (thorough)
+- Explicit flags (`--inline` / `--delegate`) override auto-detection
+
+**Current markers in commands:**
+- `architecture-review.md` Step 7b (SonarLint): Delegate if ≥ 50 files
+- `governed-plan.md` Step 2 (Memory synthesis): Delegate if ≥ 20 memory docs
+- `governed-tasks.md` Step 2 (Memory synthesis): Delegate if ≥ 20 memory docs
+- `governed-implement.md` Step 2 (Memory synthesis): Delegate if ≥ 20 memory docs
+
 ### Adding Examples
 
 Add new example scenarios to the `examples/` directory. Use the generic backend/frontend format to keep them framework-agnostic.
