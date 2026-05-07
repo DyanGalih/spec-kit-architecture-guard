@@ -35,9 +35,8 @@ When you see this marker in a step:
 - LLM override: Explicit `--inline` or `--delegate` flags override auto-detection
 
 **Sub-agents available:**
-- `/analyze-sonar-violations` — Parallel SonarLint rule scanning
 - `/speckit.memory-md.plan-with-memory` — Memory synthesis and filtering
-- Custom sub-agents defined in project
+- Custom sub-agents defined in project (e.g., `/analyze-sonar-violations` for SonarLint scanning)
 
 This pattern enables flexibility: fast execution for typical PRs, powerful execution for large refactors.
 
