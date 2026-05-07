@@ -22,6 +22,35 @@ If you want to modify architecture rules or detection logic:
 1. Update the relevant file in `commands/`. Each command file is self-contained with its full rules, detection logic, and output format.
 2. Run `./scripts/test-install.sh` to verify consistency.
 
+### SonarLint Rules Bundle Updates
+
+The `.github/sonar-rules/` directory contains bundled SonarLint rules used during architecture review (Step 7b).
+
+**To update the rules bundle** (quarterly recommended):
+
+```bash
+./scripts/bash/extract-sonar-rules.sh --commit
+```
+
+This will:
+1. Verify `sonarlint` CLI is installed
+2. Extract all available rules
+3. Filter for architecture-relevant tags (coupling, complexity, structure, dependency, performance)
+4. Update `sonarlint-rules.json` and `rules-manifest.json`
+5. Auto-commit if changes detected
+
+**To update without auto-commit:**
+
+```bash
+./scripts/bash/extract-sonar-rules.sh
+# Review changes
+git diff .github/sonar-rules/
+# Manually commit
+git add .github/sonar-rules/ && git commit -m "chore: update SonarLint rules bundle"
+```
+
+See `.github/sonar-rules/README.md` for details.
+
 ### Adding Examples
 
 Add new example scenarios to the `examples/` directory. Use the generic backend/frontend format to keep them framework-agnostic.

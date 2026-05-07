@@ -38,7 +38,7 @@ Review any available:
 - Current plan artifact.
 - Current tasks artifact.
 - Existing architecture decisions from memory context.
-- Optional adapter guidance, if available.
+- Optional preset guidance, if available.
 - Approved Constitution Update Proposals, if present.
 
 ## Apply Procedure

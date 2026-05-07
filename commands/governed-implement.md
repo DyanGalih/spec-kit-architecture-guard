@@ -35,6 +35,20 @@ IF `spec-kit-memory-hub` is available:
     - Known deviations and prior implementation pitfalls.
     - Security constraints and migration rules.
 
+#### Memory Synthesis Scope
+
+When calling memory synthesis, define scope as:
+
+- **File Scope**: Limit context to `docs/memory/<feature>/` and `specs/<feature>/` directories only
+- **Decision Limit**: Include max 3–5 most relevant past architecture decisions
+- **Content Filter**: Architecture decisions only (exclude operational, infrastructure, testing decisions)
+- **Recency**: Prioritize decisions from current feature branch or recent commits
+- **Format**: Output as `specs/<feature>/memory-synthesis.md` with Clear decisions, Conflicts, and Assumptions sections
+
+Do NOT attempt to synthesize memory for unrelated features or system-wide decisions.
+
+---
+
 ### Step 3 — Orchestrate Spec Kit Implement
 
 You must orchestrate the `/speckit.implement` (core implementation) workflow directly.
@@ -70,6 +84,28 @@ Review implementation against:
 - Plan, tasks, and `security-constraints.md`.
 - Accepted deviations and `memory-synthesis.md`.
 
+### Step 5.5 — Blocking Decision Tree
+
+**Critical Decision Point**: Evaluate architecture findings for blocking issues.
+
+```
+IF Architecture Review finds CRITICAL or HIGH violations:
+  IF Constitution marks violation as P0 (blocking):
+    STOP implementation
+    Surface violations in report
+    Ask user: "Critical architecture violation detected. Proceed? (y/n)"
+    IF user says no:
+      Return early with architecture remediation tasks
+  ELSE (violation is HIGH but not Constitution P0):
+    Continue with warning
+    Create non-blocking refactor tasks
+    Flag for post-merge remediation
+ELSE (no critical violations):
+  Continue to Step 6
+```
+
+**Rationale**: This ensures architectural integrity while preserving delivery momentum for non-blocking issues.
+
 ### Step 6 — Generate Refactor Tasks
 
 IF architecture violations exist:
@@ -83,8 +119,31 @@ Produce a final `Governed Implementation Summary`.
 
 ## Graceful Degradation
 
-- If **Memory Hub** is missing: Continue without memory synthesis.
-- If **Security Review** is missing: Continue without security implementation review.
+**Without Memory Hub**:
+- Skip Step 2 (Memory Synthesis)
+- Continue to `/speckit.implement` directly
+- Assume no historical implementation constraints beyond Constitution
+
+**Without Security Review**:
+- Skip Step 4 (Security Review on Implementation)
+- Continue to architecture review directly
+- Flag missing security implementation review in summary
+
+**Critical Architecture Violations Found**:
+- If Constitution marks as P0 (blocking):
+  - STOP implementation workflow
+  - Surface violations immediately
+  - Return early with remediation guidance
+- If HIGH but not P0:
+  - Continue with warning
+  - Create non-blocking refactor tasks
+  - Flag for post-merge remediation
+
+**Minimal Viable Workflow** (only Architecture Guard + Spec Kit):
+- Execute implementation via core Spec Kit
+- Run architecture review on output
+- Generate non-blocking refactor tasks
+- Produce summary
 
 ## Output Structure
 

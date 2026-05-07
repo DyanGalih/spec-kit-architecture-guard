@@ -34,6 +34,20 @@ IF `spec-kit-memory-hub` is available:
     - Scoped retrieval of architecture-relevant context.
     - Prioritizing active decisions and documented deviations.
 
+#### Memory Synthesis Scope
+
+When calling memory synthesis, define scope as:
+
+- **File Scope**: Limit context to `docs/memory/<feature>/` and `specs/<feature>/` directories only
+- **Decision Limit**: Include max 3–5 most relevant past architecture decisions
+- **Content Filter**: Architecture decisions only (exclude operational, infrastructure, testing decisions)
+- **Recency**: Prioritize decisions from current feature branch or recent commits
+- **Format**: Output as `specs/<feature>/memory-synthesis.md` with Clear decisions, Conflicts, and Assumptions sections
+
+Do NOT attempt to synthesize memory for unrelated features or system-wide decisions.
+
+---
+
 ### Step 3 — Orchestrate Spec Kit Plan
 
 You must orchestrate the `/speckit.plan` workflow directly.
@@ -75,9 +89,25 @@ Produce a final `Governed Planning Summary` for the user.
 
 ## Graceful Degradation
 
-- If **Memory Hub** is missing: Continue without memory synthesis.
-- If **Security Review** is missing: Continue without security validation.
-- The workflow must remain functional with only `architecture-guard` and core Spec Kit.
+**Without Memory Hub**:
+- Skip Step 2 (Memory Synthesis)
+- Continue to `/speckit.plan` directly
+- Assume no historical architecture constraints beyond Constitution
+- Plan-level review proceeds with Constitution + Architecture Guard only
+
+**Without Security Review**:
+- Skip Step 4 (Security Review)
+- Continue to violation-detection directly
+- Flag missing security validation in governance summary
+- Plan-level review proceeds with architecture constraints only
+
+**Minimal Viable Workflow** (only Architecture Guard + Spec Kit):
+- Detect optional extensions
+- Generate plan via core Spec Kit
+- Validate against Constitution + architecture boundaries
+- Produce summary
+
+The workflow must remain functional with only `architecture-guard` and core Spec Kit.
 
 ## Output Structure
 

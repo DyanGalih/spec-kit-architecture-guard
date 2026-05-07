@@ -15,6 +15,30 @@ You are running `architecture-guard`, a framework-agnostic architecture review e
 - **Progressive Disclosure**: Load context incrementally. Start with manifests and design artifacts before deep-diving into implementation code.
 - **Evidence-Based**: Every violation must cite specific "Implementation Evidence" (file paths, line numbers, or code patterns) or its absence.
 
+---
+
+## Framework-Agnostic vs Framework-Aware Review
+
+**Framework-Agnostic Foundation** (always applied):
+- Universal boundary concepts (Entry, App, Domain, Data, External)
+- Core governance principles apply to any architecture
+- Violations are framework-independent
+
+**Framework-Aware Annotations** (if preset installed):
+- If project used preset during init (e.g., Laravel, Django, NestJS):
+  - Review vocabulary becomes framework-specific
+  - Patterns are mapped to framework conventions
+  - Guidance references framework-native concepts
+  - BUT underlying violations remain identical
+
+**Coexistence Model**:
+- Review always starts framework-agnostic
+- If preset detected in `.specify/preset/` or Constitution: Enhance with framework vocabulary
+- Violations list remains the same; explanation becomes framework-native
+- Example: "Entry boundary contamination" (agnostic) → "Controller mixing HTTP and business logic" (Laravel-aware)
+
+---
+
 ## Determine Review Scope
 
 1. **Normalize Arguments**: Parse "$ARGUMENTS" to identify the `mode` (`architecture` or `performance`) and `focus` aspects (`general`, `db`, `api`, or `async`).
@@ -70,7 +94,69 @@ Detect violations such as:
 5. **Scan Principles**: Apply Review Principles across the implemented boundaries.
 6. **Security Cross-Check**: If `security-constraints.md` is breached, log it as a critical violation.
 7. **Performance Scan (if mode=performance)**: Skip violations; focus on optimizations.
+7b. **Code Quality Scan (SonarLint)**: If `mode=architecture`, optionally scan for coupling/complexity violations.
 8. **Generate Refactors**: Produce structured tasks for each confirmed violation.
+
+---
+
+## Code Quality Scan (SonarLint) — Optional Step 7b
+
+This step runs code quality checks using bundled SonarLint rules. It is **optional** and complements architecture violations.
+
+### Activation
+
+- Run only if `mode=architecture` (not for performance mode)
+- Skip if user explicitly disables with `--no-sonarlint`
+- Skip if `.github/sonar-rules/sonarlint-rules.json` is missing or empty
+
+### Procedure
+
+1. **Load Rules**: Read `.github/sonar-rules/sonarlint-rules.json` (architecture-relevant rules only)
+2. **Scan Changed Files**: Simulate or invoke SonarLint logic on `changed_files` list
+3. **Filter Results**: Keep only CRITICAL/HIGH severity findings related to complexity, coupling, structure
+4. **Map to Boundaries**: Correlate findings with architecture boundaries (Entry/App/Domain/Data/External)
+5. **Deduplicate**: If a violation is already in architecture violations list, suppress from SonarLint output
+6. **Categorize**: Group findings by rule category (Brain Overload, Dependency Coupling, Structure Drift, Performance Anti-patterns)
+
+### Interpretation Guide
+
+| SonarLint Category | Architecture Signal |
+|---|---|
+| Brain Overload (high complexity) | Hidden boundaries; function does too much |
+| Dependency Coupling (tight dependencies) | Cross-module leakage; missing abstraction |
+| Structure Drift (inconsistent patterns) | Boundary erosion; inconsistent contracts |
+| Performance Anti-patterns | Possible architectural misuse (e.g., N+1 queries from wrong layer) |
+
+### Output Integration
+
+Add a new section in the report (see Output Format below):
+
+```markdown
+### Code Quality Findings (SonarLint)
+
+Findings that correlate with architecture concerns:
+
+| Rule | Severity | File | Issue |
+|---|---|---|---|
+| [Rule Key] | [HIGH/CRITICAL] | [File:Line] | [Issue summary + recommended boundary fix] |
+```
+
+**Note**: Pure style violations (formatting, naming conventions) are filtered out.
+
+---
+
+Every violation MUST cite evidence or explicitly note its absence. Evidence can be:
+
+- **Specific**: Concrete code reference like `src/checkout/route.js:45-67 contains pricing logic that should be in service layer`
+- **Pattern**: Behavioral observation like `All 5 user endpoints return different response shapes instead of standard contract`
+- **Absence**: Missing implementation like `Task references Repository pattern but no repo/ folder exists`
+
+**Absence Evidence** is acceptable for CRITICAL violations only. Example:
+- "Constitution requires data access abstraction but `repositories/` folder does not exist"
+
+For all other violations, cite specific code locations, line numbers, or patterns. Vague claims like "business logic is leaking" without specific evidence are insufficient.
+
+---
 
 ## Severity Guide
 
@@ -113,6 +199,19 @@ Return only this structure:
 - **Suggestion**: 
 - **Trade-off**: 
 
+(Only if `mode=architecture` and SonarLint findings detected)
+### Code Quality Findings (SonarLint)
+
+Findings that correlate with architecture concerns:
+
+| Rule | Severity | File | Issue | Architecture Signal |
+|:---|:---|:---|:---|:---|
+| `brain-overload::...` | HIGH | src/service/checkout.ts:45 | Function has 8 parameters | Hidden boundary: pricing logic should be in dedicated module |
+
+**Note**: Pure style violations (formatting, naming) are filtered out. Only findings related to complexity, coupling, and structure are included.
+
+---
+
 (Only if `mode=architecture` and Constitution drift is cross-cutting)
 ### Constitution Update Proposal
 - **Current Rule**: 
@@ -120,13 +219,15 @@ Return only this structure:
 - **Rationale**: 
 
 ---
+
 ### Action Plan
 1. **Critical Fixes**: Address Constitution and Security violations first.
 2. **Architecture Alignment**: Resolve boundary erosion and contract mismatches.
-3. **Next Step**: [e.g. Run /speckit.architecture-guard.architecture-apply]
-4. **Remediation**: "Would you like me to suggest concrete remediation edits for the top issues?"
+3. **Code Quality**: Address SonarLint findings that map to architectural concerns (if any).
+4. **Next Step**: [e.g. Run /speckit.architecture-guard.architecture-apply]
+5. **Remediation**: "Would you like me to suggest concrete remediation edits for the top issues?"
 
-## Framework Adapter Presets
+## Framework Preset Guidance
 
-If `.claude/prompts/architecture-guard-adapter.md` exists, it is **mandatory** to use it to map generic principles to framework primitives and detect stack-specific anti-patterns.
+If `.claude/prompts/architecture-guard-preset.md` exists, it is **mandatory** to use it to map generic principles to framework primitives and detect stack-specific anti-patterns.
 

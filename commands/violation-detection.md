@@ -22,6 +22,29 @@ Accept the same normalized command context as the review workflow:
 
 If `mode=performance`, do not emit violations here. Let `architecture-review` own the advisory performance output.
 
+### Scope Filtering by Focus
+
+**When focus=general** (default):
+- Review all violation categories (A through E)
+- Detect intent divergence, boundary erosion, contracts, coupling, Constitution breach
+
+**When focus=db** (data/persistence):
+- Review only data access violations
+- Scope to repositories, query services, ORM usage
+- Detect: missing repository pattern, isolation breach, tight coupling with persistence
+
+**When focus=api** (API contracts):
+- Review only API contract and response violations
+- Scope to endpoints, DTOs, response shapes, request validation
+- Detect: contract mismatch, inconsistent responses, missing validation boundaries
+
+**When focus=async** (async boundaries):
+- Review only async execution and event violations
+- Scope to queues, event handlers, background jobs, async boundaries
+- Detect: blocking in async, missing event contracts, isolation breaches
+
+---
+
 ## Semantic Modeling
 
 Before analysis, build internal representations (do not output these):
@@ -53,6 +76,32 @@ Before analysis, build internal representations (do not output these):
 ### E. Constitution & Security
 - **Constitution Breach**: Conflict with a "MUST" principle in the Constitution.
 - **Security-Architecture Conflict**: Decisions contradicting `security-constraints.md` or trust boundaries.
+
+## Security-Architecture Conflict (Detailed)
+
+A Security-Architecture Conflict occurs when security requirements and architecture boundaries create opposing design constraints. These must be flagged with **CRITICAL** severity and routed to both security and architecture workflows.
+
+### Examples
+
+**Example 1: Sensitive Data Placement**
+- **Security Constraint**: "Pricing logic must remain server-side; never expose to client"
+- **Architecture Finding**: "Pricing displayed in client component fetching pricing from API endpoint"
+- **Conflict**: Client architecture violates server-side security boundary
+- **Resolution**: Move pricing calculation to server boundary, client receives only final price
+
+**Example 2: Secret Management**
+- **Security Constraint**: "API keys stored in `.env`, never passed to build or frontend"
+- **Architecture Finding**: "Environment variables passed to frontend build process"
+- **Conflict**: Build architecture leaks secrets to frontend bundle
+- **Resolution**: Store secrets only in backend runtime, never in build environment
+
+**Example 3: Authorization Boundary**
+- **Security Constraint**: "User can only access their own data"
+- **Architecture Finding**: "Data access layer queries all users without ownership check"
+- **Conflict**: Persistence layer bypasses authorization boundary
+- **Resolution**: Add ownership filter to repository, move check to before data access
+
+---
 
 ## Review Procedure
 
@@ -87,6 +136,6 @@ Violations:
 - None detected
 ```
 
-## Framework Adapter Presets
+## Framework Preset Guidance
 
-If `.claude/prompts/architecture-guard-adapter.md` exists, use it to map the Generic Architecture Model to framework primitives and detect stack-specific anti-patterns.
+If `.claude/prompts/architecture-guard-preset.md` exists, use it to map the Generic Architecture Model to framework primitives and detect stack-specific anti-patterns.

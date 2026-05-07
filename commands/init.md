@@ -18,7 +18,6 @@ This command generates or refines:
 
 * `constitution.md`
 * `architecture_constitution.md`
-* `.claude/prompts/architecture-guard-adapter.md` (Optional Framework Preset)
 
 The goal is NOT to generate generic best practices.
 
@@ -29,6 +28,28 @@ The goal is to establish:
 * long-term consistency
 * architecture evolution discipline
 * project-specific standards
+
+---
+
+## Framework-Agnostic vs Framework-Aware
+
+**Framework-Agnostic Core** (applied to all projects):
+- Universal boundary concepts apply (Entry, App, Domain, Data, External)
+- Core governance principles are framework-independent
+- Examples: "Domain logic never touches HTTP", "Persistence is abstracted", "Events flow one direction"
+
+**Framework-Aware Enhancement** (optional, selected during init):
+- If user selects framework preset (Laravel, Django, NestJS, etc.):
+  - Core principles are enhanced with framework-specific vocabulary
+  - Examples become Laravel-idiomatic, Django-idiomatic, etc.
+  - Pattern names shift from generic to framework-native
+  - But underlying boundary concepts remain identical
+
+**Coexistence**:
+- Command starts framework-agnostic
+- If preset selected: Constitution gains framework-aware guidance
+- Both layers work together: abstract principles + concrete framework patterns
+- Switching frameworks: Start over, preset vocabulary changes but core governance remains
 
 ---
 
@@ -134,6 +155,35 @@ The system must maintain:
 * `architecture_constitution.md`
 
 Avoid duplication between both files.
+
+---
+
+## 8. Graceful Exit and Resume Flow
+
+Users may need to pause the init workflow and resume later. Support this gracefully:
+
+**Pausing Mid-Interview**:
+1. Save current answers to `.specify/memory/constitution-draft.md` with timestamp and completion percentage
+2. Ask user: "Do you want to resume these answers later?"
+3. If YES: Save draft and exit cleanly with resume instructions
+4. If NO: Confirm deletion or suggest next steps
+
+**Resuming Saved Draft**:
+1. Detect `.specify/memory/constitution-draft.md` on next init run
+2. Ask: "I found a draft from [timestamp]. Resume from where you left off?"
+3. If YES: Load saved answers, continue from last question
+4. If NO: Start fresh (optionally archive old draft)
+
+**Draft Contents**:
+```yaml
+# Constitution Draft (Paused)
+timestamp: 2025-01-15T14:30:00Z
+completion: "Phase 1/3 (Framework + Team)"
+framework: [answer if provided]
+team_size: [answer if provided]
+technology_stack: [answer if provided]
+# ... other captured answers
+```
 
 ---
 
@@ -284,11 +334,11 @@ Examples:
 If the technology stack matches a built-in preset (e.g., Laravel, NestJS, Next.js, Nuxt.js, Django, Spring Boot, React, Vue, or Express), ask:
 
 ```text
-Would you like to install the [Framework] Architecture Preset?
+Would you like to use the [Framework] Architecture Preset?
 
 This will:
-1. Install a framework-specific preset to .claude/prompts/architecture-guard-adapter.md
-2. Automatically configure the engine to be [Framework]-aware.
+1. Configure the engine to be [Framework]-aware.
+2. Use framework-specific knowledge during constitution generation.
 3. Provide specialized detection for [Framework] anti-patterns.
 ```
 
@@ -751,13 +801,6 @@ Generate or refine:
 
 * `constitution.md`
 * `architecture_constitution.md`
-* `.claude/prompts/architecture-guard-adapter.md` (if framework preset selected)
-
-### Preset Installation
-
-If a framework preset was selected (e.g., Laravel):
-1. Copy `presets/[framework].md` from the extension directory to `.claude/prompts/architecture-guard-adapter.md` in the project.
-2. This ensures the core engine uses the framework-specific context during all architecture reviews.
 
 ---
 

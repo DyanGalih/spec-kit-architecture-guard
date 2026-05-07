@@ -39,7 +39,7 @@ Review any available:
 - Existing response or output patterns.
 - Stored architecture decisions from Memory Hub, if present.
 - Security Review findings, if present.
-- Optional adapter guidance, if present.
+- Optional preset guidance, if present.
 
 ## Workflow
 
@@ -65,4 +65,32 @@ When `mode=performance`, do not produce violations or refactor tasks.
 
 ## Output Format
 
-Return the architecture review output, followed by a short workflow summary that notes any Memory Hub context used, any Security Review handoff, and any Constitution Update Proposal that was surfaced.
+All governance reports MUST follow this standard template:
+
+```markdown
+# Architecture Governance Report
+
+## Input Summary
+- **Artifacts Scanned**: [list]
+- **Extensions Used**: [Memory Hub: yes/no, Security Review: yes/no]
+- **Mode**: [architecture/performance]
+- **Focus**: [general/db/api/async]
+
+## Findings
+
+### Violations
+[Table format with: ID | Category | Severity | Location | Summary | Evidence]
+
+### Refactor Tasks (if any)
+[Task list or "None"]
+
+### Constitution Update Proposals (if any)
+[Proposals or "None"]
+
+## Context Applied
+- **Memory Hub**: [Used context or "Not available"]
+- **Security Review**: [Findings routed or "Not available"]
+
+## Recommended Next Step
+[Single clear action]
+```
