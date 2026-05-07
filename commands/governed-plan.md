@@ -63,7 +63,7 @@ You must orchestrate the `/speckit.plan` workflow directly.
 1. **Execute Plan**: Run `/speckit.plan` to generate and save `specs/<feature>/plan.md`.
 2. The planning process must incorporate:
    - The Project Constitution.
-   - `ARCHITECTURE_CONSTITUTION.md`.
+   - `architecture_constitution.md`.
    - `memory-synthesis.md` (if available).
 
 ### Step 4 — Security Review (Optional)

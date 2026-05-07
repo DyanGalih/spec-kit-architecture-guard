@@ -2,7 +2,7 @@
 
 > Continuous architecture governance for AI-assisted development.
 
-[![Version](https://img.shields.io/badge/version-1.6.7-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.7.0-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Orchestration](https://img.shields.io/badge/role-governance--orchestrator-blue)](https://spec-kit.dev)
@@ -97,6 +97,44 @@ Suggested Fix: Extract pricing logic into the checkout service and keep the hand
 ```
 
 Only rules explicitly marked as `P0` in the architecture constitution should block delivery.
+
+---
+
+# Sub-Agent Delegation (Hybrid Execution Model)
+
+Throughout Architecture Guard commands, complex analysis steps offer **optional sub-agent delegation** for intelligent workload distribution.
+
+## How It Works
+
+When a command encounters analysis marked `[OPTIONAL SUB-AGENT DELEGATION]`:
+- LLM assesses complexity (file count, lines, decision count, etc.)
+- LLM **automatically decides**: Inline execution (fast) OR delegate to sub-agent (thorough)
+- **You don't control it** — LLM chooses based on context
+
+## Decision Criteria
+
+| Scenario | Decision |
+|---|---|
+| < 50 files AND < 10,000 lines | **Inline** (fast execution) |
+| ≥ 50 files OR ≥ 10,000 lines | **Sub-agent** (parallel execution) |
+| ≥ 20 memory documents | **Sub-agent** (faster synthesis) |
+
+## Override Flags (Optional)
+
+Force inline or sub-agent execution:
+```bash
+/speckit.architecture-guard.architecture-review --inline
+/speckit.architecture-guard.governed-plan --delegate
+```
+
+## Where Delegation Appears
+
+- `architecture-review.md` Step 7b — SonarLint code quality scanning
+- `governed-plan.md` Step 2 — Memory synthesis for planning
+- `governed-tasks.md` Step 2 — Memory synthesis for task generation
+- `governed-implement.md` Step 2 — Memory synthesis for implementation
+
+This pattern enables **flexibility**: typical PRs execute inline for speed; large refactors delegate for thoroughness.
 
 ---
 
@@ -430,7 +468,7 @@ specify extension add architecture-guard
 
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.6.7.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.7.0.zip
 ```
 
 ### Local Development
@@ -519,6 +557,50 @@ Architecture complexity increased
 ```
 
 For most teams, `architecture-workflow` is the safest default because it runs the complete architecture governance pass in one command.
+
+---
+
+# Code Quality Integration (SonarLint)
+
+Architecture Guard includes optional **SonarLint code quality scanning** (Step 7b in `architecture-review`) that complements architecture violations by detecting complexity, coupling, and structure drift from a code perspective.
+
+## Bundled Rules
+
+18 architecture-relevant SonarLint rules are bundled in `.github/sonar-rules/sonarlint-rules.json`:
+
+### By Category
+- **Brain Overload** (8 rules): High complexity, oversized functions/classes, hidden boundaries
+- **Coupling/Dependencies** (4 rules): Circular deps, tight coupling, encapsulation violations
+- **Structure** (5 rules): Inconsistent patterns, missing abstractions, error boundaries
+- **Performance** (1 rule): Anti-patterns signaling architectural misuse
+
+### By Language
+- Java, JavaScript, Python, TypeScript, Go, Rust (cross-language rules supported)
+
+### How to Use
+
+**Automatic**: `architecture-review` Step 7b loads rules automatically (< 50 files by default, or delegate to sub-agent for larger codebases).
+
+**Manual**: View and customize bundled rules:
+```bash
+cat .github/sonar-rules/sonarlint-rules.json
+```
+
+**Update Rules**: Extract fresh rules from SonarLint CLI (quarterly):
+```bash
+./scripts/bash/extract-sonar-rules.sh --commit
+```
+
+### Filtering Rules
+
+The extraction script filters for these tags:
+- `brain-overload` — Function/class complexity
+- `complexity` — Cyclomatic complexity
+- `dependency` — Dependency structure issues
+- `structure` — Code organization
+- `performance` — Performance anti-patterns
+
+See `.github/sonar-rules/README.md` for complete documentation.
 
 ---
 
@@ -684,7 +766,7 @@ Architecture Guard is framework-agnostic by design, but includes built-in framew
 
 1. Run `/speckit.architecture-guard.init`
 2. Follow the interview and select your framework when prompted
-3. The preset will be installed to `.claude/prompts/architecture-guard-adapter.md`
+3. The preset will be installed to `.claude/prompts/architecture-guard-adapter.md` (internal filename kept for backward compatibility; referred to as "preset" throughout)
 
 The preset provides framework-specific vocabulary, examples, and stronger interpretation guidance for your AI assistant.
 

@@ -87,7 +87,7 @@ Run:
 ```
 
 Review implementation against:
-- `ARCHITECTURE_CONSTITUTION.md`.
+- `architecture_constitution.md`.
 - Plan, tasks, and `security-constraints.md`.
 - Accepted deviations and `memory-synthesis.md`.
 
@@ -171,7 +171,7 @@ The command MUST return:
 ## Architecture Review
 - **Violations**: [Drift findings or Security-Architecture Conflicts]
 - **Refactor Tasks**: [Suggested corrections]
-- **Constitution Update Proposals**: [Proposed updates to ARCHITECTURE_CONSTITUTION.md]
+- **Constitution Update Proposals**: [Proposed updates to `architecture_constitution.md`]
 
 ## Implementation Status
 - [Ready to merge / Needs security fix / Needs architecture refactor / Needs constitution update]
@@ -192,7 +192,7 @@ Example:
 
 ## Architecture Evolution Handling
 
-If implementation repeatedly violates a standard because the standard is outdated, generate a `Constitution Update Proposal` targeting `ARCHITECTURE_CONSTITUTION.md`.
+If implementation repeatedly violates a standard because the standard is outdated, generate a `Constitution Update Proposal` targeting `architecture_constitution.md`.
 
 ## Guardrails
 

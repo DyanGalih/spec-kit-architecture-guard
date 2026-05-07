@@ -145,7 +145,7 @@ This step runs code quality checks using bundled SonarLint rules. It is **option
 **[OPTIONAL SUB-AGENT DELEGATION]**:
 - If changed files ≥ 50 OR total lines ≥ 10,000:
   - Consider delegating to sub-agent for parallel rule scanning
-  - Sub-agent command: `/analyze-sonar-violations`
+  - Suggested sub-agent: Custom `/analyze-sonar-violations` (if defined) or `Explore` agent
   - Sub-agent benefits: Parallelized rule evaluation, detailed categorization
   - LLM decides: Inline for fast path, sub-agent for thorough path
 
