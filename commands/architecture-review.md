@@ -77,19 +77,36 @@ This pattern enables flexibility: fast execution for typical PRs, powerful execu
 Review any available artifacts from these common locations. **IMPORTANT**: You MUST read these files explicitly using your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore` and may be excluded from default context:
 
 1. **Governance & Security Constitution**:
-   - `.specify/memory/constitution.md`
-   - `.specify/memory/security_constitution.md`
+    - `.specify/memory/constitution.md`
+    - `.specify/memory/security_constitution.md`
 
 2. **Architecture Constitution**:
-   - `.specify/memory/architecture_constitution.md`
+    - `.specify/memory/architecture_constitution.md`
 
-3. **Feature-Specific Context**:
-   - `specs/<feature>/security-constraints.md`
-   - `specs/<feature>/memory-synthesis.md`
-   - `spec.md`, `plan.md`, `tasks.md`, `data-model.md`
+3. **Memory Hub Optimizer (Recommended)**:
 
-4. **Implementation**:
-   - The detected `changed_files` and their respective directories.
+    #### Optimizer-Aware Flow
+    When `.specify/extensions/memory-md/config.yml` has `optimizer.enabled: true` and the CLI is available:
+
+    1. **Refresh Cache**: Execute `npx speckit-memory refresh-memory` to ensure the local SQLite cache is up to date.
+    2. **Targeted Architecture Search**: Execute `npx speckit-memory search-memory "architecture constraints boundaries dependencies coupling abstractions"` to retrieve relevant durable memory entries.
+    3. **Synthesis Refresh**: If a feature scope is identified, execute `npx speckit-memory synthesize --feature specs/<feature>`.
+    4. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` (or the search results) first to understand active architectural constraints and historical decisions.
+
+    #### Markdown-Only Flow
+    When the optimizer is disabled or unavailable, you **MUST** read these files explicitly using your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
+
+    - `docs/memory/INDEX.md` (Read this first to identify relevant source sections)
+    - `docs/memory/` for durable repository memory (Read only the sections identified in the index)
+    - `.specify/memory/` for project-wide architecture rules and standards
+    - `specs/<feature>/memory.md` for active feature memory
+    - `specs/<feature>/memory-synthesis.md` for the concise working summary
+    - `specs/<feature>/security-constraints.md` for security boundaries
+    - `.github/copilot-instructions.md` for repo-scoped Copilot guidance
+
+4. **Implementation Context**:
+    - `spec.md`, `plan.md`, `tasks.md`, `data-model.md`
+    - The detected `changed_files` and their respective directories.
 
 ## Semantic Modeling
 
@@ -139,12 +156,15 @@ Detect violations such as:
 ## Code Quality Scan (SonarLint) — Optional Step 7b
 
 This step runs code quality checks using bundled SonarLint rules. It is **optional** and complements architecture violations.
+The rules bundle is repository-native and IDE-agnostic, so it works the same in VS Code, Cursor, JetBrains, or CLI-only workflows.
+When the extension is installed, load the bundle from `.specify/extensions/architecture-guard/.github/sonar-rules/sonarlint-rules.json`.
 
 ### Activation
 
 - Run only if `mode=architecture` (not for performance mode)
 - Skip if user explicitly disables with `--no-sonarlint`
-- Skip if `.github/sonar-rules/sonarlint-rules.json` is missing or empty
+- Skip if the repository does not contain a SonarLint rules bundle or the bundle is empty
+- If skipped, continue the rest of the architecture review and note that the optional SonarLint scan was unavailable
 
 ### Scope-Based Delegation (Hybrid Model)
 
@@ -163,7 +183,7 @@ This step runs code quality checks using bundled SonarLint rules. It is **option
 ### Procedure
 
 **If inline**:
-1. **Load Rules**: Read `.github/sonar-rules/sonarlint-rules.json` (architecture-relevant rules only)
+1. **Load Rules**: Read the installed extension bundle at `.specify/extensions/architecture-guard/.github/sonar-rules/sonarlint-rules.json` first; if running from the extension source checkout, use `.github/sonar-rules/sonarlint-rules.json`
 2. **Scan Changed Files**: Simulate or invoke SonarLint logic on `changed_files` list
 3. **Filter Results**: Keep only CRITICAL/HIGH severity findings related to complexity, coupling, structure
 4. **Map to Boundaries**: Correlate findings with architecture boundaries (Entry/App/Domain/Data/External)
@@ -281,8 +301,9 @@ Findings that correlate with architecture concerns:
 1. **Critical Fixes**: Address Constitution and Security violations first.
 2. **Architecture Alignment**: Resolve boundary erosion and contract mismatches.
 3. **Code Quality**: Address SonarLint findings that map to architectural concerns (if any).
-4. **Next Step**: [e.g. Run /speckit.architecture-guard.architecture-apply]
-5. **Remediation**: [Concrete remediation direction for the top issues, or "None needed"]
+4. **Durable Memory Preservation**: If new architectural patterns, decisions, or repeatable lessons were identified, execute `/speckit.memory-md.capture` after providing the report.
+5. **Next Step**: [e.g. Run /speckit.architecture-guard.architecture-apply]
+6. **Remediation**: [Concrete remediation direction for the top issues, or "None needed"]
 
 ## Framework Preset Guidance
 

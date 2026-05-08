@@ -1,6 +1,8 @@
 # SonarLint Rules Bundle
 
 This directory contains the bundled SonarLint rules used by `architecture-review` command during code quality scanning phase (Step 7b).
+The bundle is repository-native, not VS Code-specific, so any IDE or CLI that can read the repository can participate in the same scan.
+When this extension is installed into a project, the same bundle is available at `.specify/extensions/architecture-guard/.github/sonar-rules/`.
 
 ## Purpose
 

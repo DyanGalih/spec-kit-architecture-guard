@@ -105,13 +105,25 @@ A Security-Architecture Conflict occurs when security requirements and architect
 
 ## Review Procedure
 
-1. **Model Context**: Load artifacts and build the Semantic Models. Look for the following files. **IMPORTANT**: You MUST read these files explicitly using your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
-   - `.specify/memory/constitution.md`
-   - `.specify/memory/architecture_constitution.md`
-   - `.specify/memory/security_constitution.md`
-   - `specs/<feature>/security-constraints.md`
-   - `specs/<feature>/memory-synthesis.md`
-   - `spec.md`, `plan.md`, `tasks.md`, `data-model.md`
+1. **Model Context**: Load artifacts and build the Semantic Models.
+
+    #### Optimizer-Aware Flow
+    When `.specify/extensions/memory-md/config.yml` has `optimizer.enabled: true`:
+
+    1. **Refresh Cache**: Execute `npx speckit-memory refresh-memory`.
+    2. **Targeted Search**: Execute `npx speckit-memory search-memory "architecture constraints boundaries decisions <feature>"`.
+    3. **Synthesis**: Execute `npx speckit-memory synthesize --feature specs/<feature>`.
+    4. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` (or search results) first.
+
+    #### Markdown-Only Flow
+    When the optimizer is disabled, you **MUST** read these files explicitly using your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
+
+    - `.specify/memory/constitution.md`
+    - `.specify/memory/architecture_constitution.md`
+    - `.specify/memory/security_constitution.md`
+    - `specs/<feature>/security-constraints.md`
+    - `specs/<feature>/memory-synthesis.md`
+    - `spec.md`, `plan.md`, `tasks.md`, `data-model.md`
 2. **Verify Evidence**: Check if task-referenced files exist and contain expected implementation logic.
 3. **Analyze Alignment**: Compare `spec.md` intent vs. `plan.md` architecture vs. actual behavior.
 4. **Scan Principles**: Apply detection scope across boundaries and contracts.

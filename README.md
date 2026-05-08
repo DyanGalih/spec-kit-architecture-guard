@@ -421,8 +421,28 @@ This injects refactor tasks into `plan.md` and `tasks.md` so the AI has explicit
 | `architecture-workflow` | General Review | Violations, severity/priority, refactor tasks, evolution proposals | Entry point for end-to-end review; good for dashboards |
 | `architecture-review` | Validation | Alignment status, boundary issues, contract drift | After `/specify`, `/plan`, or `/implement` |
 | `violation-detection` | Detection | Drift summary, boundary violations, module coupling | Focus on specific architecture problems |
-| `refactor-generator` | Planning | Structured refactor tasks (P0-P3) with guidance | Convert violations into actionable tasks |
-| `architecture-apply` | Integration | Updated `plan.md`, `tasks.md` with refactor tasks | Apply approved refactors into artifacts |
+| `refactor-generator` | Planning | Refactor Task Generation | After review | Convert violations to non-blocking refactor tasks |
+| `architecture-apply` | Implementation | After refactor decisions | Inject refactor tasks into `tasks.md` and `plan.md` |
+
+## Optimizer-Aware Memory Flow
+
+Architecture Guard integrates with the `spec-kit-memory-hub` SQLite optimizer to provide high-performance, token-efficient reviews.
+
+### Enabling the Optimizer
+
+In your local Spec-Kit project, ensure the optimizer is enabled:
+
+```yaml
+# .specify/extensions/memory-md/config.yml
+optimizer:
+  enabled: true
+```
+
+### Benefits
+- **Targeted Retrieval**: Only reads architectural decisions relevant to the current feature.
+- **Self-Learning**: Reviews conclude with a recommendation to run `/speckit.memory-md.capture` to preserve new architectural patterns.
+- **Lower Latency**: Reduces context window bloat by avoiding massive markdown file reads.
+
 | `governed-plan` | Orchestration | Plan with memory synthesis + security + architecture | Use when Memory Hub and Security Review are installed |
 | `governed-tasks` | Orchestration | Tasks with memory context + security + architecture refactors | Use when companion extensions are installed |
 | `governed-implement` | Orchestration | Implementation validation with full governance context | Use for end-to-end implementation with governance |
@@ -542,10 +562,12 @@ For most teams, `architecture-workflow` is the safest default because it runs th
 # Code Quality Integration (SonarLint)
 
 Architecture Guard includes optional **SonarLint code quality scanning** (Step 7b in `architecture-review`) that complements architecture violations by detecting complexity, coupling, and structure drift from a code perspective.
+The bundle lives in the repository, so it is not tied to VS Code or any specific IDE.
+In an installed project, the command reads the bundled rules from `.specify/extensions/architecture-guard/.github/sonar-rules/sonarlint-rules.json`.
 
 ## Bundled Rules
 
-18 architecture-relevant SonarLint rules are bundled in `.github/sonar-rules/sonarlint-rules.json`:
+18 architecture-relevant SonarLint rules are bundled in the installed extension at `.specify/extensions/architecture-guard/.github/sonar-rules/sonarlint-rules.json`:
 
 ### By Category
 - **Brain Overload** (8 rules): High complexity, oversized functions/classes, hidden boundaries
@@ -562,7 +584,7 @@ Architecture Guard includes optional **SonarLint code quality scanning** (Step 7
 
 **Manual**: View and customize bundled rules:
 ```bash
-cat .github/sonar-rules/sonarlint-rules.json
+cat .specify/extensions/architecture-guard/.github/sonar-rules/sonarlint-rules.json
 ```
 
 **Update Rules**: Extract fresh rules from SonarLint CLI (quarterly):

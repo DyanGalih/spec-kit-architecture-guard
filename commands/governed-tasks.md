@@ -29,33 +29,27 @@ Check for the existence of:
 2. Fall back to checking for the extension directory in `.specify/extensions/` only if the YAML is missing or the list is empty.
 3. If they are missing from both, degrade gracefully by skipping their respective steps.
 
-### Step 2 — Memory Synthesis
+### Step 2 — Memory Synthesis (Optional)
 
 IF `spec-kit-memory-hub` is available:
+
+#### Optimizer-Aware Flow (Recommended)
+When `.specify/extensions/memory-md/config.yml` has `optimizer.enabled: true`:
+
+1. **Refresh Cache**: Execute `npx speckit-memory refresh-memory`.
+2. **Targeted Search**: Execute `npx speckit-memory search-memory "architecture decisions constraints boundaries <feature>"`.
+3. **Synthesis**: Execute `npx speckit-memory synthesize --feature specs/<feature>`.
+
+#### Markdown-Only Flow
+If the optimizer is disabled, use the standard synthesis command:
+
+1. **Execute Synthesis**: Run `/speckit.memory-md.plan-with-memory` to synthesize and save `specs/<feature>/memory-synthesis.md`.
 
 **[OPTIONAL SUB-AGENT DELEGATION]**
 - If memory hub has ≥ 20 decision documents: Consider sub-agent for synthesis
 - Sub-agent command: `/speckit.memory-md.plan-with-memory`
 - Sub-agent benefits: Faster traversal, better filtering, detailed synthesis
 - LLM decides: Inline for quick decisions, sub-agent for complex memory
-
-1. **Execute Synthesis**: Run `/speckit.memory-md.plan-with-memory` to synthesize and save `specs/<feature>/memory-synthesis.md`.
-2. Ensure synthesis is scoped to:
-    - Current feature and plan.
-    - Affected modules and architecture decisions.
-    - Accepted deviations and known risks.
-
-#### Memory Synthesis Scope
-
-When calling memory synthesis, define scope as:
-
-- **File Scope**: Limit context to `docs/memory/<feature>/` and `specs/<feature>/` directories only
-- **Decision Limit**: Include max 3–5 most relevant past architecture decisions
-- **Content Filter**: Architecture decisions only (exclude operational, infrastructure, testing decisions)
-- **Recency**: Prioritize decisions from current feature branch or recent commits
-- **Format**: Output as `specs/<feature>/memory-synthesis.md` with Clear decisions, Conflicts, and Assumptions sections
-
-Do NOT attempt to synthesize memory for unrelated features or system-wide decisions.
 
 ---
 
@@ -139,6 +133,7 @@ The command MUST return:
 - [e.g., Continue to /speckit.architecture-guard.governed-implement]
 - [e.g., Revise tasks to address missing security items]
 - [e.g., Update architecture constitution if standard is outdated]
+- **Durable Memory Preservation**: If new architectural lessons were learned, run `/speckit.memory-md.capture`.
 ```
 
 ## Output Rules
