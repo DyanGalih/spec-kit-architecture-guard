@@ -2,7 +2,7 @@
 
 > Continuous architecture governance for AI-assisted development.
 
-[![Version](https://img.shields.io/badge/version-1.8.0-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.8.1-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Orchestration](https://img.shields.io/badge/role-governance--orchestrator-blue)](https://spec-kit.dev)
@@ -149,33 +149,13 @@ into two different documents.
 
 ---
 
-## `.specify/memory/constitution.md`
+Architecture Guard respects the following project governance artifacts when they exist:
 
-Defines:
-
-* engineering philosophy
-* testing expectations
-* security expectations
-* documentation standards
-* review standards
-* governance principles
-
-This file should remain relatively stable.
-
----
-
-## `.specify/memory/architecture_constitution.md`
-
-Defines:
-
-* layer boundaries
-* business logic placement
-* validation standards
-* module boundaries
-* response contracts
-* async boundaries
-* framework-specific architecture rules
-* architecture evolution policies
+| Artifact | Purpose | Location |
+| --- | --- | --- |
+| `constitution.md` | Engineering philosophy and high-level governance. | `.specify/memory/constitution.md` |
+| `architecture_constitution.md` | **The Core Standard.** Layer boundaries, module ownership, and architectural rules. | `.specify/memory/architecture_constitution.md` |
+| `security_constitution.md` | Repository-wide security rules and trust boundaries. | `.specify/memory/security_constitution.md` |
 
 Architecture Guard primarily validates against:
 
@@ -401,6 +381,7 @@ Run the initializer once to create or refine your architecture and governance st
 This creates or updates:
 - `.specify/memory/constitution.md` — governance and engineering standards
 - `.specify/memory/architecture_constitution.md` — architecture rules and boundaries
+- `.specify/memory/security_constitution.md` — security standards
 
 ---
 
@@ -436,7 +417,7 @@ This injects refactor tasks into `plan.md` and `tasks.md` so the AI has explicit
 
 | Command | Phase | Output | When To Use |
 | --- | --- | --- | --- |
-| `init` | Setup | `.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md` | Once at project start; rerun to refine standards |
+| `init` | Setup | `.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md`, `.specify/memory/security_constitution.md` | Once at project start; rerun to refine standards |
 | `architecture-workflow` | General Review | Violations, severity/priority, refactor tasks, evolution proposals | Entry point for end-to-end review; good for dashboards |
 | `architecture-review` | Validation | Alignment status, boundary issues, contract drift | After `/specify`, `/plan`, or `/implement` |
 | `violation-detection` | Detection | Drift summary, boundary violations, module coupling | Focus on specific architecture problems |
@@ -466,7 +447,7 @@ specify extension add architecture-guard
 
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.0.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.1.zip
 ```
 
 ### Local Development

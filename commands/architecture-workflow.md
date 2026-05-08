@@ -26,20 +26,22 @@ Review the current specification, plan, task list, or implementation with a sing
 
 ## Inputs To Consider
 
-Review any available:
+Review any available artifacts from these common locations:
 
-- Constitution rules.
-- Feature specification.
-- Implementation plan.
-- Task list.
-- Code changes or implementation summary.
-- Module or service boundaries.
-- Existing contract conventions.
-- Existing validation patterns.
-- Existing response or output patterns.
-- Stored architecture decisions from Memory Hub, if present.
-- Security Review findings, if present.
-- Optional preset guidance, if present.
+1. **Governance & Security Constitution**:
+   - `.specify/memory/constitution.md`
+   - `.specify/memory/security_constitution.md`
+
+2. **Architecture Constitution**:
+   - `.specify/memory/architecture_constitution.md`
+
+3. **Feature-Specific Context**:
+   - `specs/<feature>/security-constraints.md`
+   - `specs/<feature>/memory-synthesis.md`
+   - `spec.md`, `plan.md`, `tasks.md`, `data-model.md`
+   - Stored architecture decisions from Memory Hub, if present.
+   - Security Review findings, if present.
+   - Optional preset guidance, if present.
 
 ## Workflow
 

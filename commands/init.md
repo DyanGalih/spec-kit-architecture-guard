@@ -16,6 +16,7 @@ This command generates or refines:
 
 * `.specify/memory/constitution.md`
 * `.specify/memory/architecture_constitution.md`
+* `.specify/memory/security_constitution.md`
 
 The goal is NOT to generate generic best practices.
 
@@ -214,7 +215,7 @@ Should NOT contain:
 
 ---
 
-## `.specify/memory/architecture_constitution.md`
+## `architecture_constitution.md`
 
 Purpose:
 
@@ -234,6 +235,23 @@ Should contain:
 
 ---
 
+## `security_constitution.md`
+
+Purpose:
+
+Project-wide security rules, standards, and requirements.
+
+Should contain:
+
+* trust boundaries
+* authentication/authorization standards
+* secret management policies
+* data isolation rules
+* audit/logging requirements
+* secure-by-design patterns
+
+---
+
 # Initialization Logic
 
 ## Step 1 — Detect Existing Constitution Files
@@ -242,6 +260,7 @@ Check for:
 
 * `.specify/memory/constitution.md`
 * `.specify/memory/architecture_constitution.md`
+* `.specify/memory/security_constitution.md`
 
 ---
 
@@ -799,6 +818,7 @@ Generate or refine:
 
 * `.specify/memory/constitution.md`
 * `.specify/memory/architecture_constitution.md`
+* `.specify/memory/security_constitution.md`
 
 ---
 
@@ -831,6 +851,22 @@ Generate or refine:
 9. Blocking Architecture Violations (P0)
 10. Architecture Evolution Policy
 11. Refactor & Drift Handling
+```
+
+---
+
+## `.specify/memory/security_constitution.md` Structure
+
+```text
+1. Trust Boundaries
+2. Authentication & Authorization Standards
+3. Data Isolation & Privacy Rules
+4. Secrets Management Policy
+5. Secure-by-Design Patterns
+6. API & Integration Security
+7. Audit, Logging & Monitoring Requirements
+8. Security Incident Response Triggers
+9. Compliance & Regulatory Mapping
 ```
 
 ---

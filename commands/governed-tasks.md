@@ -62,12 +62,9 @@ You must orchestrate the `/speckit.tasks` workflow directly.
 
 **CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must actually generate the tasks:
 1. **Execute Tasks**: Run `/speckit.tasks` to generate and save `specs/<feature>/tasks.md`.
-2. The generated tasks MUST use:
-   - Feature specification and technical plan.
-   - The Project Constitution (`.specify/memory/constitution.md`).
-   - `.specify/memory/architecture_constitution.md`.
-   - `memory-synthesis.md` (if available).
-   - `security-constraints.md` (if available).
+2. The generated tasks MUST use the Project Constitution documents from `.specify/memory/`:
+   - `constitution.md`, `architecture_constitution.md`, and `security_constitution.md`.
+   - Also use `memory-synthesis.md`, `security-constraints.md` (if available).
 
 ### Step 4 — Security Review on Tasks
 

@@ -65,8 +65,8 @@ You must orchestrate the `/speckit.implement` (core implementation) workflow dir
 2. **Write Code**: Perform the actual coding work (writing files, running tests) required by the tasks.
 3. **Sync the tasks**: You MUST update `specs/<feature>/tasks.md` to mark completed tasks with `[x]`, check them off, and add any new subtasks discovered during implementation.
 4. The implementation MUST follow:
-   - Current tasks and the Project Constitution (`.specify/memory/constitution.md`).
-   - `.specify/memory/architecture_constitution.md`.
+   - Current tasks and the Project Constitution documents from `.specify/memory/`:
+     - `constitution.md`, `architecture_constitution.md`, and `security_constitution.md`.
    - `security-constraints.md` (if available).
    - Architecture migration plan (if available).
 

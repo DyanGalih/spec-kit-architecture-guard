@@ -105,12 +105,19 @@ A Security-Architecture Conflict occurs when security requirements and architect
 
 ## Review Procedure
 
-1. **Model Context**: Load artifacts and build the Semantic Models.
+1. **Model Context**: Load artifacts and build the Semantic Models. Look for:
+   - `.specify/memory/constitution.md`
+   - `.specify/memory/architecture_constitution.md`
+   - `.specify/memory/security_constitution.md`
+   - `specs/<feature>/security-constraints.md`
+   - `specs/<feature>/memory-synthesis.md`
+   - `spec.md`, `plan.md`, `tasks.md`, `data-model.md`
 2. **Verify Evidence**: Check if task-referenced files exist and contain expected implementation logic.
 3. **Analyze Alignment**: Compare `spec.md` intent vs. `plan.md` architecture vs. actual behavior.
 4. **Scan Principles**: Apply detection scope across boundaries and contracts.
-5. **Assign Severity**:
-   - `Critical`: Constitution MUST breach, Security Constraint violation, or zero evidence for a required boundary.
+5. **Security & Governance Cross-Check**: Ensure architecture decisions do not violate `security_constitution.md` or `security-constraints.md`.
+6. **Assign Severity**:
+   - `Critical`: Constitution MUST breach (including Security), Security Constraint violation, or zero evidence for a required boundary.
    - `High`: Significant boundary erosion, contract inconsistency, or intent divergence.
    - `Medium`: Local drift or debt.
    - `Low`: Minor shape or naming drift.

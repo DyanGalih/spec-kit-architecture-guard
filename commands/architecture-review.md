@@ -74,13 +74,22 @@ This pattern enables flexibility: fast execution for typical PRs, powerful execu
 
 ## Input & Context Loading
 
-Review any available artifacts:
-- **Governance Constitution**: `.specify/memory/constitution.md`.
-- **Architecture Constitution**: `.specify/memory/architecture_constitution.md`.
-- **Security Constraints**: `specs/<feature>/security-constraints.md`.
-- **Memory Context**: `specs/<feature>/memory-synthesis.md`.
-- **Feature Design**: `spec.md`, `plan.md`, `tasks.md`, `data-model.md`.
-- **Implementation**: The detected `changed_files` and their respective directories.
+Review any available artifacts from these common locations:
+
+1. **Governance & Security Constitution**:
+   - `.specify/memory/constitution.md`
+   - `.specify/memory/security_constitution.md`
+
+2. **Architecture Constitution**:
+   - `.specify/memory/architecture_constitution.md`
+
+3. **Feature-Specific Context**:
+   - `specs/<feature>/security-constraints.md`
+   - `specs/<feature>/memory-synthesis.md`
+   - `spec.md`, `plan.md`, `tasks.md`, `data-model.md`
+
+4. **Implementation**:
+   - The detected `changed_files` and their respective directories.
 
 ## Semantic Modeling
 
@@ -118,7 +127,9 @@ Detect violations such as:
 3. **Verify Evidence**: Check if task-referenced files exist and contain expected implementation logic.
 4. **Analyze Alignment**: Compare `spec.md` intent vs. `plan.md` architecture vs. implementation behavior.
 5. **Scan Principles**: Apply Review Principles across the implemented boundaries.
-6. **Security Cross-Check**: If `security-constraints.md` is breached, log it as a critical violation.
+6. **Security & Governance Cross-Check**: 
+   - If `security-constraints.md` or `security_constitution.md` is breached, log it as a critical violation.
+   - Cross-reference architecture decisions with security trust boundaries.
 7. **Performance Scan (if mode=performance)**: Skip violations; focus on optimizations.
 7b. **Code Quality Scan (SonarLint)**: If `mode=architecture`, optionally scan for coupling/complexity violations.
 8. **Generate Refactors**: Produce structured tasks for each confirmed violation.
