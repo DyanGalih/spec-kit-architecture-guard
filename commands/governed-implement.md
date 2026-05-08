@@ -24,7 +24,10 @@ Check for the existence of:
 - `spec-kit-memory-hub`
 - `spec-kit-security-review`
 
-If they are missing, degrade gracefully by skipping their respective steps.
+**Detection Logic**:
+1. Read `.specify/extensions.yml` and check the `installed` list. If an extension ID is present there, consider it available.
+2. Fall back to checking for the extension directory in `.specify/extensions/` only if the YAML is missing or the list is empty.
+3. If they are missing from both, degrade gracefully by skipping their respective steps.
 
 ### Step 2 — Memory Synthesis
 
