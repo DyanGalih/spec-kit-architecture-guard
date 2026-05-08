@@ -74,7 +74,7 @@ This pattern enables flexibility: fast execution for typical PRs, powerful execu
 
 ## Input & Context Loading
 
-Review any available artifacts from these common locations:
+Review any available artifacts from these common locations. **IMPORTANT**: You MUST read these files explicitly using your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore` and may be excluded from default context:
 
 1. **Governance & Security Constitution**:
    - `.specify/memory/constitution.md`

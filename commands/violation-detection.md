@@ -105,7 +105,7 @@ A Security-Architecture Conflict occurs when security requirements and architect
 
 ## Review Procedure
 
-1. **Model Context**: Load artifacts and build the Semantic Models. Look for:
+1. **Model Context**: Load artifacts and build the Semantic Models. Look for the following files. **IMPORTANT**: You MUST read these files explicitly using your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
    - `.specify/memory/constitution.md`
    - `.specify/memory/architecture_constitution.md`
    - `.specify/memory/security_constitution.md`

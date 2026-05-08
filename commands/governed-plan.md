@@ -61,9 +61,9 @@ You must orchestrate the `/speckit.plan` workflow directly.
 
 **CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must actually generate the plan:
 1. **Execute Plan**: Run `/speckit.plan` to generate and save `specs/<feature>/plan.md`.
-2. The planning process must incorporate the Project Constitution documents from `.specify/memory/`:
-   - `constitution.md`, `architecture_constitution.md`, and `security_constitution.md`.
-   - Also use `memory-synthesis.md` (if available).
+2. The planning process must incorporate the Project Constitution documents and memory synthesis. **IMPORTANT**: You MUST read these files explicitly using your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
+   - `.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md`, and `.specify/memory/security_constitution.md`.
+   - Also use `specs/<feature>/memory-synthesis.md` (if available).
 
 ### Step 4 — Security Review (Optional)
 
