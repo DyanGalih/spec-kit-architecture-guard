@@ -86,12 +86,10 @@ Review any available artifacts from these common locations. **IMPORTANT**: You M
 3. **Memory Hub Optimizer (Recommended)**:
 
     #### Optimizer-Aware Flow
-    When `.specify/extensions/memory-md/config.yml` has `optimizer.enabled: true` and the CLI is available:
+    When `.specify/extensions/memory-md/config.yml` has `optimizer.enabled: true`:
 
-    1. **Refresh Cache**: Execute `npx speckit-memory refresh-memory` to ensure the local SQLite cache is up to date.
-    2. **Targeted Architecture Search**: Execute `npx speckit-memory search-memory "architecture constraints boundaries dependencies coupling abstractions"` to retrieve relevant durable memory entries.
-    3. **Synthesis Refresh**: If a feature scope is identified, execute `npx speckit-memory synthesize --feature specs/<feature>`.
-    4. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` (or the search results) first to understand active architectural constraints and historical decisions.
+    1. **Prepare Context**: Execute `/speckit.memory-md.prepare-context --feature specs/<feature> --query "architecture constraints boundaries dependencies coupling abstractions"`.
+    2. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` to identify the "Why" behind the current design.
 
     #### Markdown-Only Flow
     When the optimizer is disabled or unavailable, you **MUST** read these files explicitly using your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
@@ -301,7 +299,7 @@ Findings that correlate with architecture concerns:
 1. **Critical Fixes**: Address Constitution and Security violations first.
 2. **Architecture Alignment**: Resolve boundary erosion and contract mismatches.
 3. **Code Quality**: Address SonarLint findings that map to architectural concerns (if any).
-4. **Durable Memory Preservation**: If new architectural patterns, decisions, or repeatable lessons were identified, execute `/speckit.memory-md.capture` after providing the report.
+4. **Durable Memory Preservation (Mandatory Check)**: If new architectural patterns, decisions, or repeatable lessons were identified, you **MUST** execute `/speckit.memory-md.capture` after providing the report. Use the formal capture flow to propose entries and wait for user approval.
 5. **Next Step**: [e.g. Run /speckit.architecture-guard.architecture-apply]
 6. **Remediation**: [Concrete remediation direction for the top issues, or "None needed"]
 

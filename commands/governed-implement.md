@@ -36,9 +36,8 @@ IF `spec-kit-memory-hub` is available:
 #### Optimizer-Aware Flow (Recommended)
 When `.specify/extensions/memory-md/config.yml` has `optimizer.enabled: true`:
 
-1. **Refresh Cache**: Execute `npx speckit-memory refresh-memory`.
-2. **Targeted Search**: Execute `npx speckit-memory search-memory "architecture decisions implementation pitfalls constraints <feature>"`.
-3. **Synthesis**: Execute `npx speckit-memory synthesize --feature specs/<feature>`.
+1. **Prepare Context**: Execute `/speckit.memory-md.prepare-context --feature specs/<feature> --query "architecture decisions implementation pitfalls constraints <feature>"`.
+2. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` first.
 
 #### Markdown-Only Flow
 If the optimizer is disabled, use the standard synthesis command:
@@ -117,7 +116,13 @@ IF architecture violations exist:
 2. Generate non-blocking refactor, migration, or correction tasks.
 3. Skip performance refactors unless explicitly requested.
 
-### Step 7 — Implementation Governance Summary
+### Step 7 — Durable Memory Preservation (Optional)
+
+If the implementation review or security audit identified new architectural patterns, critical decisions, or repeatable lessons:
+1. **Trigger Capture**: Run `/speckit.memory-md.capture`.
+2. **Standard**: Use the formal capture flow to propose and wait for user approval.
+
+### Step 8 — Implementation Governance Summary
 
 Produce a final `Governed Implementation Summary`.
 

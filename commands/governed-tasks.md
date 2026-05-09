@@ -33,12 +33,11 @@ Check for the existence of:
 
 IF `spec-kit-memory-hub` is available:
 
-#### Optimizer-Aware Flow (Recommended)
+#### Optimizer-Aware Flow
 When `.specify/extensions/memory-md/config.yml` has `optimizer.enabled: true`:
 
-1. **Refresh Cache**: Execute `npx speckit-memory refresh-memory`.
-2. **Targeted Search**: Execute `npx speckit-memory search-memory "architecture decisions constraints boundaries <feature>"`.
-3. **Synthesis**: Execute `npx speckit-memory synthesize --feature specs/<feature>`.
+1. **Prepare Context**: Execute `/speckit.memory-md.prepare-context --feature specs/<feature> --query "architecture decisions constraints boundaries <feature>"`.
+2. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` to identify constraints.
 
 #### Markdown-Only Flow
 If the optimizer is disabled, use the standard synthesis command:
@@ -84,7 +83,13 @@ It MUST convert architecture findings into:
 - Boundary-level or contract-level corrections.
 - **Prefer module-level tasks** over broad system rewrites.
 
-### Step 6 — Task Governance Summary
+### Step 6 — Durable Memory Preservation (Optional)
+
+If the task generation or security review identified new architectural lessons or reusable patterns:
+1. **Trigger Capture**: Run `/speckit.memory-md.capture`.
+2. **Standard**: Use the formal capture flow to propose and wait for user approval.
+
+### Step 7 — Task Governance Summary
 
 Produce a final `Governed Tasks Summary` for the user.
 

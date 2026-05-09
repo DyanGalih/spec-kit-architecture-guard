@@ -33,12 +33,11 @@ Check for the existence of:
 
 IF `spec-kit-memory-hub` is available:
 
-#### Optimizer-Aware Flow (Recommended)
+#### Optimizer-Aware Flow
 When `.specify/extensions/memory-md/config.yml` has `optimizer.enabled: true`:
 
-1. **Refresh Cache**: Execute `npx speckit-memory refresh-memory`.
-2. **Targeted Search**: Execute `npx speckit-memory search-memory "architecture decisions constraints boundaries <feature>"`.
-3. **Synthesis**: Execute `npx speckit-memory synthesize --feature specs/<feature>`.
+1. **Prepare Context**: Execute `/speckit.memory-md.prepare-context --feature specs/<feature>`.
+2. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` to identify constraints.
 
 #### Markdown-Only Flow
 If the optimizer is disabled, use the standard synthesis command:
@@ -87,7 +86,13 @@ Inputs to consider:
 
 Detect any `Security-Architecture Conflict` or architectural drift.
 
-### Step 6 — Generate Governance Summary
+### Step 6 — Durable Memory Preservation (Optional)
+
+If the planning process or architecture validation identified new architectural patterns, critical decisions, or repeatable lessons:
+1. **Trigger Capture**: Run `/speckit.memory-md.capture`.
+2. **Standard**: Do not silently write memory; use the capture flow to propose and wait for user approval.
+
+### Step 7 — Generate Governance Summary
 
 Produce a final `Governed Planning Summary` for the user.
 
