@@ -86,11 +86,11 @@ Inputs to consider:
 
 Detect any `Security-Architecture Conflict` or architectural drift.
 
-### Step 6 — Durable Memory Preservation (Optional)
+### Step 6 — Proactive Durable Memory Preservation
 
 If the planning process or architecture validation identified new architectural patterns, critical decisions, or repeatable lessons:
-1. **Trigger Capture**: Run `/speckit.memory-md.capture`.
-2. **Standard**: Do not silently write memory; use the capture flow to propose and wait for user approval.
+1. **Proactive Execution**: You **MUST** proactively execute `/speckit.memory-md.capture` as the final action of this turn.
+2. **Standard**: Do not silently write memory; use the formal capture flow to propose entries and wait for user approval.
 
 ### Step 7 — Generate Governance Summary
 
@@ -142,7 +142,7 @@ The command MUST return:
 - [e.g., Run /speckit.architecture-guard.refactor-generator]
 - [e.g., Refine plan to address Security Conflict]
 - [e.g., Continue to /speckit.tasks phase]
-- **Durable Memory Preservation**: If new architectural lessons were learned, run `/speckit.memory-md.capture`.
+- **Durable Memory Preservation**: (Proactively triggered) Review the proposed memory entries below.
 ```
 
 ## Guardrails

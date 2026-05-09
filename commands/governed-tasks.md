@@ -83,11 +83,11 @@ It MUST convert architecture findings into:
 - Boundary-level or contract-level corrections.
 - **Prefer module-level tasks** over broad system rewrites.
 
-### Step 6 — Durable Memory Preservation (Optional)
+### Step 6 — Proactive Durable Memory Preservation
 
 If the task generation or security review identified new architectural lessons or reusable patterns:
-1. **Trigger Capture**: Run `/speckit.memory-md.capture`.
-2. **Standard**: Use the formal capture flow to propose and wait for user approval.
+1. **Proactive Execution**: You **MUST** proactively execute `/speckit.memory-md.capture` as the final part of this turn.
+2. **Standard**: Use the formal capture flow to propose entries and wait for user approval.
 
 ### Step 7 — Task Governance Summary
 
@@ -138,7 +138,7 @@ The command MUST return:
 - [e.g., Continue to /speckit.architecture-guard.governed-implement]
 - [e.g., Revise tasks to address missing security items]
 - [e.g., Update architecture constitution if standard is outdated]
-- **Durable Memory Preservation**: If new architectural lessons were learned, run `/speckit.memory-md.capture`.
+- **Durable Memory Preservation**: (Proactively triggered) Review the proposed memory entries below.
 ```
 
 ## Output Rules

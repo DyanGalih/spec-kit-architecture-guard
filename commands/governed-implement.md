@@ -116,11 +116,11 @@ IF architecture violations exist:
 2. Generate non-blocking refactor, migration, or correction tasks.
 3. Skip performance refactors unless explicitly requested.
 
-### Step 7 — Durable Memory Preservation (Optional)
+### Step 7 — Proactive Durable Memory Preservation
 
 If the implementation review or security audit identified new architectural patterns, critical decisions, or repeatable lessons:
-1. **Trigger Capture**: Run `/speckit.memory-md.capture`.
-2. **Standard**: Use the formal capture flow to propose and wait for user approval.
+1. **Proactive Execution**: You **MUST** proactively execute `/speckit.memory-md.capture` as the final part of this turn.
+2. **Standard**: Use the formal capture flow to propose entries and wait for user approval. Do not ask the user if they want to capture; identify the lessons and trigger the command immediately after the summary.
 
 ### Step 8 — Implementation Governance Summary
 
@@ -182,7 +182,7 @@ The command MUST return:
 - [e.g., Merge changes]
 - [e.g., Revise implementation to address Security Conflict]
 - [e.g., Run /speckit.architecture-guard.architecture-apply]
-- **Durable Memory Preservation**: If new architectural lessons were learned, run `/speckit.memory-md.capture`.
+- **Durable Memory Preservation**: (Proactively triggered) Review the proposed memory entries below.
 ```
 
 ## Security + Architecture Conflict Handling
