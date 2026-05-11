@@ -183,6 +183,7 @@ The command MUST return:
 - [e.g., Revise implementation to address Security Conflict]
 - [e.g., Run /speckit.architecture-guard.architecture-apply]
 - **Durable Memory Preservation**: (Proactively triggered) Review the proposed memory entries below.
+- **Verification Gate**: Run `/speckit.architecture-guard.architecture-verify` to ensure all tasks are delivered and requirements are met.
 ```
 
 ## Security + Architecture Conflict Handling

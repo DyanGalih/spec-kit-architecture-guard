@@ -2,7 +2,7 @@
 
 > Continuous architecture governance for AI-assisted development.
 
-[![Version](https://img.shields.io/badge/version-1.8.2-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.8.3-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Orchestration](https://img.shields.io/badge/role-governance--orchestrator-blue)](https://spec-kit.dev)
@@ -70,6 +70,7 @@ Architecture Guard detects these drifts early and converts them into structured,
 | Implementation         | Re-checks implementation against architecture rules         | Drift detection and consistency review       |
 | Architecture Evolution | Detects repeated patterns and proposes architecture updates | Constitution Update Proposals                |
 | Approved Changes       | Applies accepted updates into planning artifacts            | Updated tasks/plans via `architecture-apply` |
+| **Verification**       | **Post-implementation task & requirement audit**            | **Task gap analysis and outcome report**     |
 
 ---
 
@@ -423,6 +424,7 @@ This injects refactor tasks into `plan.md` and `tasks.md` so the AI has explicit
 | `violation-detection` | Detection | Drift summary, boundary violations, module coupling | Focus on specific architecture problems |
 | `refactor-generator` | Planning | Refactor Task Generation | After review | Convert violations to non-blocking refactor tasks |
 | `architecture-apply` | Implementation | After refactor decisions | Inject refactor tasks into `tasks.md` and `plan.md` |
+| `architecture-verify` | Verification | Task Fulfillment Report, Gap Analysis | Final gate after implementation to ensure all tasks are delivered |
 
 ## Optimizer-Aware Memory Flow
 
@@ -467,7 +469,7 @@ specify extension add architecture-guard
 
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.2.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.3.zip
 ```
 
 ### Local Development
@@ -506,7 +508,8 @@ Architecture Guard commands are optional follow-up validation steps that can be 
 | **Milestone: Execution** | `governed-tasks` | After `plan` | Generate tasks with governance checks and architecture migration awareness. |
 | **Milestone: Delivery** | `governed-implement` | After `tasks` | Implement and review output against memory, security, and architecture. |
 | **Milestone: Evolution** | **`architecture-apply`** | After review/detection | **Inject approved refactor tasks** into Plan and Task artifacts. |
-| **Milestone: Verification** | `architecture-review` | After `implement` | Final check of the actual code against architecture rules. |
+| **Milestone: Quality Gate** | `architecture-review` | After `implement` | **Structural Review**: Ensures implementation respects boundaries and the Constitution. |
+| **Milestone: Delivery Gate** | `architecture-verify` | After `review` | **Outcome Verification**: Final audit of task fulfillment and requirement coverage. |
 | **Milestone: Complete Pass** | `architecture-workflow` | Anytime | Run a complete review pass including evolution proposals. |
 
 ---
