@@ -1,18 +1,19 @@
 ---
-description: Run a single architecture workflow that can incorporate optional memory and security context when available.
+description: Run a single architecture workflow that prefers memory-first context and can incorporate security review when available.
 ---
 
 # Architecture Workflow Command
 
 You are running `architecture-guard` as the single orchestration entry point for architecture review.
 
-Use this command when the user wants one pass that covers architecture review, optional Memory Hub context, optional Security Review handoff, and optional performance mode without manually chaining multiple commands.
+Use this command when the user wants one pass that covers architecture review, memory-first context when available, Security Review handoff when available, and optional performance mode without manually chaining multiple commands.
+When Memory Hub is available, prefer `memory-synthesis.md` first and keep any token-savings banner visible if that output is enabled.
 
 This command accepts the same normalized command context as `architecture-review`, including semantic and dot-style aliases.
 
 The workflow is serial and ownership-aware:
 
-1. Read Memory Hub context and `specs/<feature>/memory-synthesis.md` if they are available.
+1. Read Memory Hub context and `specs/<feature>/memory-synthesis.md` first when they are available.
 2. Normalize `mode` and `focus` from the incoming command.
 3. Run the architecture review against the Constitution, memory synthesis, and generic architecture principles.
 4. If `mode=performance`, keep the pass advisory and route output to `Performance Insights` only.
@@ -45,7 +46,7 @@ Review any available artifacts from these common locations. **IMPORTANT**: You M
 
 ## Workflow
 
-1. Read optional Memory Hub context if it is available in the project or workflow context.
+1. Read Memory Hub context first if it is available in the project or workflow context.
 2. Review the current work against the Constitution and generic architecture principles.
 3. Identify whether any finding is primarily security-related.
 4. If a finding is security-related, flag it as a handoff to Security Review rather than treating it as a core architecture finding.

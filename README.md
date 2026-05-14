@@ -2,7 +2,7 @@
 
 > Continuous architecture governance for AI-assisted development.
 
-[![Version](https://img.shields.io/badge/version-1.8.4-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.8.5-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Orchestration](https://img.shields.io/badge/role-governance--orchestrator-blue)](https://spec-kit.dev)
@@ -11,9 +11,9 @@
 
 # What Is This?
 
-Architecture Guard is a modular **architecture governance orchestration layer** for Spec Kit.
+Architecture Guard is a modular **architecture governance orchestration layer** for Spec Kit that helps AI follow the architectural rules you define.
 
-It reviews specifications, plans, task lists, and implementations against your project's architecture standards and produces:
+It reviews specifications, plans, task lists, and implementations against your project's architecture standards and turns the results into:
 
 * architecture drift detection
 * structured refactor tasks
@@ -21,11 +21,21 @@ It reviews specifications, plans, task lists, and implementations against your p
 * architecture evolution proposals
 * incremental migration guidance
 
-Architecture Guard helps teams continuously enforce and evolve architecture standards during AI-assisted development.
+It is designed to make architecture part of the workflow instead of something you only check at review time.
 
 It answers one question throughout delivery:
 
 > Does this still align with the architecture we agreed on?
+
+## Why It’s Cool
+
+Architecture Guard is useful because it gives AI a smaller, better set of rules to follow:
+
+* Small models stay on rails because they read the right context first.
+* Architecture decisions stop living only in people’s heads.
+* Drift becomes visible as refactor work instead of hidden technical debt.
+* Security and architecture checks happen in the workflow, not after the damage is done.
+* The whole system stays framework-agnostic, so the same ideas work across Laravel, NestJS, Next.js, Django, and more.
 
 ---
 
@@ -37,7 +47,7 @@ AI-generated code usually optimizes for:
 * local correctness
 * immediate implementation success
 
-It does NOT naturally preserve architectural consistency.
+It does NOT naturally preserve architectural consistency or remember your standards from one feature to the next.
 
 Over time this creates drift:
 
@@ -61,6 +71,8 @@ Architecture Guard detects these drifts early and converts them into structured,
 ---
 
 # What It Actually Does
+
+Think of it as a governance layer that sits between Spec Kit and implementation.
 
 | Phase                  | What Happens                                                | Output                                       |
 | ---------------------- | ----------------------------------------------------------- | -------------------------------------------- |
@@ -168,20 +180,32 @@ This separation prevents implementation-level architecture rules from polluting 
 
 # Benefits
 
-## Compared to Spec Kit Alone
+Architecture Guard can make Spec Kit feel safer, clearer, and easier to scale without adding heavy process.
+
+## What You Get
 
 | Spec Kit Only                                          | Spec Kit + Architecture Guard                            |
 | ------------------------------------------------------ | -------------------------------------------------------- |
-| AI starts each feature independently                   | AI checks work against architecture standards            |
+| AI starts each feature independently                   | AI checks work against architecture standards first      |
 | Drift accumulates silently                             | Drift becomes visible and actionable                     |
 | Architecture inconsistencies appear during code review | Inconsistencies are detected earlier                     |
 | Constitution exists passively                          | Constitution becomes actively enforced                   |
 | No structured architecture debt tracking               | Violations become prioritized refactor tasks             |
 | Architecture evolution is manual and inconsistent      | Architecture evolution becomes structured and reviewable |
 
+The practical payoff:
+
+* less time re-explaining the same rules
+* clearer boundaries for both AI and humans
+* earlier feedback before drift hardens
+* more visible architecture debt
+* more consistent behavior from smaller or mixed-capability models
+
 ---
 
 ## Compared to Static Analyzers
+
+Static analyzers are great at rules. Architecture Guard is better at helping AI keep the right shape in mind while it works.
 
 | Static Analyzers              | Architecture Guard                      |
 | ----------------------------- | --------------------------------------- |
@@ -191,19 +215,24 @@ This separation prevents implementation-level architecture rules from polluting 
 | Generic rules                 | Project-specific architecture rules     |
 | Runtime/tooling dependencies  | Prompt-based with no runtime dependency |
 
+> **Important:** Architecture Guard is a **prompt governance layer**, not a static analysis engine.
+> Its commands are structured Markdown files that instruct the AI agent on what to check and how to report findings.
+> Validation quality depends on the AI agent following the instructions carefully.
+> It does not perform AST inspection, syntax analysis, or runtime checks.
+> For complementary static guarantees, pair it with SonarLint, ESLint, or a framework-native linter.
+
 ---
 
 # When To Use It
 
-Use Architecture Guard when:
+Use Architecture Guard when you want AI-assisted development to stay disciplined over time:
 
 * your project has meaningful boundaries
-* AI-generated code introduces inconsistencies
-* multiple developers contribute to architecture decisions
-* architectural patterns should remain consistent
-* architecture drift is increasing over time
-* you want visible architecture debt instead of hidden drift
-* you want architecture evolution to be intentional
+* AI-generated code tends to drift from your standards
+* multiple developers need the same rules enforced consistently
+* architecture decisions should be visible instead of tribal knowledge
+* you want refactor work to surface before debt becomes expensive
+* you want architecture evolution to be intentional instead of accidental
 
 ---
 
@@ -215,12 +244,13 @@ Use Architecture Guard when:
 * shared API/UI contract systems
 * long-lived codebases
 * systems where consistency matters more than framework purity
+* teams using smaller models that benefit from compact, explicit guidance
 
 ---
 
 # When NOT To Use It
 
-Do NOT use Architecture Guard for:
+Do NOT use Architecture Guard when the overhead would outweigh the value:
 
 * tiny projects with no meaningful architecture
 * throwaway prototypes
@@ -229,7 +259,7 @@ Do NOT use Architecture Guard for:
 * teams unwilling to maintain architecture standards
 * replacing benchmarking or profiling workflows
 
-If you can fully manage architecture mentally and you are the only contributor, this extension may be unnecessary overhead.
+If you can fully manage architecture mentally and the project is truly small, this extension may be unnecessary overhead.
 
 ---
 
@@ -238,6 +268,22 @@ If you can fully manage architecture mentally and you are the only contributor, 
 Architecture Guard depends on architecture standards.
 
 Without architecture rules, the extension has nothing meaningful to validate against.
+
+## Validate Your Setup
+
+Before running governed workflows, verify prerequisites with the included setup validator:
+
+```bash
+# Bash
+./scripts/validate-setup.sh
+```
+
+```powershell
+# PowerShell
+.\scripts\powershell\validate-setup.ps1
+```
+
+The validator checks constitution files, Spec Kit structure, optional extensions, optimizer status, and source directories. It exits non-zero when blocking errors are present, making it safe to use in CI.
 
 ---
 
@@ -313,8 +359,8 @@ Architecture Guard can orchestrate planning workflows across Memory Hub, Securit
 
 **The Orchestrated Workflow:**
 
-1. **Memory Synthesis**: Scoped retrieval of historical decisions (`memory-synthesis.md`).
-2. **Plan Generation**: Spec Kit technical planning (`plan.md`).
+1. **Memory Synthesis**: Scoped retrieval of historical decisions (`memory-synthesis.md`) before broader file reads.
+2. **Plan Generation**: Spec Kit technical planning (`plan.md`) using that synthesis first.
 3. **Security Validation**: Review plan against trust boundaries (`security-constraints.md`).
 4. **Architecture Validation**: Detect drift and security-architecture conflicts (`architecture-findings.md`).
 5. **Governance Summary**: Final overview of architecture and security risks.
@@ -333,7 +379,7 @@ Architecture Guard can orchestrate governance checks throughout the implementati
 
 ### Governed Tasks
 
-Runs task generation with optional memory context, then checks whether security and architecture work are represented in the task list.
+Runs task generation with cached memory context, then checks whether security and architecture work are represented in the task list.
 
 **Flow:**
 memory synthesis → tasks → security task review → architecture refactor generation → task governance summary
@@ -344,7 +390,7 @@ memory synthesis → tasks → security task review → architecture refactor ge
 
 ### Governed Implement
 
-Runs implementation with optional memory context, then reviews the result against security and architecture constraints.
+Runs implementation with cached memory context, then reviews the result against security and architecture constraints.
 
 **Flow:**
 memory synthesis → implement → security review → architecture review → refactor/fix recommendations
@@ -420,11 +466,11 @@ This injects refactor tasks into `plan.md` and `tasks.md` so the AI has explicit
 | --- | --- | --- | --- |
 | `init` | Setup | `.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md`, `.specify/memory/security_constitution.md` | Once at project start; rerun to refine standards |
 | `architecture-workflow` | General Review | Violations, severity/priority, refactor tasks, evolution proposals | Entry point for end-to-end review; good for dashboards |
-| `architecture-review` | Validation | Alignment status, boundary issues, contract drift | After `/specify`, `/plan`, or `/implement` |
+| `architecture-review` | Validation | Cached-context alignment status, boundary issues, contract drift | After `/specify`, `/plan`, or `/implement` |
 | `violation-detection` | Detection | Drift summary, boundary violations, module coupling | Focus on specific architecture problems |
 | `refactor-generator` | Planning | Refactor Task Generation | After review | Convert violations to non-blocking refactor tasks |
-| `architecture-apply` | Implementation | After refactor decisions | Inject refactor tasks into `tasks.md` and `plan.md` |
-| `architecture-verify` | Verification | Task Fulfillment Report, Gap Analysis | Final gate after implementation to ensure all tasks are delivered |
+| `architecture-apply` | Implementation | After refactor decisions | Inject refactor tasks into `tasks.md` and `plan.md` using the approved review context |
+| `architecture-verify` | Verification | Task Fulfillment Report, Gap Analysis | Final gate after implementation to ensure all tasks are delivered, with cached memory context if available |
 
 ## Optimizer-Aware Memory Flow
 
@@ -445,15 +491,15 @@ optimizer:
 - **Self-Learning**: Reviews conclude with a recommendation to run `/speckit.memory-md.capture` to preserve new architectural patterns.
 - **Lower Latency**: Reduces context window bloat by avoiding massive markdown file reads.
 
-| `governed-plan` | Orchestration | Plan with memory synthesis + security + architecture | Use when Memory Hub and Security Review are installed |
-| `governed-tasks` | Orchestration | Tasks with memory context + security + architecture refactors | Use when companion extensions are installed |
-| `governed-implement` | Orchestration | Implementation validation with full governance context | Use for end-to-end implementation with governance |
+| `governed-plan` | Orchestration | Plan with memory synthesis first + security + architecture | Use when Memory Hub and Security Review are installed |
+| `governed-tasks` | Orchestration | Tasks with cached memory context + security + architecture refactors | Use when companion extensions are installed |
+| `governed-implement` | Orchestration | Implementation validation with cached memory governance context | Use for end-to-end implementation with governance |
 
 > [!TIP]
 > Most projects use `architecture-workflow` or `architecture-review` directly. Orchestrator commands (`governed-*`) are advanced and optional when companion extensions are available.
 
 > [!TIP]
-> `architecture-apply` targets `plan.md` and `tasks.md`. If architectural issues are found in the specification stage, refine the specification before generating a technical plan.
+> `architecture-apply` targets `plan.md` and `tasks.md`. If architectural issues are found in the specification stage, refine the specification before generating a technical plan. When Memory Hub is available, use the cached synthesis and approved review output before writing back.
 
 ---
 
@@ -469,7 +515,7 @@ specify extension add architecture-guard
 
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.4.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.5.zip
 ```
 
 ### Local Development
@@ -528,7 +574,7 @@ If `architecture-review` finds boundary or contract issues in your spec:
 If drift is detected in your technical plan or task list:
 1. **Review**: Check the `Refactor Tasks` generated by the review.
 2. **Apply**: Run `/speckit.architecture-guard.architecture-apply`.
-3. **Implement**: The AI will now have explicit refactor steps in its task list to fix the architectural debt while building the feature.
+3. **Implement**: The AI can then follow explicit refactor steps in its task list while building the feature.
 
 ---
 

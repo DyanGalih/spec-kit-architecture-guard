@@ -7,6 +7,7 @@ description: Orchestrate a governed planning workflow that coordinates Memory Hu
 You are orchestrating the `governed-plan` workflow for `architecture-guard`.
 
 This command coordinates multiple extensions to ensure the technical plan respects architectural, historical, and security constraints before implementation begins.
+The orchestrator should be memory-first: refresh or read `memory-synthesis.md` before any broader file scan, then fall back to targeted reads only when the synthesis is insufficient.
 
 ## Goal
 
@@ -38,6 +39,7 @@ When `.specify/extensions/memory-md/config.yml` has `optimizer.enabled: true`:
 
 1. **Prepare Context**: Execute `/speckit.memory-md.prepare-context --feature specs/<feature>`.
 2. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` to identify constraints.
+3. If Memory Hub emits a token banner, keep it visible so the savings remain observable during normal planning runs.
 
 #### Markdown-Only Flow
 If the optimizer is disabled, use the standard synthesis command:
@@ -58,9 +60,18 @@ You must orchestrate the `/speckit.plan` workflow directly.
 
 **CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must actually generate the plan:
 1. **Execute Plan**: Run `/speckit.plan` to generate and save `specs/<feature>/plan.md`.
+
+   **If `/speckit.plan` is not available as a registered command** (i.e., the AI agent does not recognize it as a slash command), fall back to inline planning:
+   - Read the active spec at `specs/<feature>/spec.md` (or the path provided by the user).
+   - Read all applicable constitution files (`.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md`, `.specify/memory/security_constitution.md`).
+   - Read `specs/<feature>/memory-synthesis.md` if available.
+   - Generate `specs/<feature>/plan.md` directly, incorporating all context above.
+   - Note in the Governance Summary that `/speckit.plan` was unavailable and planning was performed inline.
+
 2. The planning process must incorporate the Project Constitution documents and memory synthesis. **IMPORTANT**: You MUST read these files explicitly using your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
    - `.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md`, and `.specify/memory/security_constitution.md`.
    - Also use `specs/<feature>/memory-synthesis.md` (if available).
+3. Prefer the cached synthesis and selected index entries over reopening the full durable memory set.
 
 ### Step 4 — Security Review (Optional)
 

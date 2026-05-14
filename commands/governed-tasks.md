@@ -7,6 +7,7 @@ description: Generate or validate implementation tasks with memory context, secu
 You are orchestrating the `governed-tasks` workflow for `architecture-guard`.
 
 This command coordinates multiple extensions to ensure the task list respects architectural, historical, and security constraints before implementation begins.
+The orchestrator should be memory-first: reuse the current synthesis before reopening the full memory set, and only refresh the cache when the plan or feature scope changed.
 
 ## Goal
 
@@ -38,6 +39,7 @@ When `.specify/extensions/memory-md/config.yml` has `optimizer.enabled: true`:
 
 1. **Prepare Context**: Execute `/speckit.memory-md.prepare-context --feature specs/<feature> --query "architecture decisions constraints boundaries <feature>"`.
 2. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` to identify constraints.
+3. If Memory Hub emits a token banner, keep it visible so the savings remain observable during normal task generation runs.
 
 #### Markdown-Only Flow
 If the optimizer is disabled, use the standard synthesis command:
@@ -58,9 +60,18 @@ You must orchestrate the `/speckit.tasks` workflow directly.
 
 **CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must actually generate the tasks:
 1. **Execute Tasks**: Run `/speckit.tasks` to generate and save `specs/<feature>/tasks.md`.
+
+   **If `/speckit.tasks` is not available as a registered command** (i.e., the AI agent does not recognize it as a slash command), fall back to inline task generation:
+   - Read `specs/<feature>/plan.md` (and `spec.md` if present).
+   - Read all applicable constitution files (`.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md`, `.specify/memory/security_constitution.md`).
+   - Read `specs/<feature>/memory-synthesis.md` and `specs/<feature>/security-constraints.md` if available.
+   - Generate `specs/<feature>/tasks.md` directly, breaking down the plan into implementation-ready tasks with checkbox format.
+   - Note in the Governance Summary that `/speckit.tasks` was unavailable and task generation was performed inline.
+
 2. The generated tasks MUST use the Project Constitution documents and feature context. **IMPORTANT**: You MUST read these files explicitly using your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
    - `.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md`, and `.specify/memory/security_constitution.md`.
    - Also use `specs/<feature>/memory-synthesis.md`, `specs/<feature>/security-constraints.md` (if available).
+3. Prefer compact, feature-scoped task generation over broad restatements of the full memory set.
 
 ### Step 4 — Security Review on Tasks
 

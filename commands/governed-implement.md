@@ -7,6 +7,7 @@ description: Run implementation with memory context, then review the produced im
 You are orchestrating the `governed-implement` workflow for `architecture-guard`.
 
 This command coordinates implementation and post-implementation review to ensure the output respects architectural, historical, and security constraints.
+The orchestrator should be memory-first: load the synthesis and active watchpoints before coding, then fall back to targeted reads only when the synthesis is insufficient.
 
 ## Goal
 
@@ -38,6 +39,7 @@ When `.specify/extensions/memory-md/config.yml` has `optimizer.enabled: true`:
 
 1. **Prepare Context**: Execute `/speckit.memory-md.prepare-context --feature specs/<feature> --query "architecture decisions implementation pitfalls constraints <feature>"`.
 2. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` first.
+3. If Memory Hub emits a token banner, keep it visible so the savings remain observable during normal implementation runs.
 
 #### Markdown-Only Flow
 If the optimizer is disabled, use the standard synthesis command:
@@ -57,7 +59,11 @@ If the optimizer is disabled, use the standard synthesis command:
 You must orchestrate the `/speckit.implement` (core implementation) workflow directly.
 
 **CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must perform the implementation by following the `tasks.md` breakdown:
-1. **Execute Tasks**: Sequentially or in parallel (as marked) execute the tasks defined in `specs/<feature>/tasks.md`.
+1. **Execute Tasks**: Run `/speckit.implement`. If `/speckit.implement` is not available as a registered command, fall back to inline implementation:
+   - Read `specs/<feature>/tasks.md` and execute each unchecked task sequentially.
+   - Read all applicable constitution files and `specs/<feature>/memory-synthesis.md` before coding.
+   - Perform the actual coding work (writing files, running tests) for each task.
+   - Note in the Governance Summary that `/speckit.implement` was unavailable and implementation was performed inline.
 2. **Write Code**: Perform the actual coding work (writing files, running tests) required by the tasks.
 3. **Sync the tasks**: You MUST update `specs/<feature>/tasks.md` to mark completed tasks with `[x]`, check them off, and add any new subtasks discovered during implementation.
 4. The implementation MUST follow current tasks and context. **IMPORTANT**: You MUST read these files explicitly using your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
@@ -203,3 +209,4 @@ If implementation repeatedly violates a standard because the standard is outdate
 - **Modular**: Do not mix security findings into a generic architecture list.
 - **Framework-Agnostic**: Maintain boundary concepts (Entry, Domain, Data).
 - **Non-Blocking**: Adhere to the non-blocking philosophy for architecture findings.
+- **Memory-First**: Prefer cached synthesis and selected index entries before broad file reads.

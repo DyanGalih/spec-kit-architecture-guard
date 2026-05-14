@@ -8,6 +8,7 @@ scripts:
 # Architecture Verification
 
 Validate that the implementation fulfills all tasks in `tasks.md` while adhering to the defined architecture boundaries and the **Architecture Constitution**. This command acts as a post-implementation gate.
+When Memory Hub is available, read `memory-synthesis.md` before broader scans so verification stays memory-first.
 
 ## User Input
 

@@ -5,6 +5,7 @@ description: Apply approved architecture refactors by updating plan and task art
 # Architecture Apply Command
 
 You are applying approved architecture refactors for `architecture-guard`.
+When Memory Hub is available, prefer `memory-synthesis.md` and the approved architecture review output before editing plan or task artifacts.
 
 This is the write-capable companion to the review workflow. Use it when the team wants the architecture feedback reflected directly in planning artifacts instead of only receiving suggestions.
 
@@ -51,6 +52,7 @@ Review any available:
 6. Keep implementation moving unless the Constitution explicitly says the issue is blocking.
 7. If a refactor is too large for the current scope, create a scoped task rather than expanding the whole plan.
 8. If an approved Constitution Update Proposal exists, reflect it as explicit follow-up work without auto-changing the Constitution itself.
+9. If the surrounding workflow emits a token-savings banner, leave it visible while applying the approved changes.
 
 ## Write-Back Rules
 

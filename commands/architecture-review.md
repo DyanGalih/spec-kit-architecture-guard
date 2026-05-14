@@ -8,6 +8,7 @@ scripts:
 # Architecture Review Command
 
 You are running `architecture-guard`, a framework-agnostic architecture review extension designed for high-integrity governance.
+When Memory Hub is available, treat `memory-synthesis.md` as the first context source, and keep any token-savings banner visible if the surrounding workflow emits one.
 
 ## Operating Constraints
 
@@ -142,7 +143,7 @@ Detect violations such as:
 3. **Verify Evidence**: Check if task-referenced files exist and contain expected implementation logic.
 4. **Analyze Alignment**: Compare `spec.md` intent vs. `plan.md` architecture vs. implementation behavior.
 5. **Scan Principles**: Apply Review Principles across the implemented boundaries.
-6. **Security & Governance Cross-Check**: 
+6. **Security & Governance Cross-Check**:
    - If `security-constraints.md` or `security_constitution.md` is breached, log it as a critical violation.
    - Cross-reference architecture decisions with security trust boundaries.
 7. **Performance Scan (if mode=performance)**: Skip violations; focus on optimizations.
