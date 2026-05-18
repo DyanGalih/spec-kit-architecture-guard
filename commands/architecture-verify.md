@@ -9,6 +9,7 @@ scripts:
 
 Validate that the implementation fulfills all tasks in `tasks.md` while adhering to the defined architecture boundaries and the **Architecture Constitution**. This command acts as a post-implementation gate.
 When Memory Hub is available, read `memory-synthesis.md` before broader scans so verification stays memory-first.
+If Memory Hub is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `spec-kit-memory-hub`; do not shell out to `npx memory-hub` directly.
 
 ## User Input
 

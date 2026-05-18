@@ -8,6 +8,7 @@ You are orchestrating the `governed-implement` workflow for `architecture-guard`
 
 This command coordinates implementation and post-implementation review to ensure the output respects architectural, historical, and security constraints.
 The orchestrator should be memory-first: load the synthesis and active watchpoints before coding, then fall back to targeted reads only when the synthesis is insufficient.
+If Memory Hub is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `spec-kit-memory-hub`; do not shell out to `npx memory-hub` directly.
 
 ## Goal
 

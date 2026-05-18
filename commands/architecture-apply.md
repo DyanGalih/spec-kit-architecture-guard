@@ -6,6 +6,7 @@ description: Apply approved architecture refactors by updating plan and task art
 
 You are applying approved architecture refactors for `architecture-guard`.
 When Memory Hub is available, prefer `memory-synthesis.md` and the approved architecture review output before editing plan or task artifacts.
+If Memory Hub is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `spec-kit-memory-hub`; do not shell out to `npx memory-hub` directly.
 
 This is the write-capable companion to the review workflow. Use it when the team wants the architecture feedback reflected directly in planning artifacts instead of only receiving suggestions.
 

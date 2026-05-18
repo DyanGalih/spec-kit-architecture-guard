@@ -8,6 +8,7 @@ You are orchestrating the `governed-tasks` workflow for `architecture-guard`.
 
 This command coordinates multiple extensions to ensure the task list respects architectural, historical, and security constraints before implementation begins.
 The orchestrator should be memory-first: reuse the current synthesis before reopening the full memory set, and only refresh the cache when the plan or feature scope changed.
+If Memory Hub is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `spec-kit-memory-hub`; do not shell out to `npx memory-hub` directly.
 
 ## Goal
 

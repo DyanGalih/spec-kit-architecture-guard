@@ -8,6 +8,7 @@ You are orchestrating the `governed-plan` workflow for `architecture-guard`.
 
 This command coordinates multiple extensions to ensure the technical plan respects architectural, historical, and security constraints before implementation begins.
 The orchestrator should be memory-first: refresh or read `memory-synthesis.md` before any broader file scan, then fall back to targeted reads only when the synthesis is insufficient.
+If Memory Hub is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `spec-kit-memory-hub`; do not shell out to `npx memory-hub` directly.
 
 ## Goal
 

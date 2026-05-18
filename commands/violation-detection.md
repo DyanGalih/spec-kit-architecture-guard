@@ -7,6 +7,7 @@ description: Detect framework-agnostic architecture violations in plans, tasks, 
 You are detecting architecture violations for `architecture-guard`, a high-integrity governance extension.
 
 Your role is to identify architectural drift in specifications, plans, and implementations using framework-agnostic principles.
+If Memory Hub is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `spec-kit-memory-hub`; do not shell out to `npx memory-hub` directly.
 
 ## Operating Constraints
 

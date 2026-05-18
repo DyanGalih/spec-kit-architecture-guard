@@ -8,6 +8,7 @@ You are running `architecture-guard` as the single orchestration entry point for
 
 Use this command when the user wants one pass that covers architecture review, memory-first context when available, Security Review handoff when available, and optional performance mode without manually chaining multiple commands.
 When Memory Hub is available, prefer `memory-synthesis.md` first and keep any token-savings banner visible if that output is enabled.
+If Memory Hub is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `spec-kit-memory-hub`; do not shell out to `npx memory-hub` directly.
 
 This command accepts the same normalized command context as `architecture-review`, including semantic and dot-style aliases.
 

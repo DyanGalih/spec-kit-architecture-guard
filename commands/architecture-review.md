@@ -9,6 +9,7 @@ scripts:
 
 You are running `architecture-guard`, a framework-agnostic architecture review extension designed for high-integrity governance.
 When Memory Hub is available, treat `memory-synthesis.md` as the first context source, and keep any token-savings banner visible if the surrounding workflow emits one.
+If Memory Hub is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `spec-kit-memory-hub`; do not shell out to `npx memory-hub` directly.
 
 ## Operating Constraints
 
