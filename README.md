@@ -7,956 +7,112 @@
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Orchestration](https://img.shields.io/badge/role-governance--orchestrator-blue)](https://spec-kit.dev)
 
----
-
-# What Is This?
-
-Architecture Guard is a modular **architecture governance orchestration layer** for Spec Kit that helps AI follow the architectural rules you define.
-
-It reviews specifications, plans, task lists, and implementations against your project's architecture standards and turns the results into:
-
-* architecture drift detection
-* structured refactor tasks
-* consistency reviews
-* architecture evolution proposals
-* incremental migration guidance
-
-It is designed to make architecture part of the workflow instead of something you only check at review time.
-
-It answers one question throughout delivery:
-
-> Does this still align with the architecture we agreed on?
-
-## Why It’s Cool
-
-Architecture Guard is useful because it gives AI a smaller, better set of rules to follow:
-
-* Small models stay on rails because they read the right context first.
-* Architecture decisions stop living only in people’s heads.
-* Drift becomes visible as refactor work instead of hidden technical debt.
-* Security and architecture checks happen in the workflow, not after the damage is done.
-* The whole system stays framework-agnostic, so the same ideas work across Laravel, NestJS, Next.js, Django, and more.
+**Architecture Guard** is a repository-native governance layer for Spec Kit that helps AI agents follow the architecture rules you already defined. It keeps architecture review visible during delivery instead of waiting until code review.
 
 ---
 
-# The Problem It Solves
+## Core Value: Architecture Guidance Without Hidden Drift
 
-AI-generated code usually optimizes for:
+Architecture Guard uses a layered, reviewable workflow to keep architecture decisions explicit:
 
-* speed
-* local correctness
-* immediate implementation success
+| Layer | Focus | What It Prevents |
+| :--- | :--- | :--- |
+| **Governance** | High-level engineering rules | Loose, inconsistent project standards |
+| **Architecture** | Boundaries, ownership, and contracts | Drift between modules and layers |
+| **Workflow** | Reviews and refactor generation | Hidden architecture debt |
 
-It does NOT naturally preserve architectural consistency or remember your standards from one feature to the next.
+### Why Developers and Teams Use It:
 
-Over time this creates drift:
-
-* business logic leaks into controllers or route handlers
-* direct database access bypasses established boundaries
-* inconsistent response contracts appear across modules
-* modules reach into each other's internals
-* new features introduce slightly different patterns
-
-Each issue looks small in isolation.
-
-After enough features:
-
-* boundaries weaken
-* contracts drift
-* architecture becomes inconsistent
-* technical debt spreads silently
-
-Architecture Guard detects these drifts early and converts them into structured, visible, non-blocking architecture work.
+- architecture decisions stop living only in people’s heads
+- drift becomes visible as refactor work instead of silent debt
+- smaller models get clearer rules to follow
+- architecture checks happen during delivery, not only at review time
+- the same ideas work across Laravel, NestJS, Next.js, Django, and more
 
 ---
 
-# What It Actually Does
+## Quick Start in 3 Steps
 
-Think of it as a governance layer that sits between Spec Kit and implementation.
+### 1. Install the Extension
 
-| Phase                  | What Happens                                                | Output                                       |
-| ---------------------- | ----------------------------------------------------------- | -------------------------------------------- |
-| Specification          | Reviews ownership, boundaries, contracts                    | Missing boundaries or unclear ownership      |
-| Planning               | Detects coupling and architecture drift                     | Warnings before implementation hardens       |
-| Task Generation        | Converts violations into structured refactor work           | Prioritized refactor tasks                   |
-| Implementation         | Re-checks implementation against architecture rules         | Drift detection and consistency review       |
-| Architecture Evolution | Detects repeated patterns and proposes architecture updates | Constitution Update Proposals                |
-| Approved Changes       | Applies accepted updates into planning artifacts            | Updated tasks/plans via `architecture-apply` |
-| **Verification**       | **Post-implementation task & requirement audit**            | **Task gap analysis and outcome report**     |
-
----
-
-# Key Philosophy: Non-Blocking Architecture Governance
-
-Architecture Guard is intentionally non-blocking by default.
-
-Violations become:
-
-* refactor tasks
-* migration tasks
-* architecture proposals
-
-—not hard errors.
-
-Example:
-
-```text
-[Refactor Task]
-Title: Move pricing rule out of checkout handler
-Reason: The handler currently owns business decisions that belong in the application layer.
-Scope: Checkout handler and checkout application service.
-Priority: P1
-Suggested Fix: Extract pricing logic into the checkout service and keep the handler responsible for validation and delegation only.
-```
-
-Only rules explicitly marked as `P0` in the architecture constitution should block delivery.
-
----
-
-# Sub-Agent Delegation (Hybrid Execution Model)
-
-Throughout Architecture Guard commands, complex analysis steps offer **optional sub-agent delegation** for intelligent workload distribution.
-
-## How It Works
-
-When a command encounters analysis marked `[OPTIONAL SUB-AGENT DELEGATION]`:
-- LLM assesses complexity (file count, lines, decision count, etc.)
-- LLM **automatically decides**: Inline execution (fast) OR delegate to sub-agent (thorough)
-- The default is automatic, but explicit `--inline` or `--delegate` flags override the decision
-
-## Decision Criteria
-
-| Scenario | Decision |
-|---|---|
-| < 50 files AND < 10,000 lines | **Inline** (fast execution) |
-| ≥ 50 files OR ≥ 10,000 lines | **Sub-agent** (parallel execution) |
-| ≥ 20 memory documents | **Sub-agent** (faster synthesis) |
-
-## Override Flags (Optional)
-
-Force inline or sub-agent execution:
-```bash
-/speckit.architecture-guard.architecture-review --inline
-/speckit.architecture-guard.governed-plan --delegate
-```
-
-## Where Delegation Appears
-
-- `architecture-review.md` Step 7b — SonarLint code quality scanning
-- `governed-plan.md` Step 2 — Memory synthesis for planning
-- `governed-tasks.md` Step 2 — Memory synthesis for task generation
-- `governed-implement.md` Step 2 — Memory synthesis for implementation
-
-This pattern enables **flexibility**: typical PRs execute inline for speed; large refactors delegate for thoroughness.
-
----
-
-# Layered Constitution Model
-
-Architecture Guard separates:
-
-* engineering governance
-* architecture enforcement
-
-into two different documents.
-
----
-
-Architecture Guard respects the following project governance artifacts when they exist:
-
-| Artifact | Purpose | Location |
-| --- | --- | --- |
-| `constitution.md` | Engineering philosophy and high-level governance. | `.specify/memory/constitution.md` |
-| `architecture_constitution.md` | **The Core Standard.** Layer boundaries, module ownership, and architectural rules. | `.specify/memory/architecture_constitution.md` |
-| `security_constitution.md` | Repository-wide security rules and trust boundaries. | `.specify/memory/security_constitution.md` |
-
-Architecture Guard primarily validates against:
-
-```text
-.specify/memory/architecture_constitution.md
-```
-
-This separation prevents implementation-level architecture rules from polluting broader engineering governance.
-
-# Benefits
-
-Architecture Guard can make Spec Kit feel safer, clearer, and easier to scale without adding heavy process.
-
-## What You Get
-
-| Spec Kit Only                                          | Spec Kit + Architecture Guard                            |
-| ------------------------------------------------------ | -------------------------------------------------------- |
-| AI starts each feature independently                   | AI checks work against architecture standards first      |
-| Drift accumulates silently                             | Drift becomes visible and actionable                     |
-| Architecture inconsistencies appear during code review | Inconsistencies are detected earlier                     |
-| Constitution exists passively                          | Constitution becomes actively enforced                   |
-| No structured architecture debt tracking               | Violations become prioritized refactor tasks             |
-| Architecture evolution is manual and inconsistent      | Architecture evolution becomes structured and reviewable |
-
-The practical payoff:
-
-* less time re-explaining the same rules
-* clearer boundaries for both AI and humans
-* earlier feedback before drift hardens
-* more visible architecture debt
-* more consistent behavior from smaller or mixed-capability models
-
----
-
-## Compared to Static Analyzers
-
-Static analyzers are great at rules. Architecture Guard is better at helping AI keep the right shape in mind while it works.
-
-| Static Analyzers              | Architecture Guard                      |
-| ----------------------------- | --------------------------------------- |
-| Language-specific tooling     | Framework-agnostic architecture review  |
-| Syntax and code-pattern focus | Architecture and boundary focus         |
-| Build-time blocking           | Non-blocking by default                 |
-| Generic rules                 | Project-specific architecture rules     |
-| Runtime/tooling dependencies  | Prompt-based with no runtime dependency |
-
-> **Important:** Architecture Guard is a **prompt governance layer**, not a static analysis engine.
-> Its commands are structured Markdown files that instruct the AI agent on what to check and how to report findings.
-> Validation quality depends on the AI agent following the instructions carefully.
-> It does not perform AST inspection, syntax analysis, or runtime checks.
-> For complementary static guarantees, pair it with SonarLint, ESLint, or a framework-native linter.
-
----
-
-# When To Use It
-
-Use Architecture Guard when you want AI-assisted development to stay disciplined over time:
-
-* your project has meaningful boundaries
-* AI-generated code tends to drift from your standards
-* multiple developers need the same rules enforced consistently
-* architecture decisions should be visible instead of tribal knowledge
-* you want refactor work to surface before debt becomes expensive
-* you want architecture evolution to be intentional instead of accidental
-
----
-
-## Best Fit
-
-* modular monoliths
-* microservices
-* large full-stack applications
-* shared API/UI contract systems
-* long-lived codebases
-* systems where consistency matters more than framework purity
-* teams using smaller models that benefit from compact, explicit guidance
-
----
-
-# When NOT To Use It
-
-Do NOT use Architecture Guard when the overhead would outweigh the value:
-
-* tiny projects with no meaningful architecture
-* throwaway prototypes
-* one-off scripts
-* projects with no agreed architectural direction
-* teams unwilling to maintain architecture standards
-* replacing benchmarking or profiling workflows
-
-If you can fully manage architecture mentally and the project is truly small, this extension may be unnecessary overhead.
-
----
-
-# Prerequisites
-
-Architecture Guard depends on architecture standards.
-
-Without architecture rules, the extension has nothing meaningful to validate against.
-
-## Validate Your Setup
-
-Before running governed workflows, verify prerequisites with the included setup validator:
-
-```bash
-# Bash
-./scripts/validate-setup.sh
-```
-
-```powershell
-# PowerShell
-.\scripts\powershell\validate-setup.ps1
-```
-
-The validator checks constitution files, Spec Kit structure, optional extensions, optimizer status, and source directories. It exits non-zero when blocking errors are present, making it safe to use in CI.
-
----
-
-# Initialize Your Constitutions
-
-Run:
-
-```text
-/speckit.architecture-guard.init
-```
-
-This command can:
-
-* initialize constitutions
-* refine existing constitutions
-* split governance and architecture rules
-* detect duplicated architecture standards
-* generate architecture enforcement rules
-
-It may generate:
-
-```text
-.specify/memory/constitution.md
-.specify/memory/architecture_constitution.md
-```
-
----
-
-## What The Initializer Defines
-
-### Governance Standards
-
-Examples:
-
-* testing expectations
-* documentation standards
-* review policies
-* engineering philosophy
-
----
-
-### Architecture Standards
-
-Examples:
-
-* business logic placement
-* validation boundaries
-* response contracts
-* module ownership
-* async boundaries
-* layering rules
-
----
-
-## Architecture Evolution Support
-
-The initializer also supports:
-
-* constitution refinement
-* architecture evolution
-* migration planning
-* architecture standard extraction
-
----
-
-By using explicit markdown files, extensions remain decoupled, and all constraints and decisions are fully reviewable in Git.
-
----
-
-# Governed Planning Workflow
-
-Architecture Guard can orchestrate planning workflows across Memory Hub, Security Review, and Architecture Guard validation when companion extensions are installed.
-
-**The Orchestrated Workflow:**
-
-1. **Memory Synthesis**: Scoped retrieval of historical decisions (`memory-synthesis.md`) before broader file reads.
-2. **Plan Generation**: Spec Kit technical planning (`plan.md`) using that synthesis first.
-3. **Security Validation**: Review plan against trust boundaries (`security-constraints.md`).
-4. **Architecture Validation**: Detect drift and security-architecture conflicts (`architecture-findings.md`).
-5. **Governance Summary**: Final overview of architecture and security risks.
-
-### Example Orchestration
-
-```text
-/speckit.architecture-guard.governed-plan
-```
-
----
-
-## Governed Task and Implementation Workflows
-
-Architecture Guard can orchestrate governance checks throughout the implementation lifecycle when companion extensions are installed.
-
-### Governed Tasks
-
-Runs task generation with cached memory context, then checks whether security and architecture work are represented in the task list.
-
-**Flow:**
-memory synthesis → tasks → security task review → architecture refactor generation → task governance summary
-
-```text
-/speckit.architecture-guard.governed-tasks
-```
-
-### Governed Implement
-
-Runs implementation with cached memory context, then reviews the result against security and architecture constraints.
-
-**Flow:**
-memory synthesis → implement → security review → architecture review → refactor/fix recommendations
-
-```text
-/speckit.architecture-guard.governed-implement
-```
-
-> [!IMPORTANT]
-> **Companion extensions are optional.** Architecture Guard degrades gracefully and does not require Memory Hub or Security Review to function. It orchestrates workflows only when companion artifacts or extensions are available.
-
----
-
-# Quick Start
-
-## 1. Install
-
-See [Installation](#installation) section for all methods (Registry, GitHub, Local Development).
-
-Basic:
+**From the Registry (Recommended):**
 ```text
 specify extension add architecture-guard
 ```
 
----
+**From a Release Artifact (ZIP):**
+```text
+specify extension add architecture-guard --from https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.5.zip
+```
 
-## 2. Initialize Constitutions
+**From a Local Developer Artifact:**
+```text
+specify extension add architecture-guard --dev /path/to/spec-kit-architecture-guard
+```
 
-Run the initializer once to create or refine your architecture and governance standards:
+### 2. Initialize Your Constitutions
 
 ```text
 /speckit.architecture-guard.init
 ```
 
-This creates or updates:
-- `.specify/memory/constitution.md` — governance and engineering standards
-- `.specify/memory/architecture_constitution.md` — architecture rules and boundaries
-- `.specify/memory/security_constitution.md` — security standards
-
----
-
-## 3. Run Architecture Workflow
-
-Review your current architecture and identify drift:
+### 3. Run an Architecture Review
 
 ```text
 /speckit.architecture-guard.architecture-workflow
 ```
 
-Outputs:
-- Architecture alignment status
-- Detected violations (with severity and priority)
-- Suggested refactor tasks
-- Evolution proposals
-
----
-
-## 4. Review Violations and Apply Fixes
-
-If violations are found, apply approved refactors into your plan and task artifacts:
+If violations appear, apply approved refactors:
 
 ```text
 /speckit.architecture-guard.architecture-apply
 ```
 
-This injects refactor tasks into `plan.md` and `tasks.md` so the AI has explicit guidance to fix architectural debt while implementing features.
+---
+
+## Command Directory
+
+| Command | When To Use | What It Does |
+| :--- | :--- | :--- |
+| **`/speckit.architecture-guard.init`** | At project setup or when standards change | Creates or refines governance and architecture constitutions. |
+| **`/speckit.architecture-guard.architecture-workflow`** | For an end-to-end review | Reviews specs, plans, tasks, and implementations for drift and refactors. |
+| **`/speckit.architecture-guard.architecture-review`** | After `/specify`, `/plan`, or `/implement` | Checks a spec, plan, or implementation against architecture rules. |
+| **`/speckit.architecture-guard.refactor-generator`** | After violations are found | Converts violations into structured refactor tasks. |
+| **`/speckit.architecture-guard.architecture-apply`** | When refactors are approved | Injects approved architecture work into plans and tasks. |
+| **`/speckit.architecture-guard.architecture-verify`** | Final validation step | Checks whether the final work matches the approved tasks. |
 
 ---
 
-# Commands
+## Technical Documentation Map
 
-| Command | Phase | Output | When To Use |
-| --- | --- | --- | --- |
-| `init` | Setup | `.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md`, `.specify/memory/security_constitution.md` | Once at project start; rerun to refine standards |
-| `architecture-workflow` | General Review | Violations, severity/priority, refactor tasks, evolution proposals | Entry point for end-to-end review; good for dashboards |
-| `architecture-review` | Validation | Cached-context alignment status, boundary issues, contract drift | After `/specify`, `/plan`, or `/implement` |
-| `violation-detection` | Detection | Drift summary, boundary violations, module coupling | Focus on specific architecture problems |
-| `refactor-generator` | Planning | Refactor Task Generation | After review | Convert violations to non-blocking refactor tasks |
-| `architecture-apply` | Implementation | After refactor decisions | Inject refactor tasks into `tasks.md` and `plan.md` using the approved review context |
-| `architecture-verify` | Verification | Task Fulfillment Report, Gap Analysis | Final gate after implementation to ensure all tasks are delivered, with cached memory context if available |
+We split the Architecture Guard manual into focused technical resources:
 
-## Optimizer-Aware Memory Flow
-
-Architecture Guard integrates with the `spec-kit-memory-hub` SQLite optimizer to provide high-performance, token-efficient reviews.
-
-### Enabling the Optimizer
-
-In your local Spec-Kit project, ensure the optimizer is enabled:
-
-```yaml
-# .specify/extensions/memory-md/config.yml
-optimizer:
-  enabled: true
+```
+spec-kit-architecture-guard/
+├── README.md                  ← Readable, high-level project summary
+└── docs/
+    ├── beginner-guide.md       ← Plain-language explanation and first workflow
+    ├── architecture-overview.md ← Problem statement, value, and behavior
+    ├── governance-model.md      ← Constitution layers and delegation model
+    ├── workflows.md             ← Governed planning, task, and implementation flows
+    ├── reference-manual.md      ← Setup, commands, install, and validation details
+    └── release-notes.md         ← Change history and workflow updates
 ```
 
-### Benefits
-- **Targeted Retrieval**: Only reads architectural decisions relevant to the current feature.
-- **Self-Learning**: Reviews conclude with a recommendation to run `/speckit.memory-md.capture` to preserve new architectural patterns.
-- **Lower Latency**: Reduces context window bloat by avoiding massive markdown file reads.
+### Direct Links
 
-| `governed-plan` | Orchestration | Plan with memory synthesis first + security + architecture | Use when Memory Hub and Security Review are installed |
-| `governed-tasks` | Orchestration | Tasks with cached memory context + security + architecture refactors | Use when companion extensions are installed |
-| `governed-implement` | Orchestration | Implementation validation with cached memory governance context | Use for end-to-end implementation with governance |
-
-> [!TIP]
-> Most projects use `architecture-workflow` or `architecture-review` directly. Orchestrator commands (`governed-*`) are advanced and optional when companion extensions are available.
-
-> [!TIP]
-> `architecture-apply` targets `plan.md` and `tasks.md`. If architectural issues are found in the specification stage, refine the specification before generating a technical plan. When Memory Hub is available, use the cached synthesis and approved review output before writing back.
+- [Beginner Guide](docs/beginner-guide.md) - Plain-language overview for new users
+- [Architecture Overview](docs/architecture-overview.md) - Problem statement, value, and how the tool behaves
+- [Governance Model](docs/governance-model.md) - Layered constitutions and delegation behavior
+- [Workflows](docs/workflows.md) - Governed planning, tasks, implementation, and companion extension flows
+- [Reference Manual](docs/reference-manual.md) - Install, configure, validate, and command details
+- [Release Notes](docs/release-notes.md) - Recent workflow and README updates
 
 ---
 
-# Installation
-
-### From Registry
-
-```text
-specify extension add architecture-guard
-```
-
-### From GitHub
-
-```text
-specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.5.zip
-```
-
-### Local Development
-
-```text
-specify extension add --dev /path/to/spec-kit-architecture-guard
-```
-
----
-
-# Recommended Architecture Validation Flow
-
-Architecture Guard is a **post-phase architecture validation and evolution layer** on top of Spec Kit workflows. It does not replace Spec Kit phases; it validates the architectural alignment of the artifacts they create.
-
----
-
-### The Mental Model
-
-| System | Role |
-| --- | --- |
-| **Spec Kit** | Creates delivery artifacts (specs, plans, tasks, code) |
-| **Architecture Guard** | Validates architectural alignment of those artifacts |
-
----
-
-Architecture Guard commands are **manually invoked** unless integrated into a custom workflow automation.
-
-## Suggested Validation Flow
-
-Architecture Guard commands are optional follow-up validation steps that can be run after Spec Kit phases. They are intended to review architecture alignment before implementation drift spreads further.
-
-| Milestone | Recommended Command | Phase Integration | Purpose |
-| --- | --- | --- | --- |
-| **Milestone: Boundaries** | `architecture-review` | After `specify` | Validate ownership and contracts early before planning. |
-| **Milestone: Strategy** | `governed-plan` | After `specify` | Orchestrated planning with memory, security, and architecture review. |
-| **Milestone: Execution** | `governed-tasks` | After `plan` | Generate tasks with governance checks and architecture migration awareness. |
-| **Milestone: Delivery** | `governed-implement` | After `tasks` | Implement and review output against memory, security, and architecture. |
-| **Milestone: Evolution** | **`architecture-apply`** | After review/detection | **Inject approved refactor tasks** into Plan and Task artifacts. |
-| **Milestone: Quality Gate** | `architecture-review` | After `implement` | **Structural Review**: Ensures implementation respects boundaries and the Constitution. |
-| **Milestone: Delivery Gate** | `architecture-verify` | After `review` | **Outcome Verification**: Final audit of task fulfillment and requirement coverage. |
-| **Milestone: Complete Pass** | `architecture-workflow` | Anytime | Run a complete review pass including evolution proposals. |
-
----
-
-## How to Handle Violations
-
-Architecture Guard identifies drift, but you decide how to resolve it based on the stage of your development.
-
-### 1. In the Specification Stage
-If `architecture-review` finds boundary or contract issues in your spec:
-1. **Refine**: Run `/specify` again with additional instructions (e.g., `/specify - please move business logic from the entry point to the domain layer`).
-2. **Verify**: Run `architecture-review` again to ensure the status is **Aligned**.
-3. **Proceed**: Only then run `/plan`.
-
-### 2. In the Planning or Implementation Stage
-If drift is detected in your technical plan or task list:
-1. **Review**: Check the `Refactor Tasks` generated by the review.
-2. **Apply**: Run `/speckit.architecture-guard.architecture-apply`.
-3. **Implement**: The AI can then follow explicit refactor steps in its task list while building the feature.
-
----
-
-### Example Workflow: Specification
-
-```text
-/specify
-↓
-/clarify
-↓
-No major ambiguity found
-↓
-/speckit.architecture-guard.architecture-review
-```
-
-### Example Workflow: Tasks & Analysis
-
-```text
-/plan
-↓
-/tasks
-↓
-/analyze
-↓
-Architecture complexity increased
-↓
-/speckit.architecture-guard.violation-detection
-```
-
-For most teams, `architecture-workflow` is the safest default because it runs the complete architecture governance pass in one command.
-
----
-
-# Code Quality Integration (SonarLint)
-
-Architecture Guard includes optional **SonarLint code quality scanning** (Step 7b in `architecture-review`) that complements architecture violations by detecting complexity, coupling, and structure drift from a code perspective.
-The bundle lives in the repository, so it is not tied to VS Code or any specific IDE.
-In an installed project, the command reads the bundled rules from `.specify/extensions/architecture-guard/.github/sonar-rules/sonarlint-rules.json`.
-
-## Bundled Rules
-
-18 architecture-relevant SonarLint rules are bundled in the installed extension at `.specify/extensions/architecture-guard/.github/sonar-rules/sonarlint-rules.json`:
-
-### By Category
-- **Brain Overload** (8 rules): High complexity, oversized functions/classes, hidden boundaries
-- **Coupling/Dependencies** (4 rules): Circular deps, tight coupling, encapsulation violations
-- **Structure** (5 rules): Inconsistent patterns, missing abstractions, error boundaries
-- **Performance** (1 rule): Anti-patterns signaling architectural misuse
-
-### By Language
-- Java, JavaScript, Python, TypeScript, Go, Rust (cross-language rules supported)
-
-### How to Use
-
-**Automatic**: `architecture-review` Step 7b loads rules automatically (< 50 files by default, or delegate to sub-agent for larger codebases).
-
-**Manual**: View and customize bundled rules:
-```bash
-cat .specify/extensions/architecture-guard/.github/sonar-rules/sonarlint-rules.json
-```
-
-**Update Rules**: Extract fresh rules from SonarLint CLI (quarterly):
-```bash
-./scripts/bash/extract-sonar-rules.sh --commit
-```
-
-### Filtering Rules
-
-The extraction script filters for these tags:
-- `brain-overload` — Function/class complexity
-- `complexity` — Cyclomatic complexity
-- `dependency` — Dependency structure issues
-- `structure` — Code organization
-- `performance` — Performance anti-patterns
-
-See `.github/sonar-rules/README.md` for complete documentation.
-
----
-
-# Command Options: Modes & Focus
-
-You can refine any Architecture Guard command using **Modes** and **Focus Areas** to target specific architectural concerns.
-
-| Option | Type | Default | Purpose |
-| --- | --- | --- | --- |
-| `architecture` | **Mode** | Yes | **Corrective**: Produces violations and refactor tasks. |
-| `performance` | **Mode** | No | **Advisory**: Produces high-level performance insights and trade-offs. |
-| `general` | **Focus** | Yes | Reviews all boundaries (Entry, Domain, Data, etc.). |
-| `db` | **Focus** | No | Targets database schema, query patterns, and persistence logic. |
-| `api` | **Focus** | No | Targets request/response contracts, versioning, and endpoint design. |
-| `async` | **Focus** | No | Targets jobs, events, broadcasting, and background processing. |
-
-> [!NOTE]
-> **Stack Agnostic Design**: These focus areas target universal **Architecture Primitives**. Whether you are using Laravel, NestJS, Go, or Python, the engine maps these areas to your project's specific boundaries as defined in your Constitution.
-
----
-
-### Behavior Comparison
-
-| Feature | `mode=architecture` | `mode=performance` |
-| --- | --- | --- |
-| **Goal** | Governance & Drift Detection | Optimization & Scalability |
-| **Output** | Violations + Refactor Tasks | Performance Insights Only |
-| **Blocking** | Yes (if rule is P0) | No (Always advisory) |
-
----
-
-### Enterprise Examples
-
-**1. Standard Architecture Review**
-```text
-/speckit.architecture-guard.architecture-review
-```
-
-**2. Deep Database Performance Audit**
-```text
-/speckit.architecture-guard.architecture-review performance db
-```
-
-**3. API Contract & Versioning Review**
-```text
-/speckit.architecture-guard.architecture-review api
-```
-
-**4. Async Workflow Performance Check**
-```text
-/speckit.architecture-guard.architecture-review performance async
-```
-
----
-
-# Architecture Evolution Workflow
-
-Architecture Guard supports controlled architecture evolution.
-
-Recommended workflow:
-
-```text
-New architecture standard
-↓
-Update `.specify/memory/architecture_constitution.md`
-↓
-architecture-review detects drift
-↓
-refactor-generator creates migration tasks
-↓
-architecture-apply applies approved changes
-```
-
-Example:
-
-```text
-Adopt FormRequest validation
-↓
-Detect inline validation drift
-↓
-Generate incremental migration tasks
-```
-
-Architecture Guard encourages:
-
-* progressive migration
-* scoped refactors
-* module-by-module adoption
-
-instead of large rewrite tasks.
-
----
-
-# Companion Extensions
-
-## Memory Hub
-
-Provides:
-
-* durable project memory
-* historical decisions
-* feature synthesis context
-
-Architecture Guard can use this context but does not require it.
-
----
-
-## Security Review
-
-Handles:
-
-* secrets
-* injection risks
-* authorization
-* authentication
-* security-first findings
-
-Architecture Guard only keeps findings that are also architecture boundary problems.
-
----
-
-# Responsibility Split
-
-| Extension          | Responsibility                                                                             |
-| ------------------ | ------------------------------------------------------------------------------------------ |
-| Architecture Guard | Architecture boundaries, layering, contracts, consistency, drift detection, refactor tasks |
-| Memory Hub         | Durable project memory and context                                                         |
-| Security Review    | Security validation and security-focused review                                            |
-
----
-
-# Framework-Agnostic Design
-
-Architecture Guard uses architecture concepts instead of framework-specific implementation names.
-
-| Architecture Concept | Examples                                         |
-| -------------------- | ------------------------------------------------ |
-| Entry Boundary       | Controller, route handler, resolver, page action |
-| Contract Boundary    | DTO, schema, request object, response object     |
-| Application Boundary | Service, use case, handler                       |
-| Domain Boundary      | Business rule, policy, domain model              |
-| Data Boundary        | Repository, query service, gateway               |
-
----
-
-# Framework Support via Built-in Presets
-
-Architecture Guard is framework-agnostic by design, but includes built-in framework presets that automatically configure the engine with framework-specific knowledge, anti-pattern detection, and boundary mapping during the `init` phase.
-
-## Available Framework Presets
-
-- **Laravel**: Full support for Controllers, Form Requests, Actions, API Resources, Eloquent, Inertia, and Livewire patterns.
-- **NestJS**: Specialized for Module boundaries, Dependency Injection, and DTO enforcement.
-- **Next.js**: Optimized for App Router, Server Components, and Server Actions.
-- **Nuxt.js**: Focus on Nitro routes, Composables, and Nuxt directory standards.
-- **Django**: Enforces MVT separation and handles the "Fat Model" vs "Service Layer" patterns.
-- **Spring Boot**: Enforces Controller-Service-Repository patterns and DTO isolation in Java.
-- **React**: Focus on Component/Logic separation, Custom Hooks, and API abstraction.
-- **Vue**: Focus on Composition API standards, Composables, and Pinia store boundaries.
-- **Express.js**: Enforces basic Controller-Service-Repository patterns in Node.js.
-
-## Using a Preset
-
-1. Run `/speckit.architecture-guard.init`
-2. Follow the interview and select your framework when prompted
-3. The preset is stored in the tool-agnostic project path `.specify/presets/architecture-guard-preset.md`.
-
-The preset provides framework-specific vocabulary, examples, and stronger interpretation guidance for your AI assistant.
-
----
-
-# Output Format
-
-## Architecture Review
-
-```text
-Architecture Review
-
-Constitution Alignment:
-- Status: [Aligned / Partially aligned / Misaligned]
-- Notes: [Explanation]
-
-Violations:
-- Type:
-  Severity:
-  Location:
-  Description:
-  Evidence:
-  Principle:
-
-Refactor Tasks:
-[Refactor Task]
-Title:
-Reason:
-Scope:
-Priority:
-Suggested Fix:
-
-Performance Insights:
-- Suggestion:
-- Context:
-- Trade-off:
-
-Constitution Update Proposal:
-[Proposal]
-Title:
-Current Rule:
-Proposed Change:
-Rationale:
-Impact Scope:
-Migration Strategy:
-Risk Level:
-Suggested Version Bump:
-
-Summary:
-- Overall Risk:
-- Recommended Next Step:
-```
-
----
-
-# Severity and Priority Reference
-
-| Severity | Meaning                                  |
-| -------- | ---------------------------------------- |
-| Critical | Violates blocking architecture rule      |
-| High     | Cross-boundary drift that spreads easily |
-| Medium   | Local drift likely to spread             |
-| Low      | Minor inconsistency                      |
-
----
-
-| Priority | Meaning                     |
-| -------- | --------------------------- |
-| P0       | Must resolve before release |
-| P1       | Should resolve soon         |
-| P2       | Safe as technical debt      |
-| P3       | Opportunistic cleanup       |
-
----
-
-# Incremental Adoption Strategy
-
-Recommended adoption strategy:
-
-1. Start with one feature review.
-2. Define architecture rules gradually.
-3. Use refactor tasks instead of blocking delivery.
-4. Promote repeated patterns into architecture standards.
-5. Evolve architecture intentionally.
-6. Add presets only when framework-specific guidance becomes necessary.
-
----
-
-# Relationship to Governance Extensions
-
-Architecture Guard focuses specifically on:
-
-* architecture enforcement
-* architecture consistency
-* architecture drift detection
-* architecture evolution
-* migration guidance
-
-It is NOT a full governance or compliance framework.
-
-It complements:
-
-* security review systems
-* governance systems
-* memory/context systems
-
-rather than replacing them.
-
----
-
-# Non-Goals
-
-Architecture Guard orchestration does not replace Spec Kit tasks or implement commands. It coordinates optional governance checks around them.
-
-Architecture Guard does NOT:
-
-* replace Spec Kit planning
-* replace Spec Kit tasks or implement commands
-* replace security review systems
-* replace memory systems
-* automatically enforce architecture rewrites
-* replace profiling or benchmarking
-* act as a linter or static analyzer
-* auto-update constitutions
-* require runtime tooling
-* enforce framework-specific conventions globally
-* block implementation by default
-
----
-
-# Final Philosophy
-
-Architecture Guard exists to help teams:
-
-* preserve architecture consistency
-* detect architecture drift early
-* evolve architecture intentionally
-* keep architectural debt visible
-* support AI-assisted development without losing architectural direction
-
-The goal is not perfect architecture purity.
-
-The goal is controlled, intentional architectural evolution.
+## Design Philosophy
+
+- **Non-blocking by default**: violations become refactor tasks unless a rule is explicitly marked blocking
+- **Reviewable in Git**: the rules live in markdown files, not hidden state
+- **Architecture first**: the extension focuses on boundaries, ownership, and drift
+- **Companion-aware**: it can orchestrate other Spec Kit tools without depending on them
