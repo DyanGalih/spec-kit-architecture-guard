@@ -173,7 +173,7 @@ specify extension add architecture-guard
 
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.5.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.6.zip
 ```
 
 ### From a Local Developer Artifact
@@ -186,5 +186,5 @@ specify extension add architecture-guard --dev /path/to/spec-kit-architecture-gu
 
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.5.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.6.zip
 ```
