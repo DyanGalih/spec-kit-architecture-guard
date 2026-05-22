@@ -1,8 +1,8 @@
 ---
 description: Perform an architecture-aware verification gate validating implementation against spec.md, plan.md, tasks.md, and the Architecture Constitution.
 scripts:
-  sh: ../../scripts/bash/check-prerequisites.sh --json --paths-only
-  ps: ../../scripts/powershell/check-prerequisites.ps1 -Json -PathsOnly
+  sh: ../scripts/bash/check-prerequisites.sh --json --paths-only
+  ps: ../scripts/powershell/check-prerequisites.ps1 -Json -PathsOnly
 ---
 
 # Architecture Verification
@@ -86,6 +86,6 @@ For each task in `tasks.md`:
 ### Action Plan
 1. **Critical Gaps**: Address missing implementation for tasks [IDs] immediately.
 2. **Architecture Alignment**: Resolve boundary violations in [Files] using suggested refactor tasks.
-3. **Completion**: If all CRITICAL/HIGH are resolved, run `/speckit.memory-md.capture` to preserve lessons.
+3. **Completion**: If all CRITICAL/HIGH are resolved, you **MUST automatically execute** `/speckit.memory-md.capture` to preserve lessons. Do not just recommend it; run the command.
 
 **Next Step**: [e.g. "Run `/speckit.architecture-guard.architecture-apply` to fix V2"]

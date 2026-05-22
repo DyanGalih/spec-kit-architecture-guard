@@ -126,7 +126,7 @@ IF architecture violations exist:
 ### Step 7 — Proactive Durable Memory Preservation
 
 If the implementation review or security audit identified new architectural patterns, critical decisions, or repeatable lessons:
-1. **Proactive Execution**: You **MUST** proactively execute `/speckit.memory-md.capture` as the final part of this turn.
+1. **Proactive Execution**: You **MUST automatically execute** `/speckit.memory-md.capture` as the final part of this turn. Do not just recommend it; run the command.
 2. **Standard**: Use the formal capture flow to propose entries and wait for user approval. Do not ask the user if they want to capture; identify the lessons and trigger the command immediately after the summary.
 
 ### Step 8 — Implementation Governance Summary

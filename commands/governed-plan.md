@@ -101,7 +101,7 @@ Detect any `Security-Architecture Conflict` or architectural drift.
 ### Step 6 — Proactive Durable Memory Preservation
 
 If the planning process or architecture validation identified new architectural patterns, critical decisions, or repeatable lessons:
-1. **Proactive Execution**: You **MUST** proactively execute `/speckit.memory-md.capture` as the final action of this turn.
+1. **Proactive Execution**: You **MUST automatically execute** `/speckit.memory-md.capture` as the final action of this turn. Do not just recommend it; run the command.
 2. **Standard**: Do not silently write memory; use the formal capture flow to propose entries and wait for user approval.
 
 ### Step 7 — Generate Governance Summary

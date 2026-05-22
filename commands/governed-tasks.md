@@ -98,7 +98,7 @@ It MUST convert architecture findings into:
 ### Step 6 — Proactive Durable Memory Preservation
 
 If the task generation or security review identified new architectural lessons or reusable patterns:
-1. **Proactive Execution**: You **MUST** proactively execute `/speckit.memory-md.capture` as the final part of this turn.
+1. **Proactive Execution**: You **MUST automatically execute** `/speckit.memory-md.capture` as the final part of this turn. Do not just recommend it; run the command.
 2. **Standard**: Use the formal capture flow to propose entries and wait for user approval.
 
 ### Step 7 — Task Governance Summary

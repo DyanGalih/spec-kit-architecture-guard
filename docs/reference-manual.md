@@ -173,7 +173,21 @@ specify extension add architecture-guard
 
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.6.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.7.zip
+```
+
+### Global Preset Usage
+
+If you manage multiple projects using the same framework (e.g., Laravel), you can create a global preset and link it to Architecture Guard when initializing a new project.
+
+**Example: Global Laravel Preset**
+
+1. Create your preset somewhere on your system (e.g., `~/.specify/presets/laravel-architecture.md`).
+2. Add the Architecture Guard extension and apply the preset URL:
+
+```bash
+specify extension add architecture-guard --from \
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.7.zip
 ```
 
 ### From a Local Developer Artifact
@@ -186,5 +200,5 @@ specify extension add architecture-guard --dev /path/to/spec-kit-architecture-gu
 
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.6.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.7.zip
 ```

@@ -1,8 +1,8 @@
 ---
 description: Perform a framework-agnostic architecture review validating implementation against spec.md, plan.md, tasks.md, and the governance and architecture constitutions.
 scripts:
-  sh: ../../scripts/bash/detect-changed-files.sh
-  ps: ../../scripts/powershell/detect-changed-files.ps1
+  sh: ../scripts/bash/detect-changed-files.sh
+  ps: ../scripts/powershell/detect-changed-files.ps1
 ---
 
 # Architecture Review Command
@@ -301,7 +301,7 @@ Findings that correlate with architecture concerns:
 1. **Critical Fixes**: Address Constitution and Security violations first.
 2. **Architecture Alignment**: Resolve boundary erosion and contract mismatches.
 3. **Code Quality**: Address SonarLint findings that map to architectural concerns (if any).
-4. **Durable Memory Preservation (Mandatory Check)**: If new architectural patterns, decisions, or repeatable lessons were identified, you **MUST** execute `/speckit.memory-md.capture` after providing the report. Use the formal capture flow to propose entries and wait for user approval.
+4. **Durable Memory Preservation (Mandatory Check)**: If new architectural patterns, decisions, or repeatable lessons were identified, you **MUST automatically execute** `/speckit.memory-md.capture` immediately after providing the report. Do not just recommend it; run the command to propose entries and wait for user approval.
 5. **Next Step**: [e.g. Run /speckit.architecture-guard.architecture-apply]
 6. **Remediation**: [Concrete remediation direction for the top issues, or "None needed"]
 
