@@ -108,14 +108,15 @@ A Security-Architecture Conflict occurs when security requirements and architect
 
 1. **Model Context**: Load artifacts and build the Semantic Models.
 
-    #### Optimizer-Aware Flow
-    When `.specify/extensions/memory-md/config.yml` has `optimizer.enabled: true`:
+    #### SQLite / MCP Flow (Required for Memory Hub)
+    Because Memory Hub uses SQLite as its source of truth, you **MUST** use its MCP tools to retrieve context. Do not read the `.md` memory files directly, as they are only backups.
 
     1. **Prepare Context**: Execute `/speckit.memory-md.prepare-context --feature specs/<feature> --query "architecture constraints boundaries decisions <feature>"`.
     2. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` first.
+    3. **Token Report**: Execute the `speckit_memory_token_report` MCP tool with `feature: "<feature>"` and display the token savings in the output.
 
-    #### Markdown-Only Flow
-    When the optimizer is disabled, you **MUST** read these files explicitly using your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
+    #### Markdown-Only Flow (Fallback)
+    If Memory Hub is unavailable, you **MUST** read these files explicitly using your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
 
     - `.specify/memory/constitution.md`
     - `.specify/memory/architecture_constitution.md`
