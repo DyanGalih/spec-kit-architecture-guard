@@ -97,15 +97,15 @@ if (Test-Path (Join-Path $root ".specify") -PathType Container) {
     Fail ".specify/ directory missing - run 'specify init' to bootstrap Spec Kit"
 }
 
-# ─── 3. Optional Extension: Memory Hub ───────────────────────────────────────
-Section "3. Optional Extension: Memory Hub"
+# ─── 3. Optional Extension: flash-mem ───────────────────────────────────────
+Section "3. Optional Extension: flash-mem"
 
 $memoryFound = $false
 $extensionsYml = Join-Path $root ".specify/extensions.yml"
 if (Test-Path $extensionsYml) {
     $ymlContent = Get-Content $extensionsYml -Raw
     if ($ymlContent -match 'memory-md') {
-        Pass "memory-md declared in .specify/extensions.yml"
+    Pass "memory-md declared in .specify/extensions.yml"
         $memoryFound = $true
     }
 }
@@ -114,23 +114,23 @@ if (-not $memoryFound -and (Test-Path (Join-Path $root ".specify/extensions/memo
     $memoryFound = $true
 }
 if (-not $memoryFound) {
-    Warn "Memory Hub (memory-md) not installed - governed workflows will skip memory synthesis" `
+    Warn "flash-mem (memory-md) not installed - governed workflows will skip memory synthesis" `
          "Install with: specify integration add memory-md"
 }
 
 if ($memoryFound) {
     $configPath = Join-Path $root ".specify/extensions/memory-md/config.yml"
     if (Test-Path $configPath) {
-        Pass "Memory Hub config found (.specify/extensions/memory-md/config.yml)"
+        Pass "flash-mem config found (.specify/extensions/memory-md/config.yml)"
         $configContent = Get-Content $configPath -Raw
         if ($configContent -match 'enabled:\s*true') {
-            Pass "Memory Hub optimizer is enabled - SQLite acceleration active"
+            Pass "flash-mem optimizer is enabled - SQLite acceleration active"
         } else {
-            Warn "Memory Hub optimizer is disabled - running in markdown-only mode (higher token usage)" `
+            Warn "flash-mem optimizer is disabled - running in markdown-only mode (higher token usage)" `
                  "Set 'optimizer.enabled: true' in config.yml to enable SQLite acceleration"
         }
     } else {
-        Warn "Memory Hub config not found - using defaults (markdown-only, no optimizer)"
+        Warn "flash-mem config not found - using defaults (markdown-only, no optimizer)"
     }
 
     $indexPath = Join-Path $root "docs/memory/INDEX.md"

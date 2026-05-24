@@ -45,7 +45,7 @@ Run the smoke tests:
 - **Self-Contained Prompts**: Every prompt file must carry its full rules, steps, and output format inline. Do not reference external files except for scripts via `{SCRIPT}`.
 - **Actionable Findings**: Every violation must include severity, location, evidence, and a suggested fix.
 - **Non-Blocking by Default**: Findings are reported, not enforced. The `refactor-generator` handles task creation.
-- **Memory Hub Integration**: When project memory exists, use it as context — but never require it.
+- **`flash-mem` Integration**: When project memory exists, use it as context — but never require it. The legacy `memory-hub` name is reference-only.
 - **Security Awareness**: If a violation affects trust boundaries, classify it as a `Security-Architecture Conflict`.
 
 ## Pull Requests

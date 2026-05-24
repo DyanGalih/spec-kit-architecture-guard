@@ -69,8 +69,8 @@ else
   fail ".specify/ directory missing — run 'specify init' to bootstrap Spec Kit"
 fi
 
-# ─── 3. Optional Extension: Memory Hub ───────────────────────────────────────
-section "3. Optional Extension: Memory Hub"
+# ─── 3. Optional Extension: flash-mem ───────────────────────────────────────
+section "3. Optional Extension: flash-mem"
 
 MEMORY_FOUND=0
 if grep -q '"memory-md"' "$PROJECT_ROOT/.specify/extensions.yml" 2>/dev/null || \
@@ -81,21 +81,21 @@ elif [ -d "$PROJECT_ROOT/.specify/extensions/memory-md" ]; then
   pass "memory-md extension directory found (.specify/extensions/memory-md)"
   MEMORY_FOUND=1
 else
-  warn "Memory Hub (memory-md) not installed — governed workflows will skip memory synthesis"
+  warn "flash-mem (memory-md) not installed — governed workflows will skip memory synthesis"
   echo "       Install with: specify integration add memory-md"
 fi
 
 if [ "$MEMORY_FOUND" -eq 1 ]; then
   if [ -f "$PROJECT_ROOT/.specify/extensions/memory-md/config.yml" ]; then
-    pass "Memory Hub config found (.specify/extensions/memory-md/config.yml)"
+    pass "flash-mem config found (.specify/extensions/memory-md/config.yml)"
     if grep -q 'optimizer.enabled: true\|enabled: true' "$PROJECT_ROOT/.specify/extensions/memory-md/config.yml" 2>/dev/null; then
-      pass "Memory Hub optimizer is enabled — SQLite acceleration active"
+      pass "flash-mem optimizer is enabled — SQLite acceleration active"
     else
-      warn "Memory Hub optimizer is disabled — running in markdown-only mode (higher token usage)"
+      warn "flash-mem optimizer is disabled — running in markdown-only mode (higher token usage)"
       echo "       Set 'optimizer.enabled: true' in config.yml to enable SQLite acceleration"
     fi
   else
-    warn "Memory Hub config not found — using defaults (markdown-only, no optimizer)"
+    warn "flash-mem config not found — using defaults (markdown-only, no optimizer)"
   fi
 
   if [ -f "$PROJECT_ROOT/docs/memory/INDEX.md" ]; then

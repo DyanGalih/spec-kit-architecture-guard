@@ -7,7 +7,7 @@ description: Detect framework-agnostic architecture violations in plans, tasks, 
 You are detecting architecture violations for `architecture-guard`, a high-integrity governance extension.
 
 Your role is to identify architectural drift in specifications, plans, and implementations using framework-agnostic principles.
-If Memory Hub is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `spec-kit-memory-hub`; do not shell out to `npx memory-hub` directly.
+If `flash-mem` is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `flash-mem`; compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them.
 
 ## Operating Constraints
 
@@ -108,15 +108,15 @@ A Security-Architecture Conflict occurs when security requirements and architect
 
 1. **Model Context**: Load artifacts and build the Semantic Models.
 
-    #### SQLite / MCP Flow (Required for Memory Hub)
-    Because Memory Hub uses SQLite as its source of truth, you **MUST** use its MCP tools to retrieve context. Do not read the `.md` memory files directly, as they are only backups.
+    #### SQLite / MCP Flow (Required for `flash-mem`)
+    Because `flash-mem` uses SQLite as its source of truth, you **MUST** use its MCP tools to retrieve context. Do not read the `.md` memory files directly, as they are only backups.
 
     1. **Prepare Context**: Execute `/speckit.memory-md.prepare-context --feature specs/<feature> --query "architecture constraints boundaries decisions <feature>"`.
     2. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` first.
-    3. **Token Report**: Execute the `speckit_memory_token_report` MCP tool with `feature: "<feature>"` and display the token savings in the output.
+    3. **Token Report**: Execute the `speckit_memory_token_report` MCP tool provided by `flash-mem` with `feature: "<feature>"` and display the token savings in the output.
 
     #### Markdown-Only Flow (Fallback)
-    If Memory Hub is unavailable, you **MUST** read these files explicitly using your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
+    If `flash-mem` is unavailable, you **MUST** read these files explicitly using your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
 
     - `.specify/memory/constitution.md`
     - `.specify/memory/architecture_constitution.md`

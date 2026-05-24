@@ -8,12 +8,12 @@ You are orchestrating the `governed-tasks` workflow for `architecture-guard`.
 
 This command coordinates multiple extensions to ensure the task list respects architectural, historical, and security constraints before implementation begins.
 The orchestrator should be memory-first: reuse the current synthesis before reopening the full memory set, and only refresh the cache when the plan or feature scope changed.
-If Memory Hub is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `spec-kit-memory-hub`; do not shell out to `npx memory-hub` directly.
+If `flash-mem` is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `flash-mem`; compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them.
 
 ## Goal
 
 Provide a single command that ensures:
-1. Implementation tasks are historical-context aware (Memory Hub).
+1. Implementation tasks are historical-context aware (`flash-mem`).
 2. A task list is generated or validated (`/speckit.tasks`).
 3. Security requirements are represented in tasks (Security Review).
 4. Architecture refactors or migrations are represented in tasks (Architecture Guard).
@@ -23,7 +23,7 @@ Provide a single command that ensures:
 ### Step 1 — Detect Optional Extensions
 
 Check for the existence of:
-- `spec-kit-memory-hub`
+- `flash-mem`
 - `spec-kit-security-review`
 
 **Detection Logic**:
@@ -33,23 +33,23 @@ Check for the existence of:
 
 ### Step 2 — Memory Synthesis (Optional)
 
-IF `spec-kit-memory-hub` is available:
+IF `flash-mem` is available:
 
-#### SQLite / MCP Flow (Required for Memory Hub)
-Because Memory Hub uses SQLite as its source of truth, you **MUST** use its MCP tools to retrieve context. Do not read the `.md` memory files directly, as they are only backups.
+#### SQLite / MCP Flow (Required for `flash-mem`)
+Because `flash-mem` uses SQLite as its source of truth, you **MUST** use its MCP tools to retrieve context. Do not read the `.md` memory files directly, as they are only backups.
 
 1. **Prepare Context**: Execute `/speckit.memory-md.prepare-context --feature specs/<feature> --query "architecture decisions constraints boundaries <feature>"`.
 2. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` to identify constraints.
-3. If Memory Hub emits a token banner, keep it visible so the savings remain observable during normal task generation runs.
-4. **Token Report**: Execute the `speckit_memory_token_report` MCP tool with `feature: "<feature>"` and display the token savings in the summary.
+3. If `flash-mem` emits a token banner, keep it visible so the savings remain observable during normal task generation runs.
+4. **Token Report**: Execute the `speckit_memory_token_report` MCP tool provided by `flash-mem` with `feature: "<feature>"` and display the token savings in the summary.
 
 #### Markdown-Only Flow (Fallback)
-If Memory Hub is unavailable, use the standard synthesis command:
+If `flash-mem` is unavailable, use the standard synthesis command:
 
 1. **Execute Synthesis**: Run `/speckit.memory-md.plan-with-memory` to synthesize and save `specs/<feature>/memory-synthesis.md`.
 
 **[OPTIONAL SUB-AGENT DELEGATION]**
-- If memory hub has ≥ 20 decision documents: Consider sub-agent for synthesis
+- If `flash-mem` has ≥ 20 decision documents: Consider sub-agent for synthesis
 - Sub-agent command: `/speckit.memory-md.plan-with-memory`
 - Sub-agent benefits: Faster traversal, better filtering, detailed synthesis
 - LLM decides: Inline for quick decisions, sub-agent for complex memory
@@ -108,7 +108,7 @@ Produce a final `Governed Tasks Summary` for the user.
 
 ## Graceful Degradation
 
-**Without Memory Hub**:
+**Without `flash-mem`**:
 - Skip Step 2 (Memory Synthesis)
 - Continue to `/speckit.tasks` directly
 - Assume no historical task constraints beyond Constitution

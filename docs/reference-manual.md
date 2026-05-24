@@ -135,7 +135,7 @@ This injects refactor tasks into `plan.md` and `tasks.md` so the AI has explicit
 
 ## Optimizer-Aware Memory Flow
 
-Architecture Guard integrates with the `spec-kit-memory-hub` SQLite optimizer to provide high-performance, token-efficient reviews.
+Architecture Guard integrates with `flash-mem` as the runtime SQLite-backed optimizer to provide high-performance, token-efficient reviews. The legacy `memory-hub` name is reference-only and deprecated.
 
 ### Enabling the Optimizer
 
@@ -153,13 +153,13 @@ optimizer:
 - self-learning: reviews conclude with a recommendation to run `/speckit.memory-md.capture`
 - lower latency: reduces context window bloat by avoiding massive markdown file reads
 
-| `governed-plan` | Orchestration | Plan with memory synthesis first + security + architecture | Use when Memory Hub and Security Review are installed |
+| `governed-plan` | Orchestration | Plan with `flash-mem` synthesis first + security + architecture | Use when `flash-mem` and Security Review are installed |
 | `governed-tasks` | Orchestration | Tasks with cached memory context + security + architecture refactors | Use when companion extensions are installed |
 | `governed-implement` | Orchestration | Implementation validation with cached memory governance context | Use for end-to-end implementation with governance |
 
 > Most projects use `architecture-workflow` or `architecture-review` directly. Orchestrator commands (`governed-*`) are advanced and optional when companion extensions are available.
 
-> `architecture-apply` targets `plan.md` and `tasks.md`. If architectural issues are found in the specification stage, refine the specification before generating a technical plan. When Memory Hub is available, use the cached synthesis and approved review output before writing back.
+> `architecture-apply` targets `plan.md` and `tasks.md`. If architectural issues are found in the specification stage, refine the specification before generating a technical plan. When `flash-mem` is available, use the cached synthesis and approved review output before writing back.
 
 ## Installation
 
@@ -173,7 +173,7 @@ specify extension add architecture-guard
 
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.7.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.9.zip
 ```
 
 ### Global Preset Usage
@@ -187,7 +187,7 @@ If you manage multiple projects using the same framework (e.g., Laravel), you ca
 
 ```bash
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.7.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.9.zip
 ```
 
 ### From a Local Developer Artifact
@@ -200,5 +200,5 @@ specify extension add architecture-guard --dev /path/to/spec-kit-architecture-gu
 
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.7.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.9.zip
 ```

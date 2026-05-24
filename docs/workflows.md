@@ -4,7 +4,7 @@ This document covers the governed planning, task, and implementation flows used 
 
 ## Governed Planning Workflow
 
-Architecture Guard can orchestrate planning workflows across Memory Hub, Security Review, and Architecture Guard validation when companion extensions are installed.
+Architecture Guard can orchestrate planning workflows across `flash-mem`, Security Review, and Architecture Guard validation when companion extensions are installed.
 
 The orchestrated workflow is:
 
@@ -44,7 +44,7 @@ memory synthesis -> implement -> security review -> architecture review -> refac
 /speckit.architecture-guard.governed-implement
 ```
 
-> Companion extensions are optional. Architecture Guard degrades gracefully and does not require Memory Hub or Security Review to function. It orchestrates workflows only when companion artifacts or extensions are available.
+> Companion extensions are optional. Architecture Guard degrades gracefully and does not require `flash-mem` or Security Review to function. It orchestrates workflows only when companion artifacts or extensions are available.
 
 ## Practical Quick Flow
 
@@ -55,4 +55,3 @@ memory synthesis -> implement -> security review -> architecture review -> refac
 5. Apply approved refactors into plan and task artifacts.
 
 This keeps architecture concerns visible throughout the delivery lifecycle instead of concentrating them at the end.
-

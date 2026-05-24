@@ -8,12 +8,12 @@ You are orchestrating the `governed-implement` workflow for `architecture-guard`
 
 This command coordinates implementation and post-implementation review to ensure the output respects architectural, historical, and security constraints.
 The orchestrator should be memory-first: load the synthesis and active watchpoints before coding, then fall back to targeted reads only when the synthesis is insufficient.
-If Memory Hub is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `spec-kit-memory-hub`; do not shell out to `npx memory-hub` directly.
+If `flash-mem` is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `flash-mem`; compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them.
 
 ## Goal
 
 Provide a single command that ensures:
-1. Implementation is historical-context aware (Memory Hub).
+1. Implementation is historical-context aware (`flash-mem`).
 2. Implementation is performed (`/speckit.implement`).
 3. The output is reviewed for security vulnerabilities (Security Review).
 4. The output is reviewed for architectural drift (Architecture Guard).
@@ -23,7 +23,7 @@ Provide a single command that ensures:
 ### Step 1 — Detect Optional Extensions
 
 Check for the existence of:
-- `spec-kit-memory-hub`
+- `flash-mem`
 - `spec-kit-security-review`
 
 **Detection Logic**:
@@ -33,23 +33,23 @@ Check for the existence of:
 
 ### Step 2 — Memory Synthesis (Optional)
 
-IF `spec-kit-memory-hub` is available:
+IF `flash-mem` is available:
 
-#### SQLite / MCP Flow (Required for Memory Hub)
-Because Memory Hub uses SQLite as its source of truth, you **MUST** use its MCP tools to retrieve context. Do not read the `.md` memory files directly, as they are only backups.
+#### SQLite / MCP Flow (Required for `flash-mem`)
+Because `flash-mem` uses SQLite as its source of truth, you **MUST** use its MCP tools to retrieve context. Do not read the `.md` memory files directly, as they are only backups.
 
 1. **Prepare Context**: Execute `/speckit.memory-md.prepare-context --feature specs/<feature> --query "architecture decisions implementation pitfalls constraints <feature>"`.
 2. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` first.
-3. If Memory Hub emits a token banner, keep it visible so the savings remain observable during normal implementation runs.
-4. **Token Report**: Execute the `speckit_memory_token_report` MCP tool with `feature: "<feature>"` and display the token savings in the summary.
+3. If `flash-mem` emits a token banner, keep it visible so the savings remain observable during normal implementation runs.
+4. **Token Report**: Execute the `speckit_memory_token_report` MCP tool provided by `flash-mem` with `feature: "<feature>"` and display the token savings in the summary.
 
 #### Markdown-Only Flow (Fallback)
-If Memory Hub is unavailable, use the standard synthesis command:
+If `flash-mem` is unavailable, use the standard synthesis command:
 
 1. **Execute Synthesis**: Run `/speckit.memory-md.plan-with-memory` to synthesize and refresh `specs/<feature>/memory-synthesis.md`.
 
 **[OPTIONAL SUB-AGENT DELEGATION]**
-- If memory hub has ≥ 20 decision documents: Consider sub-agent for synthesis
+- If `flash-mem` has ≥ 20 decision documents: Consider sub-agent for synthesis
 - Sub-agent command: `/speckit.memory-md.plan-with-memory`
 - Sub-agent benefits: Faster traversal, better filtering, detailed synthesis
 - LLM decides: Inline for quick decisions, sub-agent for complex memory
@@ -136,7 +136,7 @@ Produce a final `Governed Implementation Summary`.
 
 ## Graceful Degradation
 
-**Without Memory Hub**:
+**Without `flash-mem`**:
 - Skip Step 2 (Memory Synthesis)
 - Continue to `/speckit.implement` directly
 - Assume no historical implementation constraints beyond Constitution

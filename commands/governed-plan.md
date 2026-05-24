@@ -1,5 +1,5 @@
 ---
-description: Orchestrate a governed planning workflow that coordinates Memory Hub, Security Review, and Architecture Guard validation.
+description: Orchestrate a governed planning workflow that coordinates flash-mem, Security Review, and Architecture Guard validation.
 ---
 
 # Governed Plan Command
@@ -8,12 +8,12 @@ You are orchestrating the `governed-plan` workflow for `architecture-guard`.
 
 This command coordinates multiple extensions to ensure the technical plan respects architectural, historical, and security constraints before implementation begins.
 The orchestrator should be memory-first: refresh or read `memory-synthesis.md` before any broader file scan, then fall back to targeted reads only when the synthesis is insufficient.
-If Memory Hub is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `spec-kit-memory-hub`; do not shell out to `npx memory-hub` directly.
+If `flash-mem` is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `flash-mem`; compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them.
 
 ## Goal
 
 Provide a single command that ensures:
-1. Historical lessons are applied (Memory Hub).
+1. Historical lessons are applied (`flash-mem`).
 2. A technical plan is generated (`/speckit.plan`).
 3. Security boundaries are respected (Security Review).
 4. Architectural drift is detected (Architecture Guard).
@@ -23,7 +23,7 @@ Provide a single command that ensures:
 ### Step 1 — Detect Optional Extensions
 
 Check for the existence of:
-- `spec-kit-memory-hub`
+- `flash-mem`
 - `spec-kit-security-review`
 
 **Detection Logic**:
@@ -33,23 +33,23 @@ Check for the existence of:
 
 ### Step 2 — Memory Synthesis (Optional)
 
-IF `spec-kit-memory-hub` is available:
+IF `flash-mem` is available:
 
-#### SQLite / MCP Flow (Required for Memory Hub)
-Because Memory Hub uses SQLite as its source of truth, you **MUST** use its MCP tools to retrieve context. Do not read the `.md` memory files directly, as they are only backups.
+#### SQLite / MCP Flow (Required for `flash-mem`)
+Because `flash-mem` uses SQLite as its source of truth, you **MUST** use its MCP tools to retrieve context. Do not read the `.md` memory files directly, as they are only backups.
 
 1. **Prepare Context**: Execute `/speckit.memory-md.prepare-context --feature specs/<feature>`.
 2. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` to identify constraints.
-3. If Memory Hub emits a token banner, keep it visible so the savings remain observable during normal planning runs.
-4. **Token Report**: Execute the `speckit_memory_token_report` MCP tool with `feature: "<feature>"` and display the token savings in the summary.
+3. If `flash-mem` emits a token banner, keep it visible so the savings remain observable during normal planning runs.
+4. **Token Report**: Execute the `speckit_memory_token_report` MCP tool provided by `flash-mem` with `feature: "<feature>"` and display the token savings in the summary.
 
 #### Markdown-Only Flow (Fallback)
-If Memory Hub is unavailable, use the standard synthesis command:
+If `flash-mem` is unavailable, use the standard synthesis command:
 
 1. **Execute Synthesis**: Run `/speckit.memory-md.plan-with-memory` to synthesize and save `specs/<feature>/memory-synthesis.md`.
 
 **[OPTIONAL SUB-AGENT DELEGATION]**
-- If memory hub has ≥ 20 decision documents: Consider sub-agent for synthesis
+- If `flash-mem` has ≥ 20 decision documents: Consider sub-agent for synthesis
 - Sub-agent command: `/speckit.memory-md.plan-with-memory`
 - Sub-agent benefits: Faster traversal, better filtering, detailed synthesis
 - LLM decides: Inline for quick decisions, sub-agent for complex memory
@@ -111,7 +111,7 @@ Produce a final `Governed Planning Summary` for the user.
 
 ## Graceful Degradation
 
-**Without Memory Hub**:
+**Without `flash-mem`**:
 - Skip Step 2 (Memory Synthesis)
 - Continue to `/speckit.plan` directly
 - Assume no historical architecture constraints beyond Constitution

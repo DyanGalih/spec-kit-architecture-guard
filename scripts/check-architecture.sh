@@ -58,11 +58,11 @@ else
   echo -e "  ${YELLOW}!${NC} No specs/ directory found. This extension is designed for Spec Kit workflows."
 fi
 
-# --- 4. Companion Check (Memory Hub) ---
+# --- 4. Companion Check (flash-mem) ---
 if [ -d "$PROJECT_ROOT/docs/memory" ] || [ -f "$PROJECT_ROOT/.github/copilot-instructions.md" ]; then
-  echo -e "  ${GREEN}✓${NC} Memory Hub context detected."
+  echo -e "  ${GREEN}✓${NC} flash-mem context detected."
 else
-  echo -e "  ${YELLOW}!${NC} No Memory Hub context detected. Optional but recommended for better architecture reviews."
+  echo -e "  ${YELLOW}!${NC} No flash-mem context detected. Optional but recommended for better architecture reviews."
 fi
 
 echo ""

@@ -18,6 +18,8 @@ This command generates or refines:
 * `.specify/memory/architecture_constitution.md`
 * `.specify/memory/security_constitution.md`
 
+When the project uses the active memory backend, `flash-mem` is the source of truth for Spec Kit memory workflows. The legacy `memory-hub` name is reference-only and should not be treated as the runtime backend.
+
 The goal is NOT to generate generic best practices.
 
 The goal is to establish:
