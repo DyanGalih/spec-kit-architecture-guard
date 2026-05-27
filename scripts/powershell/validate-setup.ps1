@@ -105,16 +105,16 @@ $extensionsYml = Join-Path $root ".specify/extensions.yml"
 if (Test-Path $extensionsYml) {
     $ymlContent = Get-Content $extensionsYml -Raw
     if ($ymlContent -match 'memory-md') {
-    Pass "memory-md declared in .specify/extensions.yml"
+    Pass "flash-mem extension declared in .specify/extensions.yml"
         $memoryFound = $true
     }
 }
 if (-not $memoryFound -and (Test-Path (Join-Path $root ".specify/extensions/memory-md") -PathType Container)) {
-    Pass "memory-md extension directory found (.specify/extensions/memory-md)"
+    Pass "flash-mem extension directory found (.specify/extensions/memory-md)"
     $memoryFound = $true
 }
 if (-not $memoryFound) {
-    Warn "flash-mem (memory-md) not installed - governed workflows will skip memory synthesis" `
+    Warn "flash-mem not installed - governed workflows will skip memory synthesis" `
          "Install with: specify integration add memory-md"
 }
 
@@ -139,7 +139,7 @@ if ($memoryFound) {
         Pass "docs/memory/INDEX.md found ($entryCount table row(s))"
     } else {
         Warn "docs/memory/INDEX.md not found" `
-             "Run /speckit.memory-md.init to initialize memory files"
+             "Run the memory initialization alias to initialize memory files"
     }
 }
 

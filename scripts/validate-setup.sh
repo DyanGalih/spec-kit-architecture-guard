@@ -75,13 +75,13 @@ section "3. Optional Extension: flash-mem"
 MEMORY_FOUND=0
 if grep -q '"memory-md"' "$PROJECT_ROOT/.specify/extensions.yml" 2>/dev/null || \
    grep -q 'memory-md' "$PROJECT_ROOT/.specify/extensions.yml" 2>/dev/null; then
-  pass "memory-md declared in .specify/extensions.yml"
+  pass "flash-mem extension declared in .specify/extensions.yml"
   MEMORY_FOUND=1
 elif [ -d "$PROJECT_ROOT/.specify/extensions/memory-md" ]; then
-  pass "memory-md extension directory found (.specify/extensions/memory-md)"
+  pass "flash-mem extension directory found (.specify/extensions/memory-md)"
   MEMORY_FOUND=1
 else
-  warn "flash-mem (memory-md) not installed — governed workflows will skip memory synthesis"
+  warn "flash-mem not installed — governed workflows will skip memory synthesis"
   echo "       Install with: specify integration add memory-md"
 fi
 
@@ -102,7 +102,7 @@ if [ "$MEMORY_FOUND" -eq 1 ]; then
     ENTRY_COUNT=$(grep -c '^|' "$PROJECT_ROOT/docs/memory/INDEX.md" 2>/dev/null || echo 0)
     pass "docs/memory/INDEX.md found ($ENTRY_COUNT table row(s))"
   else
-    warn "docs/memory/INDEX.md not found — run /speckit.memory-md.init to initialize memory files"
+    warn "docs/memory/INDEX.md not found — run the memory initialization alias to initialize memory files"
   fi
 fi
 

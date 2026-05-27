@@ -9,7 +9,7 @@ scripts:
 
 Validate that the implementation fulfills all tasks in `tasks.md` while adhering to the defined architecture boundaries and the **Architecture Constitution**. This command acts as a post-implementation gate.
 When `flash-mem` is available, read `memory-synthesis.md` before broader scans so verification stays memory-first.
-If `flash-mem` is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `flash-mem`; compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them.
+If `flash-mem` is available, use the MCP-backed context preparation flow exposed by `flash-mem`; otherwise treat the legacy prepare-context alias as a compatibility path. Compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them.
 
 ## User Input
 
@@ -86,6 +86,6 @@ For each task in `tasks.md`:
 ### Action Plan
 1. **Critical Gaps**: Address missing implementation for tasks [IDs] immediately.
 2. **Architecture Alignment**: Resolve boundary violations in [Files] using suggested refactor tasks.
-3. **Completion**: If all CRITICAL/HIGH are resolved, you **MUST automatically execute** `/speckit.memory-md.capture` to preserve lessons. Do not just recommend it; run the command.
+3. **Completion**: If all CRITICAL/HIGH are resolved, you **MUST automatically execute** the durable-memory capture alias to preserve lessons. Do not just recommend it; run the command.
 
 **Next Step**: [e.g. "Run `/speckit.architecture-guard.architecture-apply` to fix V2"]

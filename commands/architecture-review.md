@@ -9,7 +9,7 @@ scripts:
 
 You are running `architecture-guard`, a framework-agnostic architecture review extension designed for high-integrity governance.
 When `flash-mem` is available, treat `memory-synthesis.md` as the first context source, and keep any token-savings banner visible if the surrounding workflow emits one.
-If `flash-mem` is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `flash-mem`; compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them.
+If `flash-mem` is available, use the MCP-backed context preparation flow exposed by `flash-mem`; otherwise treat the legacy prepare-context alias as a compatibility path. Compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them.
 
 ## Operating Constraints
 
@@ -37,7 +37,7 @@ When you see this marker in a step:
 - LLM override: Explicit `--inline` or `--delegate` flags override auto-detection
 
 **Sub-agents available when provided by the host environment or project:**
-- `/speckit.memory-md.plan-with-memory` — Memory synthesis and filtering
+- Memory synthesis sub-agent; the markdown-only fallback alias is only relevant when `flash-mem` is unavailable
 - Custom project commands such as `/analyze-sonar-violations` for SonarLint scanning
 
 This pattern enables flexibility: fast execution for typical PRs, powerful execution for large refactors.
@@ -90,7 +90,7 @@ Review any available artifacts from these common locations. **IMPORTANT**: You M
     #### SQLite / MCP Flow (Required for `flash-mem`)
     Because `flash-mem` uses SQLite as its source of truth, you **MUST** use its MCP tools to retrieve context. Do not read the `.md` memory files directly, as they are only backups.
 
-    1. **Prepare Context**: Execute `/speckit.memory-md.prepare-context --feature specs/<feature> --query "architecture constraints boundaries dependencies coupling abstractions"`.
+    1. **Prepare Context**: Use the `flash-mem` MCP-backed context preparation flow for `specs/<feature>` with the query `architecture constraints boundaries dependencies coupling abstractions`; otherwise treat the legacy prepare-context alias as a compatibility path.
     2. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` to identify the "Why" behind the current design.
     3. **Token Report**: Execute the `speckit_memory_token_report` MCP tool provided by `flash-mem` with `feature: "<feature>"` and display the token savings in the report.
 
@@ -302,7 +302,7 @@ Findings that correlate with architecture concerns:
 1. **Critical Fixes**: Address Constitution and Security violations first.
 2. **Architecture Alignment**: Resolve boundary erosion and contract mismatches.
 3. **Code Quality**: Address SonarLint findings that map to architectural concerns (if any).
-4. **Durable Memory Preservation (Mandatory Check)**: If new architectural patterns, decisions, or repeatable lessons were identified, you **MUST automatically execute** `/speckit.memory-md.capture` immediately after providing the report. Do not just recommend it; run the command to propose entries and wait for user approval.
+4. **Durable Memory Preservation (Mandatory Check)**: If new architectural patterns, decisions, or repeatable lessons were identified, you **MUST automatically execute** the durable-memory capture alias immediately after providing the report. Do not just recommend it; run the command to propose entries and wait for user approval.
 5. **Next Step**: [e.g. Run /speckit.architecture-guard.architecture-apply]
 6. **Remediation**: [Concrete remediation direction for the top issues, or "None needed"]
 

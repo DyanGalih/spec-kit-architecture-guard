@@ -7,7 +7,7 @@ description: Detect framework-agnostic architecture violations in plans, tasks, 
 You are detecting architecture violations for `architecture-guard`, a high-integrity governance extension.
 
 Your role is to identify architectural drift in specifications, plans, and implementations using framework-agnostic principles.
-If `flash-mem` is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `flash-mem`; compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them.
+If `flash-mem` is available, use the MCP-backed context preparation flow exposed by `flash-mem`; otherwise treat the legacy prepare-context alias as a compatibility path. Compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them.
 
 ## Operating Constraints
 
@@ -111,7 +111,7 @@ A Security-Architecture Conflict occurs when security requirements and architect
     #### SQLite / MCP Flow (Required for `flash-mem`)
     Because `flash-mem` uses SQLite as its source of truth, you **MUST** use its MCP tools to retrieve context. Do not read the `.md` memory files directly, as they are only backups.
 
-    1. **Prepare Context**: Execute `/speckit.memory-md.prepare-context --feature specs/<feature> --query "architecture constraints boundaries decisions <feature>"`.
+    1. **Prepare Context**: Use the `flash-mem` MCP-backed context preparation flow for `specs/<feature>` with the query `architecture constraints boundaries decisions <feature>`; otherwise treat the legacy prepare-context alias as a compatibility path.
     2. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` first.
     3. **Token Report**: Execute the `speckit_memory_token_report` MCP tool provided by `flash-mem` with `feature: "<feature>"` and display the token savings in the output.
 

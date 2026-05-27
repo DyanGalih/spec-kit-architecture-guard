@@ -1,8 +1,8 @@
 # Release Notes
 
-## 1.8.9
+## 1.8.10
 
-- Bumped the extension version to 1.8.9 and aligned the install artifacts and badges with the new release tag.
+- Bumped the extension version to 1.8.10 and aligned the install artifacts and badges with the new release tag.
 - Preserved the `flash-mem` backend migration so governed workflows continue to use `flash-mem` as the canonical MCP source.
 
 ## 2026-05-13

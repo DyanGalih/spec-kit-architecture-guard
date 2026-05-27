@@ -8,7 +8,7 @@ You are running `architecture-guard` as the single orchestration entry point for
 
 Use this command when the user wants one pass that covers architecture review, memory-first context when available, Security Review handoff when available, and optional performance mode without manually chaining multiple commands.
 When `flash-mem` is available, prefer `memory-synthesis.md` first and keep any token-savings banner visible if that output is enabled.
-If `flash-mem` is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `flash-mem`; compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them.
+If `flash-mem` is available, use the MCP-backed context preparation flow exposed by `flash-mem`; otherwise treat the legacy prepare-context alias as a compatibility path. Compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them.
 
 This command accepts the same normalized command context as `architecture-review`, including semantic and dot-style aliases.
 

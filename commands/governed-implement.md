@@ -8,7 +8,7 @@ You are orchestrating the `governed-implement` workflow for `architecture-guard`
 
 This command coordinates implementation and post-implementation review to ensure the output respects architectural, historical, and security constraints.
 The orchestrator should be memory-first: load the synthesis and active watchpoints before coding, then fall back to targeted reads only when the synthesis is insufficient.
-If `flash-mem` is available, use `/speckit.memory-md.prepare-context` or the MCP tools exposed by `flash-mem`; compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them.
+If `flash-mem` is available, use the MCP-backed context preparation flow exposed by `flash-mem`; otherwise treat the legacy prepare-context alias as a compatibility path. Compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them.
 
 ## Goal
 
@@ -38,7 +38,7 @@ IF `flash-mem` is available:
 #### SQLite / MCP Flow (Required for `flash-mem`)
 Because `flash-mem` uses SQLite as its source of truth, you **MUST** use its MCP tools to retrieve context. Do not read the `.md` memory files directly, as they are only backups.
 
-1. **Prepare Context**: Execute `/speckit.memory-md.prepare-context --feature specs/<feature> --query "architecture decisions implementation pitfalls constraints <feature>"`.
+    1. **Prepare Context**: Use the `flash-mem` MCP-backed context preparation flow for `specs/<feature>` with the query `architecture decisions implementation pitfalls constraints <feature>`; otherwise treat the legacy prepare-context alias as a compatibility path.
 2. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` first.
 3. If `flash-mem` emits a token banner, keep it visible so the savings remain observable during normal implementation runs.
 4. **Token Report**: Execute the `speckit_memory_token_report` MCP tool provided by `flash-mem` with `feature: "<feature>"` and display the token savings in the summary.
@@ -46,11 +46,11 @@ Because `flash-mem` uses SQLite as its source of truth, you **MUST** use its MCP
 #### Markdown-Only Flow (Fallback)
 If `flash-mem` is unavailable, use the standard synthesis command:
 
-1. **Execute Synthesis**: Run `/speckit.memory-md.plan-with-memory` to synthesize and refresh `specs/<feature>/memory-synthesis.md`.
+1. **Execute Synthesis**: Run the legacy markdown-only fallback synthesis alias to synthesize and refresh `specs/<feature>/memory-synthesis.md`.
 
 **[OPTIONAL SUB-AGENT DELEGATION]**
 - If `flash-mem` has ≥ 20 decision documents: Consider sub-agent for synthesis
-- Sub-agent command: `/speckit.memory-md.plan-with-memory`
+- Sub-agent command: Use the memory synthesis sub-agent; the markdown-only fallback alias is only relevant when `flash-mem` is unavailable.
 - Sub-agent benefits: Faster traversal, better filtering, detailed synthesis
 - LLM decides: Inline for quick decisions, sub-agent for complex memory
 
@@ -127,7 +127,7 @@ IF architecture violations exist:
 ### Step 7 — Proactive Durable Memory Preservation
 
 If the implementation review or security audit identified new architectural patterns, critical decisions, or repeatable lessons:
-1. **Proactive Execution**: You **MUST automatically execute** `/speckit.memory-md.capture` as the final part of this turn. Do not just recommend it; run the command.
+1. **Proactive Execution**: You **MUST automatically execute** the durable-memory capture alias as the final part of this turn. Do not just recommend it; run the command.
 2. **Standard**: Use the formal capture flow to propose entries and wait for user approval. Do not ask the user if they want to capture; identify the lessons and trigger the command immediately after the summary.
 
 ### Step 8 — Implementation Governance Summary
