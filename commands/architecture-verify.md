@@ -86,6 +86,6 @@ For each task in `tasks.md`:
 ### Action Plan
 1. **Critical Gaps**: Address missing implementation for tasks [IDs] immediately.
 2. **Architecture Alignment**: Resolve boundary violations in [Files] using suggested refactor tasks.
-3. **Completion**: If all CRITICAL/HIGH are resolved, you **MUST automatically execute** the durable-memory capture alias to preserve lessons. Do not just recommend it; run the command.
+3. **Completion**: If all CRITICAL/HIGH are resolved, you **MUST automatically execute** the durable-memory capture alias to preserve lessons. Do not just recommend it; let the formal capture flow propose entries and request user approval.
 
 **Next Step**: [e.g. "Run `/speckit.architecture-guard.architecture-apply` to fix V2"]

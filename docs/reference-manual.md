@@ -150,7 +150,7 @@ optimizer:
 ### Benefits
 
 - targeted retrieval: only reads architectural decisions relevant to the current feature
-- self-learning: reviews conclude with a recommendation to run the durable-memory capture alias
+- self-learning: reviews trigger the durable-memory capture alias, and the formal capture flow proposes entries and requests user approval
 - lower latency: reduces context window bloat by avoiding massive markdown file reads
 
 | `governed-plan` | Orchestration | Plan with `flash-mem` synthesis first + security + architecture | Use when `flash-mem` and Security Review are installed |
@@ -173,7 +173,7 @@ specify extension add architecture-guard
 
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.10.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.11.zip
 ```
 
 ### Global Preset Usage
@@ -187,7 +187,7 @@ If you manage multiple projects using the same framework (e.g., Laravel), you ca
 
 ```bash
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.10.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.11.zip
 ```
 
 ### From a Local Developer Artifact
@@ -200,5 +200,5 @@ specify extension add architecture-guard --dev /path/to/spec-kit-architecture-gu
 
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.10.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.11.zip
 ```

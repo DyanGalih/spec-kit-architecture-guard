@@ -100,7 +100,7 @@ It MUST convert architecture findings into:
 
 If the task generation or security review identified new architectural lessons or reusable patterns:
 1. **Proactive Execution**: You **MUST automatically execute** the durable-memory capture alias as the final part of this turn. Do not just recommend it; run the command.
-2. **Standard**: Use the formal capture flow to propose entries and wait for user approval.
+2. **Standard**: Do not silently write memory outside the capture flow; let the formal capture flow propose entries and handle user approval.
 
 ### Step 7 — Task Governance Summary
 

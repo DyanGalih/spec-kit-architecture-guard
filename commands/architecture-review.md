@@ -302,7 +302,7 @@ Findings that correlate with architecture concerns:
 1. **Critical Fixes**: Address Constitution and Security violations first.
 2. **Architecture Alignment**: Resolve boundary erosion and contract mismatches.
 3. **Code Quality**: Address SonarLint findings that map to architectural concerns (if any).
-4. **Durable Memory Preservation (Mandatory Check)**: If new architectural patterns, decisions, or repeatable lessons were identified, you **MUST automatically execute** the durable-memory capture alias immediately after providing the report. Do not just recommend it; run the command to propose entries and wait for user approval.
+4. **Durable Memory Preservation (Mandatory Check)**: If new architectural patterns, decisions, or repeatable lessons were identified, you **MUST automatically execute** the durable-memory capture alias immediately after providing the report. Do not just recommend it; let the formal capture flow propose entries and request user approval.
 5. **Next Step**: [e.g. Run /speckit.architecture-guard.architecture-apply]
 6. **Remediation**: [Concrete remediation direction for the top issues, or "None needed"]
 

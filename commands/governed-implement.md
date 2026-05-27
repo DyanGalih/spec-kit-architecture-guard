@@ -128,7 +128,7 @@ IF architecture violations exist:
 
 If the implementation review or security audit identified new architectural patterns, critical decisions, or repeatable lessons:
 1. **Proactive Execution**: You **MUST automatically execute** the durable-memory capture alias as the final part of this turn. Do not just recommend it; run the command.
-2. **Standard**: Use the formal capture flow to propose entries and wait for user approval. Do not ask the user if they want to capture; identify the lessons and trigger the command immediately after the summary.
+2. **Standard**: Do not silently write memory outside the capture flow; let the formal capture flow propose entries and handle user approval. Do not ask the user if they want to capture; identify the lessons and trigger the command immediately after the summary.
 
 ### Step 8 — Implementation Governance Summary
 
