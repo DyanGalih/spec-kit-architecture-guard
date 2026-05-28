@@ -822,6 +822,8 @@ Generate or refine:
 * `.specify/memory/architecture_constitution.md`
 * `.specify/memory/security_constitution.md`
 
+If the `flash-mem` MCP server is available, you MUST run the `update_project_summary` tool to reflect any major changes in architecture, boundaries, or governance rules in the project summary.
+
 ---
 
 ## `.specify/memory/constitution.md` Structure
