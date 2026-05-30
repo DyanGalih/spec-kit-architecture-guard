@@ -1,5 +1,9 @@
 # Release Notes
 
+## 1.8.13
+
+- Bumped the extension version to 1.8.13 and aligned the install artifacts and badges with the new release tag.
+
 ## 1.8.12
 
 - Made the `update_project_summary` execution in the architecture init command conditional upon `flash-mem` availability to ensure backward compatibility.
