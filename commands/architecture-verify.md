@@ -57,6 +57,10 @@ Build internal representations:
 - **Rule Check**: Does the implementation violate any "MUST" rules in the `architecture_constitution.md`?
 - **Pattern Match**: Does the code follow the mandated architectural patterns (e.g., DTOs, Repositories, Events)?
 
+#### D. Security Review on Implementation
+- If `spec-kit-security-review` is available, run `/speckit.security-review.branch` against the verified implementation.
+- If security findings are architecture-relevant, classify them as `Security-Architecture Conflict`.
+
 ### 4. Severity Assignment
 
 - **CRITICAL**: Task marked done but implementation is missing; Constitution "MUST" violation; Boundary bypass (e.g., direct DB access from UI).

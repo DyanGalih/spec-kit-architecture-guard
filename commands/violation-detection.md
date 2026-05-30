@@ -155,6 +155,10 @@ Violations:
 - None detected
 ```
 
+## Next Step
+
+Feed detected violations to `/speckit.architecture-guard.refactor-generator` so they can be converted into actionable refactor tasks.
+
 ## Framework Preset Guidance
 
 If framework preset guidance exists, use it to map the Generic Architecture Model to framework primitives and detect stack-specific anti-patterns.

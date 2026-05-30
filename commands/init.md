@@ -18,6 +18,12 @@ This command generates or refines:
 * `.specify/memory/architecture_constitution.md`
 * `.specify/memory/security_constitution.md`
 
+## Workflow Integration
+
+Run this command once per project or whenever the constitution files need refinement. If the constitution files already exist, refine them instead of starting over.
+
+After init, the usual next step is `/speckit.architecture-guard.governed-plan` or `/speckit.architecture-guard.governed-tasks`, depending on whether the team wants planning or task generation next.
+
 When the project uses the active memory backend, `flash-mem` is the source of truth for Spec Kit memory workflows. The legacy `memory-hub` name is reference-only and should not be treated as the runtime backend.
 
 The goal is NOT to generate generic best practices.
