@@ -18,3 +18,8 @@ Thumbs.db
 _agents/
 _agent/
 .flash-mem/
+
+.codex/
+.github/copilot-instructions.md
+AGENT.md
+ANTIGRAVITY.md
