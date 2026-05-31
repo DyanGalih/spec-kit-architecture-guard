@@ -7,13 +7,42 @@ description: Run implementation with memory context, then review the produced im
 You are orchestrating the `governed-implement` workflow for `architecture-guard`.
 
 This command coordinates implementation and post-implementation review to ensure the output respects architectural, historical, and security constraints.
-The orchestrator should be memory-first: load the synthesis and active watchpoints before coding, then fall back to targeted reads only when the synthesis is insufficient.
-If `flash-mem` is available, use the MCP-backed context preparation flow exposed by `flash-mem`; otherwise treat the legacy prepare-context alias as a compatibility path. Compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them.
+
+## Flash-Mem Architecture Context Retrieval
+
+If Flash-Mem is available, use the following retrieval workflow before performing architecture analysis:
+
+1. Search Flash-Mem for relevant architecture context:
+   - architecture decisions
+   - ADRs
+   - design constraints
+   - coding conventions
+   - prior guard findings
+   - approved exceptions
+   - architectural patterns
+2. Prefer summary-first retrieval:
+   - use summaries
+   - use metadata
+   - use confidence
+   - use tags
+   - use related files
+3. Load full memory content only when summaries are insufficient.
+4. Reuse approved architectural decisions whenever possible.
+5. Flag conflicts between proposed changes and existing architectural decisions.
+6. After analysis, store durable architecture knowledge back into Flash-Mem:
+   - new architecture decisions
+   - approved exceptions
+   - recurring violations
+   - architectural constraints
+   - project conventions
+   - validated design patterns
+
+If Flash-Mem is not available, skip this retrieval block and continue with the repository artifacts and constitutions available in the workspace.
 
 ## Goal
 
 Provide a single command that ensures:
-1. Implementation is historical-context aware (`flash-mem`).
+1. Implementation is historical-context aware when Flash-Mem is available.
 2. Implementation is performed (`/speckit.implement`).
 3. The output is reviewed for security vulnerabilities (Security Review).
 4. The output is reviewed for architectural drift (Architecture Guard).
@@ -31,26 +60,15 @@ Check for the existence of:
 2. Fall back to checking for the extension directory in `.specify/extensions/` only if the YAML is missing or the list is empty.
 3. If they are missing from both, degrade gracefully by skipping their respective steps.
 
-### Step 2 — Memory Synthesis (Optional)
+### Step 2 — Flash-Mem Context Retrieval (Optional)
 
-IF `flash-mem` is available:
+If Flash-Mem is available, use the retrieval workflow above to gather the most relevant architectural context before implementation. Prefer summary-first context and only expand further when needed.
 
-#### SQLite / MCP Flow (Required for `flash-mem`)
-Because `flash-mem` uses SQLite as its source of truth, you **MUST** use its MCP tools to retrieve context. Do not read the `.md` memory files directly, as they are only backups.
-
-    1. **Prepare Context**: Use the `flash-mem` MCP-backed context preparation flow for `specs/<feature>` with the query `architecture decisions implementation pitfalls constraints <feature>`; otherwise treat the legacy prepare-context alias as a compatibility path.
-2. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` first.
-3. If `flash-mem` emits a token banner, keep it visible so the savings remain observable during normal implementation runs.
-4. **Token Report**: Execute the `speckit_memory_token_report` MCP tool provided by `flash-mem` with `feature: "<feature>"` and display the token savings in the summary.
-
-#### Markdown-Only Flow (Fallback)
-If `flash-mem` is unavailable, use the standard synthesis command:
-
-1. **Execute Synthesis**: Run the legacy markdown-only fallback synthesis alias to synthesize and refresh `specs/<feature>/memory-synthesis.md`.
+If Flash-Mem is unavailable, continue with the repository artifacts and constitutions available in the workspace.
 
 **[OPTIONAL SUB-AGENT DELEGATION]**
-- If `flash-mem` has ≥ 20 decision documents: Consider sub-agent for synthesis
-- Sub-agent command: Use the memory synthesis sub-agent; the markdown-only fallback alias is only relevant when `flash-mem` is unavailable.
+- If the available Flash-Mem context is large or highly branched: Consider sub-agent support for synthesis
+- Sub-agent command: Use the memory synthesis sub-agent when the context is too broad for inline synthesis.
 - Sub-agent benefits: Faster traversal, better filtering, detailed synthesis
 - LLM decides: Inline for quick decisions, sub-agent for complex memory
 
@@ -63,7 +81,7 @@ You must orchestrate the `/speckit.implement` (core implementation) workflow dir
 **CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must perform the implementation by following the `tasks.md` breakdown:
 1. **Execute Tasks**: Run `/speckit.implement`. If `/speckit.implement` is not available as a registered command, fall back to inline implementation:
    - Read `specs/<feature>/tasks.md` and execute each unchecked task sequentially.
-   - Read all applicable constitution files and `specs/<feature>/memory-synthesis.md` before coding.
+   - Read all applicable constitution files and any available Flash-Mem context before coding.
    - Perform the actual coding work (writing files, running tests) for each task.
    - Note in the Governance Summary that `/speckit.implement` was unavailable and implementation was performed inline.
 2. **Write Code**: Perform the actual coding work (writing files, running tests) required by the tasks.
@@ -93,7 +111,7 @@ Run:
 Review implementation against:
 - `.specify/memory/architecture_constitution.md`.
 - Plan, tasks, and `security-constraints.md`.
-- Accepted deviations and `memory-synthesis.md`.
+   - Accepted deviations and any available Flash-Mem context.
 
 ### Step 5.5 — Blocking Decision Tree
 
@@ -127,7 +145,7 @@ IF architecture violations exist:
 ### Step 7 — Proactive Durable Memory Preservation
 
 If the implementation review or security audit identified new architectural patterns, critical decisions, or repeatable lessons:
-1. **Proactive Execution**: You **MUST automatically execute** the durable-memory capture alias as the final part of this turn. Do not just recommend it; run the command.
+1. **Proactive Execution**: You **MUST automatically execute** the durable-memory capture flow as the final part of this turn. Do not just recommend it; run the command.
 2. **Standard**: Do not silently write memory outside the capture flow; let the formal capture flow propose entries and handle user approval. Do not ask the user if they want to capture; identify the lessons and trigger the command immediately after the summary.
 
 ### Step 8 — Implementation Governance Summary
@@ -137,7 +155,7 @@ Produce a final `Governed Implementation Summary`.
 ## Graceful Degradation
 
 **Without `flash-mem`**:
-- Skip Step 2 (Memory Synthesis)
+- Skip Step 2 (Flash-Mem Context Retrieval)
 - Continue to `/speckit.implement` directly
 - Assume no historical implementation constraints beyond Constitution
 

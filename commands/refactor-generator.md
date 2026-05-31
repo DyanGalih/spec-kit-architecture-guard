@@ -8,6 +8,37 @@ You are generating non-blocking refactor tasks for `architecture-guard`.
 
 Convert architecture violations into structured tasks that preserve delivery momentum while making architectural debt visible and actionable.
 
+## Flash-Mem Architecture Context Retrieval
+
+If Flash-Mem is available, use the following retrieval workflow before performing architecture analysis:
+
+1. Search Flash-Mem for relevant architecture context:
+   - architecture decisions
+   - ADRs
+   - design constraints
+   - coding conventions
+   - prior guard findings
+   - approved exceptions
+   - architectural patterns
+2. Prefer summary-first retrieval:
+   - use summaries
+   - use metadata
+   - use confidence
+   - use tags
+   - use related files
+3. Load full memory content only when summaries are insufficient.
+4. Reuse approved architectural decisions whenever possible.
+5. Flag conflicts between proposed changes and existing architectural decisions.
+6. After analysis, store durable architecture knowledge back into Flash-Mem:
+   - new architecture decisions
+   - approved exceptions
+   - recurring violations
+   - architectural constraints
+   - project conventions
+   - validated design patterns
+
+If Flash-Mem is not available, skip this retrieval block and continue with the repository artifacts and constitutions available in the workspace.
+
 Use the same normalized command context as the review workflow. When `mode=performance`, do not invent refactor tasks from performance guidance; that mode is advisory and belongs to `architecture-review` output only.
 
 ## Command Normalization

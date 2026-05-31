@@ -8,8 +8,37 @@ scripts:
 # Architecture Review Command
 
 You are running `architecture-guard`, a framework-agnostic architecture review extension designed for high-integrity governance.
-When `flash-mem` is available, treat `memory-synthesis.md` as the first context source, and keep any token-savings banner visible if the surrounding workflow emits one.
-If `flash-mem` is available, use the MCP-backed context preparation flow exposed by `flash-mem`; otherwise treat the legacy prepare-context alias as a compatibility path. Compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them.
+
+## Flash-Mem Architecture Context Retrieval
+
+If Flash-Mem is available, use the following retrieval workflow before performing architecture analysis:
+
+1. Search Flash-Mem for relevant architecture context:
+   - architecture decisions
+   - ADRs
+   - design constraints
+   - coding conventions
+   - prior guard findings
+   - approved exceptions
+   - architectural patterns
+2. Prefer summary-first retrieval:
+   - use summaries
+   - use metadata
+   - use confidence
+   - use tags
+   - use related files
+3. Load full memory content only when summaries are insufficient.
+4. Reuse approved architectural decisions whenever possible.
+5. Flag conflicts between proposed changes and existing architectural decisions.
+6. After analysis, store durable architecture knowledge back into Flash-Mem:
+   - new architecture decisions
+   - approved exceptions
+   - recurring violations
+   - architectural constraints
+   - project conventions
+   - validated design patterns
+
+If Flash-Mem is not available, skip this retrieval block and continue with the repository artifacts and constitutions available in the workspace.
 
 ## Operating Constraints
 
@@ -85,25 +114,11 @@ Review any available artifacts from these common locations. **IMPORTANT**: You M
 2. **Architecture Constitution**:
     - `.specify/memory/architecture_constitution.md`
 
-3. **flash-mem Optimizer (Recommended)**:
+3. **Flash-Mem Context Retrieval**:
 
-    #### SQLite / MCP Flow (Required for `flash-mem`)
-    Because `flash-mem` uses SQLite as its source of truth, you **MUST** use its MCP tools to retrieve context. Do not read the `.md` memory files directly, as they are only backups.
+   When Flash-Mem is available, use the retrieval workflow above to gather the most relevant architecture context before judging the implementation. Prefer summary-first context and only expand further when needed.
 
-    1. **Prepare Context**: Use the `flash-mem` MCP-backed context preparation flow for `specs/<feature>` with the query `architecture constraints boundaries dependencies coupling abstractions`; otherwise treat the legacy prepare-context alias as a compatibility path.
-    2. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` to identify the "Why" behind the current design.
-    3. **Token Report**: Execute the `speckit_memory_token_report` MCP tool provided by `flash-mem` with `feature: "<feature>"` and display the token savings in the report.
-
-    #### Markdown-Only Flow (Fallback)
-    If `flash-mem` is unavailable, you **MUST** read these files explicitly using your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
-
-    - `docs/memory/INDEX.md` (Read this first to identify relevant source sections)
-    - `docs/memory/` for durable repository memory (Read only the sections identified in the index)
-    - `.specify/memory/` for project-wide architecture rules and standards
-    - `specs/<feature>/memory.md` for active feature memory
-    - `specs/<feature>/memory-synthesis.md` for the concise working summary
-    - `specs/<feature>/security-constraints.md` for security boundaries
-    - `.github/copilot-instructions.md` for repo-scoped Copilot guidance
+   If Flash-Mem is unavailable, continue with the repository artifacts and constitutions available in the workspace.
 
 4. **Implementation Context**:
     - `spec.md`, `plan.md`, `tasks.md`, `data-model.md`
@@ -303,7 +318,7 @@ Findings that correlate with architecture concerns:
 1. **Critical Fixes**: Address Constitution and Security violations first.
 2. **Architecture Alignment**: Resolve boundary erosion and contract mismatches.
 3. **Code Quality**: Address SonarLint findings that map to architectural concerns (if any).
-4. **Durable Memory Preservation (Mandatory Check)**: If new architectural patterns, decisions, or repeatable lessons were identified, you **MUST automatically execute** the durable-memory capture alias immediately after providing the report. Do not just recommend it; let the formal capture flow propose entries and request user approval.
+4. **Durable Memory Preservation (Mandatory Check)**: If new architectural patterns, decisions, or repeatable lessons were identified, you **MUST automatically execute** the durable-memory capture flow immediately after providing the report. Do not just recommend it; let the formal capture flow propose entries and request user approval.
 5. **Next Step**: [e.g. Run `/speckit.security-review.branch` for security-first findings, or `/speckit.architecture-guard.architecture-apply` for architecture fixes]
 6. **Remediation**: [Concrete remediation direction for the top issues, or "None needed"]
 

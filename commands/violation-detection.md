@@ -7,7 +7,37 @@ description: Detect framework-agnostic architecture violations in plans, tasks, 
 You are detecting architecture violations for `architecture-guard`, a high-integrity governance extension.
 
 Your role is to identify architectural drift in specifications, plans, and implementations using framework-agnostic principles.
-If `flash-mem` is available, use the MCP-backed context preparation flow exposed by `flash-mem`; otherwise treat the legacy prepare-context alias as a compatibility path. Compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them.
+
+## Flash-Mem Architecture Context Retrieval
+
+If Flash-Mem is available, use the following retrieval workflow before performing architecture analysis:
+
+1. Search Flash-Mem for relevant architecture context:
+   - architecture decisions
+   - ADRs
+   - design constraints
+   - coding conventions
+   - prior guard findings
+   - approved exceptions
+   - architectural patterns
+2. Prefer summary-first retrieval:
+   - use summaries
+   - use metadata
+   - use confidence
+   - use tags
+   - use related files
+3. Load full memory content only when summaries are insufficient.
+4. Reuse approved architectural decisions whenever possible.
+5. Flag conflicts between proposed changes and existing architectural decisions.
+6. After analysis, store durable architecture knowledge back into Flash-Mem:
+   - new architecture decisions
+   - approved exceptions
+   - recurring violations
+   - architectural constraints
+   - project conventions
+   - validated design patterns
+
+If Flash-Mem is not available, skip this retrieval block and continue with the repository artifacts and constitutions available in the workspace.
 
 ## Operating Constraints
 
@@ -108,22 +138,10 @@ A Security-Architecture Conflict occurs when security requirements and architect
 
 1. **Model Context**: Load artifacts and build the Semantic Models.
 
-    #### SQLite / MCP Flow (Required for `flash-mem`)
-    Because `flash-mem` uses SQLite as its source of truth, you **MUST** use its MCP tools to retrieve context. Do not read the `.md` memory files directly, as they are only backups.
+    #### Flash-Mem Context Retrieval
+    When Flash-Mem is available, use the retrieval workflow above to gather the most relevant architecture context before judging violations. Prefer summary-first context and only expand further when needed.
 
-    1. **Prepare Context**: Use the `flash-mem` MCP-backed context preparation flow for `specs/<feature>` with the query `architecture constraints boundaries decisions <feature>`; otherwise treat the legacy prepare-context alias as a compatibility path.
-    2. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` first.
-    3. **Token Report**: Execute the `speckit_memory_token_report` MCP tool provided by `flash-mem` with `feature: "<feature>"` and display the token savings in the output.
-
-    #### Markdown-Only Flow (Fallback)
-    If `flash-mem` is unavailable, you **MUST** read these files explicitly using your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
-
-    - `.specify/memory/constitution.md`
-    - `.specify/memory/architecture_constitution.md`
-    - `.specify/memory/security_constitution.md`
-    - `specs/<feature>/security-constraints.md`
-    - `specs/<feature>/memory-synthesis.md`
-    - `spec.md`, `plan.md`, `tasks.md`, `data-model.md`
+    If Flash-Mem is unavailable, continue with the repository artifacts and constitutions available in the workspace.
 2. **Verify Evidence**: Check if task-referenced files exist and contain expected implementation logic.
 3. **Analyze Alignment**: Compare `spec.md` intent vs. `plan.md` architecture vs. actual behavior.
 4. **Scan Principles**: Apply detection scope across boundaries and contracts.

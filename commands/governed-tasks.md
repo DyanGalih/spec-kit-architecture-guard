@@ -7,13 +7,42 @@ description: Generate or validate implementation tasks with memory context, secu
 You are orchestrating the `governed-tasks` workflow for `architecture-guard`.
 
 This command coordinates multiple extensions to ensure the task list respects architectural, historical, and security constraints before implementation begins.
-The orchestrator should be memory-first: reuse the current synthesis before reopening the full memory set, and only refresh the cache when the plan or feature scope changed.
-If `flash-mem` is available, use the MCP-backed context preparation flow exposed by `flash-mem`; otherwise treat the legacy prepare-context alias as a compatibility path. Compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them.
+
+## Flash-Mem Architecture Context Retrieval
+
+If Flash-Mem is available, use the following retrieval workflow before performing architecture analysis:
+
+1. Search Flash-Mem for relevant architecture context:
+   - architecture decisions
+   - ADRs
+   - design constraints
+   - coding conventions
+   - prior guard findings
+   - approved exceptions
+   - architectural patterns
+2. Prefer summary-first retrieval:
+   - use summaries
+   - use metadata
+   - use confidence
+   - use tags
+   - use related files
+3. Load full memory content only when summaries are insufficient.
+4. Reuse approved architectural decisions whenever possible.
+5. Flag conflicts between proposed changes and existing architectural decisions.
+6. After analysis, store durable architecture knowledge back into Flash-Mem:
+   - new architecture decisions
+   - approved exceptions
+   - recurring violations
+   - architectural constraints
+   - project conventions
+   - validated design patterns
+
+If Flash-Mem is not available, skip this retrieval block and continue with the repository artifacts and constitutions available in the workspace.
 
 ## Goal
 
 Provide a single command that ensures:
-1. Implementation tasks are historical-context aware (`flash-mem`).
+1. Implementation tasks are historical-context aware when Flash-Mem is available.
 2. A task list is generated or validated (`/speckit.tasks`).
 3. Security requirements are represented in tasks (Security Review).
 4. Architecture refactors or migrations are represented in tasks (Architecture Guard).
@@ -31,26 +60,15 @@ Check for the existence of:
 2. Fall back to checking for the extension directory in `.specify/extensions/` only if the YAML is missing or the list is empty.
 3. If they are missing from both, degrade gracefully by skipping their respective steps.
 
-### Step 2 — Memory Synthesis (Optional)
+### Step 2 — Flash-Mem Context Retrieval (Optional)
 
-IF `flash-mem` is available:
+If Flash-Mem is available, use the retrieval workflow above to gather the most relevant architectural context before task generation. Prefer summary-first context and only expand further when needed.
 
-#### SQLite / MCP Flow (Required for `flash-mem`)
-Because `flash-mem` uses SQLite as its source of truth, you **MUST** use its MCP tools to retrieve context. Do not read the `.md` memory files directly, as they are only backups.
-
-    1. **Prepare Context**: Use the `flash-mem` MCP-backed context preparation flow for `specs/<feature>` with the query `architecture decisions constraints boundaries <feature>`; otherwise treat the legacy prepare-context alias as a compatibility path.
-2. **Read Synthesis**: Read `specs/<feature>/memory-synthesis.md` to identify constraints.
-3. If `flash-mem` emits a token banner, keep it visible so the savings remain observable during normal task generation runs.
-4. **Token Report**: Execute the `speckit_memory_token_report` MCP tool provided by `flash-mem` with `feature: "<feature>"` and display the token savings in the summary.
-
-#### Markdown-Only Flow (Fallback)
-If `flash-mem` is unavailable, use the standard synthesis command:
-
-1. **Execute Synthesis**: Run the legacy markdown-only fallback synthesis alias to save `specs/<feature>/memory-synthesis.md`.
+If Flash-Mem is unavailable, continue with the repository artifacts and constitutions available in the workspace.
 
 **[OPTIONAL SUB-AGENT DELEGATION]**
-- If `flash-mem` has ≥ 20 decision documents: Consider sub-agent for synthesis
-- Sub-agent command: Use the memory synthesis sub-agent; the markdown-only fallback alias is only relevant when `flash-mem` is unavailable.
+- If the available Flash-Mem context is large or highly branched: Consider sub-agent support for synthesis
+- Sub-agent command: Use the memory synthesis sub-agent when the context is too broad for inline synthesis.
 - Sub-agent benefits: Faster traversal, better filtering, detailed synthesis
 - LLM decides: Inline for quick decisions, sub-agent for complex memory
 
@@ -66,13 +84,13 @@ You must orchestrate the `/speckit.tasks` workflow directly.
    **If `/speckit.tasks` is not available as a registered command** (i.e., the AI agent does not recognize it as a slash command), fall back to inline task generation:
    - Read `specs/<feature>/plan.md` (and `spec.md` if present).
    - Read all applicable constitution files (`.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md`, `.specify/memory/security_constitution.md`).
-   - Read `specs/<feature>/memory-synthesis.md` and `specs/<feature>/security-constraints.md` if available.
+   - Use Flash-Mem context and `specs/<feature>/security-constraints.md` if available.
    - Generate `specs/<feature>/tasks.md` directly, breaking down the plan into implementation-ready tasks with checkbox format.
    - Note in the Governance Summary that `/speckit.tasks` was unavailable and task generation was performed inline.
 
 2. The generated tasks MUST use the Project Constitution documents and feature context. **IMPORTANT**: You MUST read these files explicitly using your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
    - `.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md`, and `.specify/memory/security_constitution.md`.
-   - Also use `specs/<feature>/memory-synthesis.md`, `specs/<feature>/security-constraints.md` (if available).
+   - Also use Flash-Mem context and `specs/<feature>/security-constraints.md` (if available).
 3. Prefer compact, feature-scoped task generation over broad restatements of the full memory set.
 
 ### Step 4 — Security Review on Tasks
@@ -99,7 +117,7 @@ It MUST convert architecture findings into:
 ### Step 6 — Proactive Durable Memory Preservation
 
 If the task generation or security review identified new architectural lessons or reusable patterns:
-1. **Proactive Execution**: You **MUST automatically execute** the durable-memory capture alias as the final part of this turn. Do not just recommend it; run the command.
+1. **Proactive Execution**: You **MUST automatically execute** the durable-memory capture flow as the final part of this turn. Do not just recommend it; run the command.
 2. **Standard**: Do not silently write memory outside the capture flow; let the formal capture flow propose entries and handle user approval.
 
 ### Step 7 — Task Governance Summary
@@ -109,7 +127,7 @@ Produce a final `Governed Tasks Summary` for the user.
 ## Graceful Degradation
 
 **Without `flash-mem`**:
-- Skip Step 2 (Memory Synthesis)
+- Skip Step 2 (Flash-Mem Context Retrieval)
 - Continue to `/speckit.tasks` directly
 - Assume no historical task constraints beyond Constitution
 

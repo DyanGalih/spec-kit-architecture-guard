@@ -8,8 +8,37 @@ scripts:
 # Architecture Verification
 
 Validate that the implementation fulfills all tasks in `tasks.md` while adhering to the defined architecture boundaries and the **Architecture Constitution**. This command acts as a post-implementation gate.
-When `flash-mem` is available, read `memory-synthesis.md` before broader scans so verification stays memory-first.
-If `flash-mem` is available, use the MCP-backed context preparation flow exposed by `flash-mem`; otherwise treat the legacy prepare-context alias as a compatibility path. Compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them.
+
+## Flash-Mem Architecture Context Retrieval
+
+If Flash-Mem is available, use the following retrieval workflow before performing architecture analysis:
+
+1. Search Flash-Mem for relevant architecture context:
+   - architecture decisions
+   - ADRs
+   - design constraints
+   - coding conventions
+   - prior guard findings
+   - approved exceptions
+   - architectural patterns
+2. Prefer summary-first retrieval:
+   - use summaries
+   - use metadata
+   - use confidence
+   - use tags
+   - use related files
+3. Load full memory content only when summaries are insufficient.
+4. Reuse approved architectural decisions whenever possible.
+5. Flag conflicts between proposed changes and existing architectural decisions.
+6. After analysis, store durable architecture knowledge back into Flash-Mem:
+   - new architecture decisions
+   - approved exceptions
+   - recurring violations
+   - architectural constraints
+   - project conventions
+   - validated design patterns
+
+If Flash-Mem is not available, skip this retrieval block and continue with the repository artifacts and constitutions available in the workspace.
 
 ## User Input
 
@@ -90,6 +119,6 @@ For each task in `tasks.md`:
 ### Action Plan
 1. **Critical Gaps**: Address missing implementation for tasks [IDs] immediately.
 2. **Architecture Alignment**: Resolve boundary violations in [Files] using suggested refactor tasks.
-3. **Completion**: If all CRITICAL/HIGH are resolved, you **MUST automatically execute** the durable-memory capture alias to preserve lessons. Do not just recommend it; let the formal capture flow propose entries and request user approval.
+3. **Completion**: If all CRITICAL/HIGH are resolved, you **MUST automatically execute** the durable-memory capture flow to preserve lessons. Do not just recommend it; let the formal capture flow propose entries and request user approval.
 
 **Next Step**: [e.g. "Run `/speckit.architecture-guard.architecture-apply` to fix V2"]
