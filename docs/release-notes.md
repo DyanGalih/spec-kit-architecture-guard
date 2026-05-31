@@ -1,5 +1,9 @@
 # Release Notes
 
+## 1.8.14
+
+- Bumped the extension version to 1.8.14 and aligned the install artifacts and badges with the new release tag.
+
 ## 1.8.13
 
 - Bumped the extension version to 1.8.13 and aligned the install artifacts and badges with the new release tag.
