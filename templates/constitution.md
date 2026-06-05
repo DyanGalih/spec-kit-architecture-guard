@@ -14,8 +14,9 @@
 
 > List the non-negotiable principles that shape engineering decisions.
 
-1. [e.g., Prefer small, reviewable changes over large rewrites.]
-2. [e.g., Decisions with long-term impact must be documented.]
+1. [e.g., DRY (Don't Repeat Yourself): Core business logic and validation rules must reside in a single source of truth.]
+2. [e.g., Prefer small, reviewable changes over large rewrites.]
+3. [e.g., Decisions with long-term impact must be documented.]
 3. [e.g., User-facing behavior must remain traceable to the feature specification.]
 
 ## Security Expectations

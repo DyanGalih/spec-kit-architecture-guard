@@ -61,6 +61,7 @@
 
 > By default, violations are non-blocking. List only rules that must stop release.
 
+- [e.g., P0: Core business logic or validation rules must not be duplicated across modules or layers (DRY violation).]
 - [e.g., P0: No public endpoint may process unvalidated external input.]
 - [e.g., P0: No module may directly access another module's private database tables.]
 
