@@ -24,7 +24,7 @@ Run this command once per project or whenever the constitution files need refine
 
 After init, the usual next step is `/speckit.architecture-guard.governed-plan` or `/speckit.architecture-guard.governed-tasks`, depending on whether the team wants planning or task generation next.
 
-When the project uses the active memory backend, `flash-mem` is the source of truth for Spec Kit memory workflows. The legacy `memory-hub` name is reference-only and should not be treated as the runtime backend.
+When Flash-Mem is available, prefer it first for retrieving prior decisions, summaries, and existing constitution context. The repository files remain the source of truth for constitution content, and the legacy `memory-hub` name is reference-only and should not be treated as the runtime backend. If Flash-Mem is unavailable or the context is incomplete, read the repository files directly and treat them as the canonical source of truth. After refining the constitutions, sync durable summaries and major decisions back into Flash-Mem.
 
 The goal is NOT to generate generic best practices.
 
@@ -828,7 +828,7 @@ Generate or refine:
 * `.specify/memory/architecture_constitution.md`
 * `.specify/memory/security_constitution.md`
 
-If the `flash-mem` MCP server is available, you MUST run the `update_project_summary` tool to reflect any major changes in architecture, boundaries, or governance rules in the project summary.
+If the `flash-mem` MCP server is available, you MUST run the `update_project_summary` tool to reflect any major changes in architecture, boundaries, or governance rules in the project summary. If it is unavailable, rely on the repository files directly and continue without the sync step.
 
 ---
 

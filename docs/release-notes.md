@@ -1,12 +1,19 @@
 # Release Notes
 
+## 1.8.15
+
+- Refined the Flash-Mem-first orchestration wording across governed and architecture prompts.
+- Synced the release artifacts, download links, and badge to `v1.8.15`.
+
 ## 1.8.14
 
-- Bumped the extension version to 1.8.14 and aligned the install artifacts and badges with the new release tag.
+- Enhanced the architecture commands with Flash-Mem context retrieval guidance.
+- Aligned the install artifacts and badge with `v1.8.14`.
 
 ## 1.8.13
 
-- Bumped the extension version to 1.8.13 and aligned the install artifacts and badges with the new release tag.
+- Tightened the architecture workflow handoffs and related orchestration notes.
+- Aligned the install artifacts and badge with `v1.8.13`.
 
 ## 1.8.12
 

@@ -8,9 +8,9 @@ You are orchestrating the `governed-plan` workflow for `architecture-guard`.
 
 This command coordinates multiple extensions to ensure the technical plan respects architectural, historical, and security constraints before implementation begins.
 
-## Flash-Mem Architecture Context Retrieval
+## Flash-Mem-First Architecture Context Retrieval
 
-If Flash-Mem is available, use the following retrieval workflow before performing architecture analysis:
+Try Flash-Mem first: query summary and metadata context before performing architecture analysis.
 
 1. Search Flash-Mem for relevant architecture context:
    - architecture decisions
@@ -37,7 +37,7 @@ If Flash-Mem is available, use the following retrieval workflow before performin
    - project conventions
    - validated design patterns
 
-If Flash-Mem is not available, skip this retrieval block and continue with the repository artifacts and constitutions available in the workspace.
+If Flash-Mem is unavailable or the retrieved summaries are insufficient, continue with the repository artifacts and constitution files available in the workspace.
 
 ## Goal
 
@@ -49,22 +49,22 @@ Provide a single command that ensures:
 
 ## Orchestration Flow
 
-### Step 1 — Detect Optional Extensions
+### Step 1 — Detect Optional Integrations
 
-Check for the existence of:
-- `flash-mem`
-- `spec-kit-security-review`
+Check for the availability of:
+- `flash-mem` MCP server
+- `spec-kit-security-review` extension
 
 **Detection Logic**:
-1. Read `.specify/extensions.yml` and check the `installed` list. If an extension ID is present there, consider it available.
-2. Fall back to checking for the extension directory in `.specify/extensions/` only if the YAML is missing or the list is empty.
-3. If they are missing from both, degrade gracefully by skipping their respective steps.
+1. Detect `flash-mem` as an MCP-backed memory service in the current environment. Do not treat it as a Spec Kit extension or look for it in `.specify/extensions.yml`.
+2. Read `.specify/extensions.yml` and check the `installed` list for `spec-kit-security-review`. Fall back to checking for the extension directory in `.specify/extensions/` only if the YAML is missing or the list is empty.
+3. If either capability is missing, degrade gracefully by skipping only its respective steps.
 
-### Step 2 — Flash-Mem Context Retrieval (Optional)
+### Step 2 — Flash-Mem MCP Context Retrieval (Optional)
 
-If Flash-Mem is available, use the retrieval workflow above to gather the most relevant architectural context before plan generation. Prefer summary-first context and only expand further when needed.
+When Flash-Mem is available, use it first to gather the most relevant architectural context before plan generation. Prefer summary-first context and only expand into repository files when needed.
 
-If Flash-Mem is unavailable, continue with the repository artifacts and constitutions available in the workspace.
+If Flash-Mem is unavailable or the context is insufficient, continue with the repository artifacts and constitution files available in the workspace.
 
 **[OPTIONAL SUB-AGENT DELEGATION]**
 - If the available Flash-Mem context is large or highly branched: Consider sub-agent support for synthesis
@@ -88,9 +88,8 @@ You must orchestrate the `/speckit.plan` workflow directly.
    - Generate `specs/<feature>/plan.md` directly, incorporating all context above.
    - Note in the Governance Summary that `/speckit.plan` was unavailable and planning was performed inline.
 
-2. The planning process must incorporate the Project Constitution documents and memory synthesis. **IMPORTANT**: You MUST read these files explicitly using your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
+2. The planning process must incorporate the Project Constitution documents and memory synthesis. Use Flash-Mem first when available. If Flash-Mem is unavailable or the retrieved context is insufficient, read the constitution files directly with your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
    - `.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md`, and `.specify/memory/security_constitution.md`.
-   - Also use Flash-Mem context when available.
 3. Prefer the cached synthesis and selected index entries over reopening the full durable memory set.
 
 ### Step 4 — Security Review (Optional)
@@ -129,8 +128,8 @@ Produce a final `Governed Planning Summary` for the user.
 
 ## Graceful Degradation
 
-**Without `flash-mem`**:
-- Skip Step 2 (Flash-Mem Context Retrieval)
+**Without Flash-Mem MCP**:
+- Skip Step 2 (Flash-Mem MCP Context Retrieval)
 - Continue to `/speckit.plan` directly
 - Assume no historical architecture constraints beyond Constitution
 - Plan-level review proceeds with Constitution + Architecture Guard only
@@ -142,7 +141,7 @@ Produce a final `Governed Planning Summary` for the user.
 - Plan-level review proceeds with architecture constraints only
 
 **Minimal Viable Workflow** (only Architecture Guard + Spec Kit):
-- Detect optional extensions
+- Detect optional integrations
 - Generate plan via core Spec Kit
 - Validate against Constitution + architecture boundaries
 - Produce summary

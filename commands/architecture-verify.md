@@ -9,9 +9,9 @@ scripts:
 
 Validate that the implementation fulfills all tasks in `tasks.md` while adhering to the defined architecture boundaries and the **Architecture Constitution**. This command acts as a post-implementation gate.
 
-## Flash-Mem Architecture Context Retrieval
+## Flash-Mem-First Architecture Context Retrieval
 
-If Flash-Mem is available, use the following retrieval workflow before performing architecture analysis:
+When Flash-Mem is available, query it first for summary and metadata context before performing architecture analysis:
 
 1. Search Flash-Mem for relevant architecture context:
    - architecture decisions
@@ -38,7 +38,7 @@ If Flash-Mem is available, use the following retrieval workflow before performin
    - project conventions
    - validated design patterns
 
-If Flash-Mem is not available, skip this retrieval block and continue with the repository artifacts and constitutions available in the workspace.
+If Flash-Mem is unavailable or the retrieved summaries are insufficient, continue with the repository artifacts and constitution files available in the workspace.
 
 ## User Input
 

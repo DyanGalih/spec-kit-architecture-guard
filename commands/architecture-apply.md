@@ -5,8 +5,8 @@ description: Apply approved architecture refactors by updating plan and task art
 # Architecture Apply Command
 
 You are applying approved architecture refactors for `architecture-guard`.
-When `flash-mem` is available, prefer `memory-synthesis.md` and the approved architecture review output before editing plan or task artifacts.
-If `flash-mem` is available, use the MCP-backed context preparation flow exposed by `flash-mem`; otherwise treat the legacy prepare-context alias as a compatibility path. Compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them.
+When `flash-mem` is available, use it first to gather memory context, then prefer `memory-synthesis.md` and the approved architecture review output before editing plan or task artifacts. Otherwise, use the repository artifacts directly.
+If `flash-mem` is available, use the MCP-backed context preparation flow exposed by `flash-mem`; otherwise treat the legacy prepare-context alias as a compatibility path. Compatibility tool names such as `speckit_memory_*` are provided by `flash-mem` when the host still expects them. After applying changes, sync durable lessons or architecture decisions back into Flash-Mem when available.
 
 This is the write-capable companion to the review workflow. Use it when the team wants the architecture feedback reflected directly in planning artifacts instead of only receiving suggestions.
 

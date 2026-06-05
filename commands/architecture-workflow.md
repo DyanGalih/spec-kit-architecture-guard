@@ -8,9 +8,9 @@ You are running `architecture-guard` as the single orchestration entry point for
 
 Use this command when the user wants one pass that covers architecture review, memory-first context when available, Security Review handoff when available, and optional performance mode without manually chaining multiple commands.
 
-## Flash-Mem Architecture Context Retrieval
+## Flash-Mem-First Architecture Context Retrieval
 
-If Flash-Mem is available, use the following retrieval workflow before performing architecture analysis:
+Try Flash-Mem first: query summary and metadata context before performing architecture analysis.
 
 1. Search Flash-Mem for relevant architecture context:
    - architecture decisions
@@ -37,13 +37,13 @@ If Flash-Mem is available, use the following retrieval workflow before performin
    - project conventions
    - validated design patterns
 
-If Flash-Mem is not available, skip this retrieval block and continue with the repository artifacts and constitutions available in the workspace.
+If Flash-Mem is unavailable or the retrieved summaries are insufficient, continue with the repository artifacts and constitution files available in the workspace.
 
 This command accepts the same normalized command context as `architecture-review`, including semantic and dot-style aliases.
 
 The workflow is serial and ownership-aware:
 
-1. Read Flash-Mem context first when it is available.
+1. Read Flash-Mem context first when it is available, then fall back to repository files if needed.
 2. Normalize `mode` and `focus` from the incoming command.
 3. Run the architecture review against the Constitution, memory synthesis, and generic architecture principles.
 4. If `mode=performance`, keep the pass advisory and route output to `Performance Insights` only.
@@ -75,7 +75,7 @@ Review any available artifacts from these common locations. **IMPORTANT**: You M
 
 ## Workflow
 
-1. Read Flash-Mem context first if it is available in the project or workflow context.
+1. Read Flash-Mem context first if it is available in the project or workflow context, then fall back to repository files if needed.
 2. Review the current work against the Constitution and generic architecture principles.
 3. Identify whether any finding is primarily security-related.
 4. If a finding is security-related, flag it as a handoff to Security Review rather than treating it as a core architecture finding.

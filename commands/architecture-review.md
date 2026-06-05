@@ -9,9 +9,9 @@ scripts:
 
 You are running `architecture-guard`, a framework-agnostic architecture review extension designed for high-integrity governance.
 
-## Flash-Mem Architecture Context Retrieval
+## Flash-Mem-First Architecture Context Retrieval
 
-If Flash-Mem is available, use the following retrieval workflow before performing architecture analysis:
+Try Flash-Mem first: query summary and metadata context before performing architecture analysis.
 
 1. Search Flash-Mem for relevant architecture context:
    - architecture decisions
@@ -38,7 +38,7 @@ If Flash-Mem is available, use the following retrieval workflow before performin
    - project conventions
    - validated design patterns
 
-If Flash-Mem is not available, skip this retrieval block and continue with the repository artifacts and constitutions available in the workspace.
+If Flash-Mem is unavailable or the retrieved summaries are insufficient, continue with the repository artifacts and constitution files available in the workspace.
 
 ## Operating Constraints
 
@@ -116,9 +116,9 @@ Review any available artifacts from these common locations. **IMPORTANT**: You M
 
 3. **Flash-Mem Context Retrieval**:
 
-   When Flash-Mem is available, use the retrieval workflow above to gather the most relevant architecture context before judging the implementation. Prefer summary-first context and only expand further when needed.
+   Try Flash-Mem first. If the context is incomplete, read the repository constitution files with file-reading tools rather than workspace search alone.
 
-   If Flash-Mem is unavailable, continue with the repository artifacts and constitutions available in the workspace.
+   If Flash-Mem is unavailable or the context is insufficient, continue with the repository artifacts and constitution files available in the workspace.
 
 4. **Implementation Context**:
     - `spec.md`, `plan.md`, `tasks.md`, `data-model.md`
