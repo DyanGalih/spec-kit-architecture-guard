@@ -18,6 +18,8 @@ Architecture Guard primarily validates against:
 .specify/memory/architecture_constitution.md
 ```
 
+See the Quick Start in the README for the brownfield and greenfield entrypoints.
+
 This separation prevents implementation-level architecture rules from polluting broader engineering governance.
 
 ## Non-Blocking Governance

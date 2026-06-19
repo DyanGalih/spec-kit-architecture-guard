@@ -25,12 +25,26 @@ Instead of waiting until code review to notice problems, it checks specs, plans,
 
 ## A simple first workflow
 
+Choose the path that matches your repository.
+
+### Brownfield
+
+1. Install Architecture Guard.
+2. Run `/speckit.architecture-guard.init-brownfield` to understand the existing codebase.
+3. Review the current-state findings.
+4. Run `/speckit.architecture-guard.architecture-review` or `/speckit.architecture-guard.architecture-workflow`.
+5. Review the findings and approve any useful refactors.
+6. Run `/speckit.architecture-guard.architecture-apply` if you want the plan and tasks updated.
+
+### Greenfield
+
 1. Install Architecture Guard.
 2. Run `/speckit.architecture-guard.init` to set up constitutions.
 3. Write or update your spec.
 4. Run `/speckit.architecture-guard.architecture-review` or `/speckit.architecture-guard.architecture-workflow`.
 5. Review the findings and approve any useful refactors.
 6. Run `/speckit.architecture-guard.architecture-apply` if you want the plan and tasks updated.
+
 
 ## What to remember
 

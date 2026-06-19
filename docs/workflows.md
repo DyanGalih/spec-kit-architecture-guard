@@ -48,10 +48,23 @@ memory synthesis -> implement -> security review -> architecture review -> refac
 
 ## Practical Quick Flow
 
+Choose the path that matches the repository state.
+
+### Brownfield
+
 1. Install the extension.
-2. Initialize your constitutions.
-3. Run an architecture review.
-4. Review the findings.
+2. Run `/speckit.architecture-guard.init-brownfield`.
+3. Review the current-state findings.
+4. Run `/speckit.architecture-guard.architecture-workflow`.
+5. Apply approved refactors into plan and task artifacts.
+
+### Greenfield
+
+1. Install the extension.
+2. Run `/speckit.architecture-guard.init`.
+3. Review the constitution output.
+4. Run `/speckit.architecture-guard.architecture-workflow`.
 5. Apply approved refactors into plan and task artifacts.
 
 This keeps architecture concerns visible throughout the delivery lifecycle instead of concentrating them at the end.
+

@@ -22,6 +22,8 @@ This command generates or refines:
 
 Run this command once per project or whenever the constitution files need refinement. If the constitution files already exist, refine them instead of starting over.
 
+See the README quick start for brownfield and greenfield entrypoints.
+
 After init, the usual next step is `/speckit.architecture-guard.governed-plan` or `/speckit.architecture-guard.governed-tasks`, depending on whether the team wants planning or task generation next.
 
 When Flash-Mem is available, prefer it first for retrieving prior decisions, summaries, and existing constitution context. The repository files remain the source of truth for constitution content, and the legacy `memory-hub` name is reference-only and should not be treated as the runtime backend. If Flash-Mem is unavailable or the context is incomplete, read the repository files directly and treat them as the canonical source of truth. After refining the constitutions, sync durable summaries and major decisions back into Flash-Mem.

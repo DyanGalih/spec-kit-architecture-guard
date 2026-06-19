@@ -16,6 +16,8 @@ It reviews specifications, plans, task lists, and implementations against your p
 
 The goal is to make architecture part of the workflow instead of something you only check at review time.
 
+See the Quick Start in the README for the brownfield and greenfield entrypoints.
+
 ## Why It’s Useful
 
 Architecture Guard is helpful because it gives AI a smaller, better set of rules to follow:

@@ -1,5 +1,11 @@
 # Release Notes
 
+## 1.8.17
+
+- Centralized brownfield and greenfield onboarding guidance in the README quick start and trimmed duplicate references across supporting docs.
+- Added and registered the `init-brownfield` command for existing codebases.
+- Bumped the extension version and aligned the release badge and download links to `v1.8.17`.
+
 ## 1.8.15
 
 - Refined the Flash-Mem-first orchestration wording across governed and architecture prompts.

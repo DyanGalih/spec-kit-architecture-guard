@@ -82,25 +82,27 @@ By using explicit markdown files, extensions remain decoupled, and all constrain
 
 ## Quick Start
 
-### 1. Install
+Choose the path that matches the repository state.
+
+### Brownfield Quick Start
+
+Use this path when the repository already contains application code.
+
+1. Install
 
 ```text
 specify extension add architecture-guard
 ```
 
-### 2. Initialize Constitutions
+2. Map the existing codebase
 
 ```text
-/speckit.architecture-guard.init
+/speckit.architecture-guard.init-brownfield
 ```
 
-This creates or updates:
+See the README quick start for the brownfield entrypoint.
 
-- `.specify/memory/constitution.md` - governance and engineering standards
-- `.specify/memory/architecture_constitution.md` - architecture rules and boundaries
-- `.specify/memory/security_constitution.md` - security standards
-
-### 3. Run Architecture Workflow
+3. Run Architecture Workflow
 
 ```text
 /speckit.architecture-guard.architecture-workflow
@@ -113,7 +115,7 @@ Outputs:
 - suggested refactor tasks
 - evolution proposals
 
-### 4. Review Violations and Apply Fixes
+4. Review Violations and Apply Fixes
 
 ```text
 /speckit.architecture-guard.architecture-apply
@@ -121,10 +123,48 @@ Outputs:
 
 This injects refactor tasks into `plan.md` and `tasks.md` so the AI has explicit guidance to fix architectural debt while implementing features.
 
+### Greenfield Quick Start
+
+Use this path when the repository is greenfield.
+
+1. Install
+
+```text
+specify extension add architecture-guard
+```
+
+2. Initialize Constitutions
+
+```text
+/speckit.architecture-guard.init
+```
+
+This creates or updates:
+
+- `.specify/memory/constitution.md` - governance and engineering standards
+- `.specify/memory/architecture_constitution.md` - architecture rules and boundaries
+- `.specify/memory/security_constitution.md` - security standards
+
+3. Run Architecture Workflow
+
+```text
+/speckit.architecture-guard.architecture-workflow
+```
+
+4. Review Violations and Apply Fixes
+
+```text
+/speckit.architecture-guard.architecture-apply
+```
+
+This injects refactor tasks into `plan.md` and `tasks.md` so the AI has explicit guidance to fix architectural debt while implementing features.
+
+
 ## Commands
 
 | Command | Phase | Output | When To Use |
 | --- | --- | --- | --- |
+| `init-brownfield` | Setup | Current-state baseline, app root detection, boundary map, and brownfield notes | When the repository already contains application code and you need to understand the existing system first |
 | `init` | Setup | `.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md`, `.specify/memory/security_constitution.md` | Once at project start; rerun to refine standards |
 | `architecture-workflow` | General Review | Violations, severity and priority, refactor tasks, evolution proposals | Entry point for end-to-end review; good for dashboards |
 | `architecture-review` | Validation | Cached-context alignment status, boundary issues, contract drift | After `/specify`, `/plan`, or `/implement` |
@@ -173,12 +213,12 @@ specify extension add architecture-guard
 
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.15.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.17.zip
 ```
 
 ### Global Preset Usage
 
-If you manage multiple projects using the same framework (e.g., Laravel), you can create a global preset and link it to Architecture Guard when initializing a new project.
+If you manage multiple projects using the same framework (e.g., Laravel), you can create a global preset and link it to Architecture Guard for greenfield setups.
 
 **Example: Global Laravel Preset**
 
@@ -187,7 +227,7 @@ If you manage multiple projects using the same framework (e.g., Laravel), you ca
 
 ```bash
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.15.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.17.zip
 ```
 
 ### From a Local Developer Artifact
@@ -200,5 +240,5 @@ specify extension add architecture-guard --dev /path/to/spec-kit-architecture-gu
 
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.15.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.17.zip
 ```

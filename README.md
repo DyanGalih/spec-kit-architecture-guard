@@ -2,7 +2,7 @@
 
 > Continuous architecture governance for AI-assisted development.
 
-[![Version](https://img.shields.io/badge/version-1.8.15-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.8.17-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Orchestration](https://img.shields.io/badge/role-governance--orchestrator-blue)](https://spec-kit.dev)
@@ -31,32 +31,55 @@ Architecture Guard uses a layered, reviewable workflow to keep architecture deci
 
 ---
 
-## Quick Start in 3 Steps
+## Quick Start
 
-### 1. Install the Extension
+Choose the path that matches your repository state.
 
-**From the Registry (Recommended):**
+### Brownfield Quick Start
+
+Use this when the repository already contains application code.
+
+1. Install the extension
+
 ```text
 specify extension add architecture-guard
 ```
 
-**From a Release Artifact (ZIP):**
+2. Map the existing codebase
+
 ```text
-specify extension add architecture-guard --from https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.15.zip
+/speckit.architecture-guard.init-brownfield
 ```
 
-**From a Local Developer Artifact:**
+3. Run an architecture review
+
 ```text
-specify extension add architecture-guard --dev /path/to/spec-kit-architecture-guard
+/speckit.architecture-guard.architecture-workflow
 ```
 
-### 2. Initialize Your Constitutions
+If violations appear, apply approved refactors:
+
+```text
+/speckit.architecture-guard.architecture-apply
+```
+
+### Greenfield Quick Start
+
+Use this when the repository is greenfield or when you want to define constitutions first.
+
+1. Install the extension
+
+```text
+specify extension add architecture-guard
+```
+
+2. Initialize your constitutions
 
 ```text
 /speckit.architecture-guard.init
 ```
 
-### 3. Run an Architecture Review
+3. Run an architecture review
 
 ```text
 /speckit.architecture-guard.architecture-workflow
@@ -74,6 +97,7 @@ If violations appear, apply approved refactors:
 
 | Command | When To Use | What It Does |
 | :--- | :--- | :--- |
+| **`/speckit.architecture-guard.init-brownfield`** | For existing codebases | Maps the current state, boundaries, and conventions before governance work. |
 | **`/speckit.architecture-guard.init`** | At project setup or when standards change | Creates or refines governance and architecture constitutions. |
 | **`/speckit.architecture-guard.architecture-workflow`** | For an end-to-end review | Reviews specs, plans, tasks, and implementations for drift and refactors. |
 | **`/speckit.architecture-guard.architecture-review`** | After `/specify`, `/plan`, or `/implement` | Checks a spec, plan, or implementation against architecture rules. |
@@ -116,3 +140,8 @@ spec-kit-architecture-guard/
 - **Reviewable in Git**: the rules live in markdown files, not hidden state
 - **Architecture first**: the extension focuses on boundaries, ownership, and drift
 - **Companion-aware**: it can orchestrate other Spec Kit tools without depending on them
+
+## Brownfield init
+
+See the Quick Start above for the brownfield entrypoint.
+
