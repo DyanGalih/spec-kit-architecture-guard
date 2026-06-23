@@ -2,7 +2,7 @@
 
 > Continuous architecture governance for AI-assisted development.
 
-[![Version](https://img.shields.io/badge/version-1.8.17-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.8.18-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Orchestration](https://img.shields.io/badge/role-governance--orchestrator-blue)](https://spec-kit.dev)
@@ -28,6 +28,19 @@ Architecture Guard uses a layered, reviewable workflow to keep architecture deci
 - smaller models get clearer rules to follow
 - architecture checks happen during delivery, not only at review time
 - the same ideas work across Laravel, NestJS, Next.js, Django, and more
+
+---
+
+## Why Use the Governed Workflows?
+
+Instead of running the raw Spec Kit commands (`/speckit.specify`, `/speckit.plan`, `/speckit.tasks`), you should use Architecture Guard's orchestrated commands (`governed-spec`, `governed-plan`, `governed-tasks`).
+
+Using the governed orchestrators simplifies the upper Spec Kit flow by adding automatic layers of safety:
+1. **Context-Aware:** It automatically queries `flash-mem` first to inject historical architectural decisions before generating any new outputs.
+2. **Unified Execution:** A single command runs the core Spec Kit generation (like `/speckit.specify` or `/speckit.tasks`), hands it off to Security Review, and then triggers the Architecture Guard.
+3. **Analyst Auto-Fix Loops:** Rather than finding out your plan violates architecture at the end, the orchestrators use formal analysis (`/speckit.analyze`). If the analyst detects gaps, missing boundaries, or severities, the orchestrator automatically pauses and offers a loop to clarify and repair the artifacts instantly.
+
+This guarantees your specifications and tasks are explicitly validated *before* writing code.
 
 ---
 
@@ -100,6 +113,7 @@ If violations appear, apply approved refactors:
 | **`/speckit.architecture-guard.init-brownfield`** | For existing codebases | Maps the current state, boundaries, and conventions before governance work. |
 | **`/speckit.architecture-guard.init`** | At project setup or when standards change | Creates or refines governance and architecture constitutions. |
 | **`/speckit.architecture-guard.architecture-workflow`** | For an end-to-end review | Reviews specs, plans, tasks, and implementations for drift and refactors. |
+| **`/speckit.architecture-guard.governed-spec`** | Specification Phase | Orchestrates specify and clarify with architecture and memory context validation, plus an auto-fix loop. |
 | **`/speckit.architecture-guard.architecture-review`** | After `/specify`, `/plan`, or `/implement` | Checks a spec, plan, or implementation against architecture rules. |
 | **`/speckit.architecture-guard.refactor-generator`** | After violations are found | Converts violations into structured refactor tasks. |
 | **`/speckit.architecture-guard.architecture-apply`** | When refactors are approved | Injects approved architecture work into plans and tasks. |

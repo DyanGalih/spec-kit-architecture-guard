@@ -46,6 +46,8 @@ Provide a single command that ensures:
 2. A task list is generated or validated (`/speckit.tasks`).
 3. Security requirements are represented in tasks (Security Review).
 4. Architecture refactors or migrations are represented in tasks (Architecture Guard).
+5. The tasks are formally analyzed for gaps and severities (`/speckit.analyze`).
+6. An automatic loop is offered to clarify and revise tasks if gaps are found.
 
 ## Orchestration Flow
 
@@ -114,15 +116,31 @@ It MUST convert architecture findings into:
 - Boundary-level or contract-level corrections.
 - **Prefer module-level tasks** over broad system rewrites.
 
-### Step 6 — Proactive Durable Memory Preservation
+### Step 6 — Orchestrate Spec Kit Analysis
+
+You must orchestrate the `/speckit.analyze` workflow directly to serve as the formal analyst.
+
+1. **Execute Analyze**: Run `/speckit.analyze` on the complete task list and architecture refactors.
+2. **Architecture Validation**: Detect any gaps, missing requirements, or high-severity execution risks present in the implementation plan or task list.
+
+### Step 7 — Proactive Durable Memory Preservation
 
 If the task generation or security review identified new architectural lessons or reusable patterns:
 1. **Proactive Execution**: You **MUST automatically execute** the durable-memory capture flow as the final part of this turn. Do not just recommend it; run the command.
 2. **Standard**: Do not silently write memory outside the capture flow; let the formal capture flow propose entries and handle user approval.
 
-### Step 7 — Task Governance Summary
+### Step 8 — Task Governance Summary
 
 Produce a final `Governed Tasks Summary` for the user.
+
+### Step 9 — Automatic Analyst Loop
+
+If the analyst (`/speckit.analyze`) finds any gaps, missing steps, or high severity issues in Step 6:
+1. **Pause and Ask**: Conclude your response by asking the user:
+   > *"The analyst found [number] gaps/severities in the tasks. Would you like me to automatically clarify and revise the tasks to address these findings?"*
+2. **Execute if Approved**: If the user answers "yes" (or equivalent) in their next message, you must:
+   - Automatically rewrite `specs/<feature>/tasks.md` to resolve the detected gaps.
+   - Present the clean result.
 
 ## Graceful Degradation
 

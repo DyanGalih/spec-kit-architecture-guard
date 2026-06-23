@@ -2,6 +2,25 @@
 
 This document covers the governed planning, task, and implementation flows used by Architecture Guard.
 
+## Governed Specification Workflow
+
+Architecture Guard can orchestrate specification workflows across `flash-mem`, Security Review, and Architecture Guard validation when companion extensions are installed.
+
+The orchestrated workflow is:
+
+1. Memory synthesis: scoped retrieval of historical decisions before broader file reads
+2. Specification generation: Spec Kit spec generation using that synthesis first
+3. Clarification: resolve ambiguities with architecture context in mind
+4. Architecture validation: detect drift and security-architecture conflicts
+5. Governance summary: final overview of architecture and security risks
+6. Interactive Auto-Fix Loop: option to automatically revise the specification if architectural gaps are found
+
+### Example Orchestration
+
+```text
+/speckit.architecture-guard.governed-spec
+```
+
 ## Governed Planning Workflow
 
 Architecture Guard can orchestrate planning workflows across `flash-mem`, Security Review, and Architecture Guard validation when companion extensions are installed.
@@ -26,7 +45,7 @@ Architecture Guard can orchestrate governance checks throughout task generation 
 
 Flow:
 
-memory synthesis -> tasks -> security task review -> architecture refactor generation -> task governance summary
+memory synthesis -> tasks -> security task review -> architecture refactor generation -> analysis -> automatic analyst loop -> task governance summary
 
 ```text
 /speckit.architecture-guard.governed-tasks

@@ -1,5 +1,11 @@
 # Release Notes
 
+## 1.8.18
+
+- Introduced the `governed-spec` orchestrator command. This command fills the gap before the `governed-plan` phase by chaining `speckit.specify` and `speckit.clarify` together.
+- Formalized the `speckit.analyze` Analyst step inside the `governed-tasks` flow, introducing an Automatic Analyst Loop that pauses to repair execution gaps before moving to implementation.
+- Updated README with clearer reasoning on why developers should use the governed orchestration flows.
+
 ## 1.8.17
 
 - Centralized brownfield and greenfield onboarding guidance in the README quick start and trimmed duplicate references across supporting docs.

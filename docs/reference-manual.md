@@ -166,6 +166,7 @@ This injects refactor tasks into `plan.md` and `tasks.md` so the AI has explicit
 | --- | --- | --- | --- |
 | `init-brownfield` | Setup | Current-state baseline, app root detection, boundary map, and brownfield notes | When the repository already contains application code and you need to understand the existing system first |
 | `init` | Setup | `.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md`, `.specify/memory/security_constitution.md` | Once at project start; rerun to refine standards |
+| `governed-spec` | Orchestration | Specification and Clarification with `flash-mem` synthesis first + security + architecture, plus auto-fix loop | Use when `flash-mem` and Security Review are installed to start from specification |
 | `architecture-workflow` | General Review | Violations, severity and priority, refactor tasks, evolution proposals | Entry point for end-to-end review; good for dashboards |
 | `architecture-review` | Validation | Cached-context alignment status, boundary issues, contract drift | After `/specify`, `/plan`, or `/implement` |
 | `violation-detection` | Detection | Drift summary, boundary violations, module coupling | Focus on specific architecture problems |
@@ -193,8 +194,9 @@ optimizer:
 - self-learning: reviews trigger the durable-memory capture alias, and the formal capture flow proposes entries and requests user approval
 - lower latency: reduces context window bloat by avoiding massive markdown file reads
 
+| `governed-spec` | Orchestration | Specification and Clarification with `flash-mem` synthesis first + security + architecture + auto-fix loop | Use when `flash-mem` and Security Review are installed to start from specification |
 | `governed-plan` | Orchestration | Plan with `flash-mem` synthesis first + security + architecture | Use when `flash-mem` and Security Review are installed |
-| `governed-tasks` | Orchestration | Tasks with cached memory context + security + architecture refactors | Use when companion extensions are installed |
+| `governed-tasks` | Orchestration | Tasks and Analysis with cached memory context + security + architecture refactors + auto-fix loop | Use when companion extensions are installed |
 | `governed-implement` | Orchestration | Implementation validation with cached memory governance context | Use for end-to-end implementation with governance |
 
 > Most projects use `architecture-workflow` or `architecture-review` directly. Orchestrator commands (`governed-*`) are advanced and optional when companion extensions are available.
@@ -213,7 +215,7 @@ specify extension add architecture-guard
 
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.17.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.18.zip
 ```
 
 ### Global Preset Usage
@@ -227,7 +229,7 @@ If you manage multiple projects using the same framework (e.g., Laravel), you ca
 
 ```bash
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.17.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.18.zip
 ```
 
 ### From a Local Developer Artifact
@@ -240,5 +242,5 @@ specify extension add architecture-guard --dev /path/to/spec-kit-architecture-gu
 
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.17.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.18.zip
 ```
