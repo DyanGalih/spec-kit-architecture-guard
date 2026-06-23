@@ -1,5 +1,9 @@
 # Release Notes
 
+## 1.8.19
+
+- Clarified installation instructions in the README to explicitly show both the default registry path and the direct artifact URL.
+
 ## 1.8.18
 
 - Introduced the `governed-spec` orchestrator command. This command fills the gap before the `governed-plan` phase by chaining `speckit.specify` and `speckit.clarify` together.
