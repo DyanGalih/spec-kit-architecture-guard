@@ -74,6 +74,7 @@ Use any available:
 Each task must:
 
 - Be non-blocking unless the Constitution explicitly says otherwise.
+- **Ponytail Pragmatism**: Apply the lazy senior developer mindset. Suggest the simplest, most minimal fix possible. Do not over-engineer the refactor. Use standard libraries where possible.
 - Have a clear title.
 - Explain the architectural reason.
 - Define a concrete scope.

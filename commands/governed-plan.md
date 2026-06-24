@@ -79,18 +79,19 @@ If Flash-Mem is unavailable or the context is insufficient, continue with the re
 You must orchestrate the `/speckit.plan` workflow directly.
 
 **CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must actually generate the plan:
-1. **Execute Plan**: Run `/speckit.plan` to generate and save `specs/<feature>/plan.md`.
+1. **Apply Ponytail Pragmatism**: Instruct the agent to act as a "lazy senior developer." The generated plan must prefer standard libraries and native platform features over proposing complex new abstractions. Strictly enforce YAGNI.
+2. **Execute Plan**: Run `/speckit.plan` to generate and save `specs/<feature>/plan.md`.
 
    **If `/speckit.plan` is not available as a registered command** (i.e., the AI agent does not recognize it as a slash command), fall back to inline planning:
    - Read the active spec at `specs/<feature>/spec.md` (or the path provided by the user).
    - Read all applicable constitution files (`.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md`, `.specify/memory/security_constitution.md`).
    - Use Flash-Mem context if available.
-   - Generate `specs/<feature>/plan.md` directly, incorporating all context above.
+   - Generate `specs/<feature>/plan.md` directly, incorporating all context above and enforcing Ponytail minimalism.
    - Note in the Governance Summary that `/speckit.plan` was unavailable and planning was performed inline.
 
-2. The planning process must incorporate the Project Constitution documents and memory synthesis. Use Flash-Mem first when available. If Flash-Mem is unavailable or the retrieved context is insufficient, read the constitution files directly with your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
+3. The planning process must incorporate the Project Constitution documents and memory synthesis. Use Flash-Mem first when available. If Flash-Mem is unavailable or the retrieved context is insufficient, read the constitution files directly with your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
    - `.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md`, and `.specify/memory/security_constitution.md`.
-3. Prefer the cached synthesis and selected index entries over reopening the full durable memory set.
+4. Prefer the cached synthesis and selected index entries over reopening the full durable memory set.
 
 ### Step 4 — Security Review (Optional)
 

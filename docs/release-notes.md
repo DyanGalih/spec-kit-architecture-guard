@@ -1,5 +1,13 @@
 # Release Notes
 
+## 1.9.0
+
+- **Ponytail Pragmatism Integration**: Adopted the Ponytail "lazy senior developer" philosophy natively across all orchestrator commands.
+  - Initialized constitutions now bake in YAGNI and standard library preference.
+  - `governed-implement` enforces writing the absolute minimum code and favors one-line solutions.
+  - `architecture-review` now features a "Ponytail Audit" phase to catch and flag bloat, over-engineering, and unnecessary abstractions.
+  - Specification, planning, and task generation orchestrators strictly enforce minimalism to prevent future-proofing.
+
 ## 1.8.19
 
 - Clarified installation instructions in the README to explicitly show both the default registry path and the direct artifact URL.

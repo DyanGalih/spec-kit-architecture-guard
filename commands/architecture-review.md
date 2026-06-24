@@ -141,6 +141,7 @@ Use these core principles to detect drift:
 - **Stable Abstractions**: Modules should depend on interfaces/abstractions, not internals.
 - **Isolation**: Data access, external APIs, and infrastructure must be isolated.
 - **Consistency**: Comparable endpoints or modules must use compatible patterns.
+- **Ponytail Pragmatism (YAGNI)**: Implementations must be minimal. No over-engineering, unnecessary abstractions, or future-proofing.
 - **Non-Blocking**: Identify drift without converting style preferences into hard failures.
 
 ## Detection Scope
@@ -151,6 +152,7 @@ Detect violations such as:
 - **Boundary Erosion**: Business logic leaking into entry points or UI.
 - **Tight Coupling**: Circular dependencies or cross-module leakage.
 - **Contract Mismatch**: Mismatch between API, UI, or service shapes.
+- **Ponytail Violation (Bloat)**: Code is over-engineered. It includes unnecessary boilerplate, "future-proofing", or bypasses standard library equivalents.
 - **Constitution Breach**: Any conflict with a "MUST" principle in the Constitution.
 
 ## Review Procedure
@@ -164,9 +166,10 @@ Detect violations such as:
   - If `security-constraints.md` or `security_constitution.md` is breached, log it as a critical violation.
   - If a finding is primarily security-related and Security Review is available, route it to `/speckit.security-review.branch` instead of duplicating it here.
   - Cross-reference architecture decisions with security trust boundaries.
-7. **Performance Scan (if mode=performance)**: Skip violations; focus on optimizations.
-7b. **Code Quality Scan (SonarLint)**: If `mode=architecture`, optionally scan for coupling/complexity violations.
-8. **Generate Refactors**: Produce structured tasks for each confirmed violation.
+7. **Ponytail Audit**: Act as a lazy senior developer. Scan the code for bloat, unnecessary abstractions, and missed opportunities to use the standard library. Flag over-engineering as a Ponytail Violation.
+8. **Performance Scan (if mode=performance)**: Skip violations; focus on optimizations.
+8b. **Code Quality Scan (SonarLint)**: If `mode=architecture`, optionally scan for coupling/complexity violations.
+9. **Generate Refactors**: Produce structured tasks for each confirmed violation.
 
 ---
 

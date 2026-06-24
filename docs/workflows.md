@@ -9,9 +9,9 @@ Architecture Guard can orchestrate specification workflows across `flash-mem`, S
 The orchestrated workflow is:
 
 1. Memory synthesis: scoped retrieval of historical decisions before broader file reads
-2. Specification generation: Spec Kit spec generation using that synthesis first
+2. Specification generation: Spec Kit spec generation using that synthesis, enforcing Ponytail minimalism
 3. Clarification: resolve ambiguities with architecture context in mind
-4. Architecture validation: detect drift and security-architecture conflicts
+4. Architecture validation: detect drift, bloat, and security-architecture conflicts
 5. Governance summary: final overview of architecture and security risks
 6. Interactive Auto-Fix Loop: option to automatically revise the specification if architectural gaps are found
 
@@ -28,9 +28,9 @@ Architecture Guard can orchestrate planning workflows across `flash-mem`, Securi
 The orchestrated workflow is:
 
 1. Memory synthesis: scoped retrieval of historical decisions before broader file reads
-2. Plan generation: Spec Kit technical planning using that synthesis first
+2. Plan generation: Spec Kit technical planning using that synthesis, enforcing Ponytail minimalism
 3. Security validation: review the plan against trust boundaries
-4. Architecture validation: detect drift and security-architecture conflicts
+4. Architecture validation: detect drift, bloat, and security-architecture conflicts
 5. Governance summary: final overview of architecture and security risks
 
 ### Example Orchestration
@@ -45,7 +45,7 @@ Architecture Guard can orchestrate governance checks throughout task generation 
 
 Flow:
 
-memory synthesis -> tasks -> security task review -> architecture refactor generation -> analysis -> automatic analyst loop -> task governance summary
+memory synthesis -> tasks (with Ponytail minimalism) -> security task review -> architecture refactor generation -> analysis -> automatic analyst loop -> task governance summary
 
 ```text
 /speckit.architecture-guard.governed-tasks
@@ -57,7 +57,7 @@ Architecture Guard can orchestrate governance checks during implementation when 
 
 Flow:
 
-memory synthesis -> implement -> security review -> architecture review -> refactor or fix recommendations
+memory synthesis -> implement (with Ponytail pragmatism) -> security review -> architecture review (with Ponytail Audit) -> refactor or fix recommendations
 
 ```text
 /speckit.architecture-guard.governed-implement

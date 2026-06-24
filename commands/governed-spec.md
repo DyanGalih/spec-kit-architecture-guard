@@ -56,7 +56,8 @@ When Flash-Mem is available, use it first to gather the most relevant architectu
 You must orchestrate the `/speckit.specify` workflow directly.
 
 1. **Execute Specify**: Run `/speckit.specify` to generate and save `specs/<feature>/spec.md`.
-2. The specification process must incorporate the Project Constitution documents and memory synthesis. Use Flash-Mem first when available.
+2. **Apply Ponytail Pragmatism**: Instruct the agent to prevent over-specified, "future-proofed" requirements. Keep the specification minimal and focused purely on the immediate needs (YAGNI).
+3. The specification process must incorporate the Project Constitution documents and memory synthesis. Use Flash-Mem first when available.
 
 ### Step 4 — Orchestrate Spec Kit Clarification
 
@@ -119,4 +120,5 @@ The command MUST return:
 ## Guardrails
 
 - **Framework-Agnostic**: Do not assume specific framework conventions unless provided via a preset.
+- **Ponytail Pragmatism**: Act as a lazy senior developer. Ensure the spec avoids bloat, complex abstractions, and over-engineering.
 - **Specification Phase**: Do NOT generate refactor tasks. Code does not exist yet. Fixes should be applied directly to the specification via the auto-fix loop.

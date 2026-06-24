@@ -215,7 +215,7 @@ specify extension add architecture-guard
 
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.19.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.9.0.zip
 ```
 
 ### Global Preset Usage

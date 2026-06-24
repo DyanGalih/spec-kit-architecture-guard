@@ -81,13 +81,14 @@ If Flash-Mem is unavailable or the context is insufficient, continue with the re
 You must orchestrate the `/speckit.tasks` workflow directly.
 
 **CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must actually generate the tasks:
-1. **Execute Tasks**: Run `/speckit.tasks` to generate and save `specs/<feature>/tasks.md`.
+1. **Apply Ponytail Pragmatism**: Instruct the agent to act as a "lazy senior developer." Break down the work into the absolute minimal tasks needed. Refuse to add boilerplate, unnecessary abstractions, or "future-proofing" tasks.
+2. **Execute Tasks**: Run `/speckit.tasks` to generate and save `specs/<feature>/tasks.md`.
 
    **If `/speckit.tasks` is not available as a registered command** (i.e., the AI agent does not recognize it as a slash command), fall back to inline task generation:
    - Read `specs/<feature>/plan.md` (and `spec.md` if present).
    - Read all applicable constitution files (`.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md`, `.specify/memory/security_constitution.md`).
    - Use Flash-Mem context and `specs/<feature>/security-constraints.md` if available.
-   - Generate `specs/<feature>/tasks.md` directly, breaking down the plan into implementation-ready tasks with checkbox format.
+   - Generate `specs/<feature>/tasks.md` directly, breaking down the plan into implementation-ready tasks with checkbox format. Enforce Ponytail minimalism.
    - Note in the Governance Summary that `/speckit.tasks` was unavailable and task generation was performed inline.
 
 2. The generated tasks MUST use the Project Constitution documents and feature context. Use Flash-Mem first when available. If Flash-Mem is unavailable or the retrieved context is insufficient, read the constitution files directly with your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:

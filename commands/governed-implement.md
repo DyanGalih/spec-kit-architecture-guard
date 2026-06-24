@@ -79,12 +79,13 @@ If Flash-Mem is unavailable or the context is insufficient, continue with the re
 You must orchestrate the `/speckit.implement` (core implementation) workflow directly.
 
 **CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must perform the implementation by following the `tasks.md` breakdown:
-1. **Execute Tasks**: Run `/speckit.implement`. If `/speckit.implement` is not available as a registered command, fall back to inline implementation:
+1. **Apply Ponytail Pragmatism**: Act as a "lazy senior developer." Write the absolute minimum code necessary. Strongly prefer one-line solutions, standard library methods, and native platform features over adding dependencies or creating new abstractions.
+2. **Execute Tasks**: Run `/speckit.implement`. If `/speckit.implement` is not available as a registered command, fall back to inline implementation:
    - Read `specs/<feature>/tasks.md` and execute each unchecked task sequentially.
    - Read all applicable constitution files and any available Flash-Mem context before coding.
-   - Perform the actual coding work (writing files, running tests) for each task.
+   - Perform the actual coding work (writing files, running tests) for each task, enforcing Ponytail minimalism.
    - Note in the Governance Summary that `/speckit.implement` was unavailable and implementation was performed inline.
-2. **Write Code**: Perform the actual coding work (writing files, running tests) required by the tasks.
+3. **Write Code**: Perform the actual coding work (writing files, running tests) required by the tasks.
 3. **Sync the tasks**: You MUST update `specs/<feature>/tasks.md` to mark completed tasks with `[x]`, check them off, and add any new subtasks discovered during implementation.
 4. The implementation MUST follow current tasks and context. Use Flash-Mem first when available. If Flash-Mem is unavailable or the retrieved context is insufficient, read the constitution files directly with your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
    - `specs/<feature>/tasks.md`

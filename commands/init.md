@@ -209,6 +209,7 @@ High-level governance and engineering philosophy.
 Should contain:
 
 * engineering philosophy
+* pragmatism & simplicity (Ponytail principles: YAGNI, standard library preference, lazy senior developer mindset)
 * testing standards
 * security expectations
 * documentation standards
@@ -754,7 +755,7 @@ Examples:
 * documentation standards
 * security requirements
 * review expectations
-* engineering philosophy
+* engineering philosophy (Ponytail principles, YAGNI, minimal abstractions)
 * operational governance
 
 ---

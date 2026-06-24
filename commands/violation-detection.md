@@ -89,6 +89,7 @@ Before analysis, build internal representations (do not output these):
 - **Intent Divergence**: Implementation deviates fundamentally from `spec.md` or `plan.md` intent.
 - **Hallucinated Abstractions**: Plan mentions an abstraction (e.g., Repository) that is missing in code.
 - **Spec-Code Mismatch**: Functional requirements from spec are implemented in the wrong architectural layer.
+- **Ponytail Violation (Bloat)**: Plan, tasks, or code include unnecessary boilerplate, "future-proofing", or bypass standard library equivalents.
 
 ### B. Boundaries & Layering
 - **Boundary Erosion**: Business logic leaking into Entry boundaries (Controllers/Handlers) or UI.

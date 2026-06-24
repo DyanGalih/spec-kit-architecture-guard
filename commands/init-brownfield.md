@@ -14,7 +14,8 @@ Create a reliable current-state baseline before any architectural or delivery gu
 2. Map the existing architecture, boundaries, and integration points.
 3. Note any current conventions, constraints, and risky areas.
 4. Capture known gaps between the current codebase and the desired governance model.
-5. Produce an initial brownfield plan instead of assuming a greenfield setup.
+5. Identify existing pragmatic patterns (Ponytail principles: YAGNI, standard library preference, minimal abstractions) to preserve in the constitution.
+6. Produce an initial brownfield plan instead of assuming a greenfield setup.
 
 ## Good outputs
 

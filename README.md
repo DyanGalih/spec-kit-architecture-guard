@@ -2,7 +2,7 @@
 
 > Continuous architecture governance for AI-assisted development.
 
-[![Version](https://img.shields.io/badge/version-1.8.19-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.9.0-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Orchestration](https://img.shields.io/badge/role-governance--orchestrator-blue)](https://spec-kit.dev)
@@ -62,7 +62,7 @@ specify extension add architecture-guard
 Or directly from the release artifact:
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.19.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.9.0.zip
 ```
 
 2. Map the existing codebase
@@ -97,7 +97,7 @@ specify extension add architecture-guard
 Or directly from the release artifact:
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.8.19.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.9.0.zip
 ```
 
 2. Initialize your constitutions
@@ -168,6 +168,14 @@ spec-kit-architecture-guard/
 - **Reviewable in Git**: the rules live in markdown files, not hidden state
 - **Architecture first**: the extension focuses on boundaries, ownership, and drift
 - **Companion-aware**: it can orchestrate other Spec Kit tools without depending on them
+- **Ponytail Pragmatism (YAGNI)**: baked-in "lazy senior developer" mindset to actively prevent bloat and over-engineering across all phases of delivery
+
+## Versioning Policy
+
+This project strictly adheres to [Semantic Versioning (SemVer) 2.0.0](https://semver.org/). Version numbers follow the `MAJOR.MINOR.PATCH` format:
+- **MAJOR** version when making incompatible API changes,
+- **MINOR** version when adding functionality in a backward-compatible manner, and
+- **PATCH** version when making backward-compatible bug fixes.
 
 ## Brownfield init
 
