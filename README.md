@@ -11,6 +11,11 @@
 
 ---
 
+✨ **NEW in v1.10.0: Repository Hygiene Guard!**  
+Tired of AI agents leaving behind a mess of `*-copy.ts` drafts, temporary test files, and stray `console.log`s? Architecture Guard now automatically detects AI scratch files, orphaned code, duplicate experiments, and debug artifacts *before* they hit your main branch. Stop the clutter before it starts. [Learn how to enforce a clean repository →](docs/repository-hygiene.md)
+
+---
+
 ## Core Value: Architecture Guidance Without Hidden Drift
 
 Architecture Guard uses a layered, reviewable workflow to keep architecture decisions explicit:
