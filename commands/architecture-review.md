@@ -124,6 +124,10 @@ Review any available artifacts from these common locations. **IMPORTANT**: You M
     - `spec.md`, `plan.md`, `tasks.md`, `data-model.md`
     - The detected `changed_files` and their respective directories.
 
+5. **Repository Hygiene**:
+    - Config: `.specify/config/repository_hygiene.yml` (or `repository_hygiene` block in constitution).
+    - Rules: `.specify/extensions/architecture-guard/hygiene-rules/*.md`
+
 ## Semantic Modeling
 
 Before analysis, build internal representations (do not output these):
@@ -169,6 +173,7 @@ Detect violations such as:
 7. **Ponytail Audit**: Act as a lazy senior developer. Scan the code for bloat, unnecessary abstractions, and missed opportunities to use the standard library. Flag over-engineering as a Ponytail Violation.
 8. **Performance Scan (if mode=performance)**: Skip violations; focus on optimizations.
 8b. **Code Quality Scan (SonarLint)**: If `mode=architecture`, optionally scan for coupling/complexity violations.
+8c. **Repository Hygiene Scan**: Evaluate the repository against all hygiene rules loaded from `.specify/extensions/architecture-guard/hygiene-rules/*.md`. Apply exclusions and severity overrides defined in the project's `repository_hygiene` configuration.
 9. **Generate Refactors**: Produce structured tasks for each confirmed violation.
 
 ---
@@ -306,6 +311,16 @@ Findings that correlate with architecture concerns:
 | `brain-overload::...` | HIGH | src/service/checkout.ts:45 | Function has 8 parameters | Hidden boundary: pricing logic should be in dedicated module |
 
 **Note**: Pure style violations (formatting, naming) are filtered out. Only findings related to complexity, coupling, and structure are included.
+
+---
+
+### Repository Hygiene Report
+(Always included if hygiene rules are evaluated)
+Findings categorized by severity based on the active hygiene rules.
+
+| Category | Severity | Location(s) | Summary | Recommendation |
+|:---|:---|:---|:---|:---|
+| [Rule Identifier] | [CRITICAL/HIGH/WARNING/INFO] | [File path] | [Finding explanation] | [Suggested action] |
 
 ---
 

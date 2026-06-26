@@ -2,7 +2,7 @@
 
 > Continuous architecture governance for AI-assisted development.
 
-[![Version](https://img.shields.io/badge/version-1.9.0-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.10.0-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Orchestration](https://img.shields.io/badge/role-governance--orchestrator-blue)](https://spec-kit.dev)
@@ -62,7 +62,7 @@ specify extension add architecture-guard
 Or directly from the release artifact:
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.9.0.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.10.0.zip
 ```
 
 2. Map the existing codebase
@@ -97,7 +97,7 @@ specify extension add architecture-guard
 Or directly from the release artifact:
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.9.0.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.10.0.zip
 ```
 
 2. Initialize your constitutions
@@ -148,6 +148,7 @@ spec-kit-architecture-guard/
     ├── governance-model.md      ← Constitution layers and delegation model
     ├── workflows.md             ← Governed planning, task, and implementation flows
     ├── reference-manual.md      ← Setup, commands, install, and validation details
+    ├── repository-hygiene.md    ← Repository Hygiene rules and configuration
     └── release-notes.md         ← Change history and workflow updates
 ```
 
@@ -158,6 +159,7 @@ spec-kit-architecture-guard/
 - [Governance Model](docs/governance-model.md) - Layered constitutions and delegation behavior
 - [Workflows](docs/workflows.md) - Governed planning, tasks, implementation, and companion extension flows
 - [Reference Manual](docs/reference-manual.md) - Install, configure, validate, and command details
+- [Repository Hygiene](docs/repository-hygiene.md) - Configuration and rules for the Repository Hygiene Guard
 - [Release Notes](docs/release-notes.md) - Recent workflow and README updates
 
 ---

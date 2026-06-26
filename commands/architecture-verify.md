@@ -63,6 +63,8 @@ Perform a high-integrity verification of the implementation. Unlike a general re
 1. Run `{SCRIPT}` from repo root to identify the active `FEATURE_DIR`.
 2. Derive absolute paths for `spec.md`, `plan.md`, and `tasks.md`.
 3. Load the Architecture Constitution: `.specify/memory/architecture_constitution.md`.
+4. Load the Repository Hygiene Config: `.specify/config/repository_hygiene.yml` (fallback to `repository_hygiene` block in constitution).
+5. Load the Repository Hygiene Rules: `.specify/extensions/architecture-guard/hygiene-rules/*.md`.
 
 ### 2. Semantic Modeling (Internal)
 
@@ -90,6 +92,11 @@ Build internal representations:
 - If `spec-kit-security-review` is available, run `/speckit.security-review.branch` against the verified implementation.
 - If security findings are architecture-relevant, classify them as `Security-Architecture Conflict`.
 
+#### E. Repository Hygiene Validation
+- Run all loaded hygiene rules against the repository, respecting configured exclusions from `repository_hygiene` config.
+- If a finding's severity matches the `fail_on` list in the configuration, elevate it to CRITICAL to fail the verification gate.
+- Other findings should be reported as Warnings or Info based on their base severity or the `warn_on` configuration.
+
 ### 4. Severity Assignment
 
 - **CRITICAL**: Task marked done but implementation is missing; Constitution "MUST" violation; Boundary bypass (e.g., direct DB access from UI).
@@ -109,6 +116,11 @@ For each task in `tasks.md`:
 - **Implemented?**: [Yes/No/Partial]
 - **Evidence**: [File path or logic pattern]
 - **Gap Analysis**: If "No" or "Partial", explain why the task is incomplete and suggest the remediation.
+
+### Repository Hygiene Status
+- **Critical Issues**: [List any hygiene issues that fail verification]
+- **Warnings**: [List non-blocking hygiene warnings]
+- **Info**: [List minor hygiene notes]
 
 ### Metrics
 - **Tasks Verified**: [Completed / Total]
