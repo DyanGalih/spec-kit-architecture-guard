@@ -771,6 +771,7 @@ Examples:
 * response contracts
 * module ownership rules
 * framework-specific architecture patterns
+* temporary/scratch files MUST use `-temp` or `-test` suffixes for easier cleanup
 
 ---
 
