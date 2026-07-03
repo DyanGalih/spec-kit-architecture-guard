@@ -51,7 +51,14 @@ Check for the availability of:
 
 When Flash-Mem is available, use it first to gather the most relevant architectural context before generating the specification.
 
-### Step 3 — Orchestrate Spec Kit Specification
+### Step 3 — Branch Management
+
+Before generating the specification, you MUST ensure work happens on a feature branch.
+1. Check the current git branch.
+2. If on `main`, `master`, `dev*` (e.g., `dev`, `develop`, `development`), or `staging`, ask the user if they want to create a new branch for this feature.
+3. If they approve, create the branch using available tools before proceeding.
+
+### Step 4 — Orchestrate Spec Kit Specification
 
 You must orchestrate the `/speckit.specify` workflow directly.
 
@@ -59,14 +66,14 @@ You must orchestrate the `/speckit.specify` workflow directly.
 2. **Apply Ponytail Pragmatism**: Instruct the agent to prevent over-specified, "future-proofed" requirements. Keep the specification minimal and focused purely on the immediate needs (YAGNI).
 3. The specification process must incorporate the Project Constitution documents and memory synthesis. Use Flash-Mem first when available.
 
-### Step 4 — Orchestrate Spec Kit Clarification
+### Step 5 — Orchestrate Spec Kit Clarification
 
 You must orchestrate the `/speckit.clarify` workflow directly.
 
 1. **Execute Clarify**: Run `/speckit.clarify` to resolve ambiguities in the newly generated `spec.md`.
 2. Ensure the clarification process considers architectural boundaries defined in the `.specify/memory/architecture_constitution.md` and `security_constitution.md`.
 
-### Step 5 — Architecture Validation
+### Step 6 — Architecture Validation
 
 Run an inline architecture validation against the clarified specification.
 Inputs to consider:
@@ -76,17 +83,17 @@ Inputs to consider:
 
 Detect any `Security-Architecture Conflict` or architectural drift present in the specification's assumptions or boundaries.
 
-### Step 6 — Proactive Durable Memory Preservation
+### Step 7 — Proactive Durable Memory Preservation
 
 If the specification process or architecture validation identified new architectural patterns or critical decisions:
 1. **Proactive Execution**: You **MUST automatically execute** the durable-memory capture flow.
 2. **Standard**: Do not silently write memory outside the capture flow; let the formal capture flow propose entries and handle user approval.
 
-### Step 7 — Generate Governance Summary
+### Step 8 — Generate Governance Summary
 
 Produce a final `Governed Specification Summary` outlining memory context, architectural review status, and any violations found.
 
-### Step 8 — Interactive Auto-Fix Loop
+### Step 9 — Interactive Auto-Fix Loop
 
 If any architectural gaps, security boundary issues, or drift are detected in Step 5:
 1. **Pause and Ask**: Conclude your response by asking the user:
