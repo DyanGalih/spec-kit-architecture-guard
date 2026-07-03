@@ -44,8 +44,9 @@ Using the governed orchestrators simplifies the upper Spec Kit flow by adding au
 1. **Context-Aware:** It automatically queries `flash-mem` first to inject historical architectural decisions before generating any new outputs.
 2. **Unified Execution:** A single command runs the core Spec Kit generation (like `/speckit.specify` or `/speckit.tasks`), hands it off to Security Review, and then triggers the Architecture Guard.
 3. **Analyst Auto-Fix Loops:** Rather than finding out your plan violates architecture at the end, the orchestrators use formal analysis (`/speckit.analyze`). If the analyst detects gaps, missing boundaries, or severities, the orchestrator automatically pauses and offers a loop to clarify and repair the artifacts instantly.
+4. **Ponytail Pragmatism:** The best feature of these workflows—they enforce a "lazy senior developer" mindset. This prevents over-engineering, minimizes external dependencies, and strictly enforces YAGNI (You Aren't Gonna Need It) during specification and implementation to keep your codebase lean.
 
-This guarantees your specifications and tasks are explicitly validated *before* writing code.
+This guarantees your specifications and tasks are explicitly validated *before* writing code, and implemented as simply as possible.
 
 ---
 
