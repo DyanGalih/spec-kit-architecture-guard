@@ -11,8 +11,10 @@
 
 ---
 
-✨ **NEW in v1.10.0: Repository Hygiene Guard!**  
-Tired of AI agents leaving behind a mess of `*-copy.ts` drafts, temporary test files, and stray `console.log`s? Architecture Guard now automatically enforces strict naming conventions for scratch files (like `-temp` or `-test`) and detects orphaned code, duplicate experiments, and debug artifacts *before* they hit your main branch. Stop the clutter before it starts. [Learn how to enforce a clean repository →](docs/repository-hygiene.md)
+✨ **NEW in v1.10.x: Built-in Pragmatism & Hygiene Guards!**  
+You no longer need to install separate agent skills for code minimalism or repository cleanliness—Architecture Guard now has them built directly into its orchestrated workflows:
+* **Ponytail Pragmatism:** Enforces the "lazy senior developer" mindset (YAGNI, minimal dependencies, one-liners) natively during implementation. *(Inspired by the [Ponytail Pragmatism Skill](https://github.com/DietrichGebert/ponytail))*
+* **Repository Hygiene Guard:** Automatically detects stray `*-copy.ts` drafts, orphaned code, and debug artifacts before they hit your main branch. [Learn more →](docs/repository-hygiene.md)
 
 ---
 
