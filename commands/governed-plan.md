@@ -80,6 +80,7 @@ You must orchestrate the `/speckit.plan` workflow directly.
 
 **CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must actually generate the plan:
 1. **Apply Ponytail Pragmatism**: Instruct the agent to act as a "lazy senior developer." The generated plan must prefer standard libraries and native platform features over proposing complex new abstractions. Strictly enforce YAGNI.
+   - Also prefer one shared plan path for repeated behavior instead of separate duplicated steps or parallel implementations.
 2. **Execute Plan**: Run `/speckit.plan` to generate and save `specs/<feature>/plan.md`.
 
    **If `/speckit.plan` is not available as a registered command** (i.e., the AI agent does not recognize it as a slash command), fall back to inline planning:

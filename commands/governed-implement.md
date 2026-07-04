@@ -80,6 +80,7 @@ You must orchestrate the `/speckit.implement` (core implementation) workflow dir
 
 **CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must perform the implementation by following the `tasks.md` breakdown:
 1. **Apply Ponytail Pragmatism**: Act as a "lazy senior developer." Write the absolute minimum code necessary. Strongly prefer one-line solutions, standard library methods, and native platform features over adding dependencies or creating new abstractions.
+   - Before adding new logic, check whether the rule, validation, or transformation already exists elsewhere and should be extracted into one shared implementation.
 2. **Execute Tasks**: Run `/speckit.implement`. If `/speckit.implement` is not available as a registered command, fall back to inline implementation:
    - Read `specs/<feature>/tasks.md` and execute each unchecked task sequentially.
    - Read all applicable constitution files and any available Flash-Mem context before coding.

@@ -25,6 +25,7 @@
 - [e.g., Entry points must validate, map, and delegate only.]
 - [e.g., Business decisions live in application services, actions, use cases, or domain policies.]
 - [e.g., UI components must not own durable business rules.]
+- Core business rules, validations, and durable transformations must live in one shared source of truth, not duplicated across modules or layers.
 
 ## Contracts and Validation
 
@@ -62,6 +63,7 @@
 > By default, violations are non-blocking. List only rules that must stop release.
 
 - [e.g., P0: Core business logic or validation rules must not be duplicated across modules or layers (DRY violation).]
+- [e.g., P0: Duplicate business logic is not allowed when a shared source of truth already exists and is reasonably reusable.]
 - [e.g., P0: No public endpoint may process unvalidated external input.]
 - [e.g., P0: No module may directly access another module's private database tables.]
 

@@ -100,7 +100,8 @@ specify extension add architecture-guard
 /speckit.architecture-guard.init-brownfield
 ```
 
-See the README quick start for the brownfield entrypoint.
+This is the Brownfield Discovery + Verification entrypoint.
+If you are specifically cleaning up duplicated logic, follow the [DRY Cleanup Guide](dry-cleanup.md) after the brownfield mapping pass.
 
 3. Run Architecture Workflow
 

@@ -75,6 +75,7 @@ Each task must:
 
 - Be non-blocking unless the Constitution explicitly says otherwise.
 - **Ponytail Pragmatism**: Apply the lazy senior developer mindset. Suggest the simplest, most minimal fix possible. Do not over-engineer the refactor. Use standard libraries where possible.
+- Prefer extracting repeated business rules, approvals, validation, DTO mapping, transformation, or orchestration into one shared source of truth instead of duplicating the same logic in multiple places.
 - Have a clear title.
 - Explain the architectural reason.
 - Define a concrete scope.
@@ -114,6 +115,7 @@ Avoid scopes that are too broad:
 Suggested fixes should be concrete:
 
 - Introduce or align a DTO, schema, interface, request object, response object, event contract, command object, or equivalent.
+- Extract repeated logic into the shared boundary that already owns the rule instead of copying it into each caller.
 - Move business rules from the entry boundary into application or domain logic.
 - Add a module-facing abstraction instead of reaching into internals.
 - Route persistence access through an established data abstraction.
@@ -212,4 +214,44 @@ Reason: The route currently owns a business decision that should live behind the
 Scope: Checkout request handler and checkout application service.
 Priority: P1
 Suggested Fix: Extract pricing decision logic into the checkout service or domain policy, keep the route responsible for validation, mapping, and delegation only.
+```
+
+```text
+Refactor Tasks:
+[Refactor Task]
+Title: Centralize repeated tax calculation logic
+Reason: The same tax rule appears in multiple checkout modules, which creates duplication drift and makes future changes easy to miss.
+Scope: Checkout service and any callers that currently reimplement the tax rule.
+Priority: P1
+Suggested Fix: Move tax calculation into one shared checkout service or domain helper, then have callers reuse that single implementation.
+```
+
+```text
+Refactor Tasks:
+[Refactor Task]
+Title: Consolidate repeated input validation
+Reason: Multiple handlers validate the same request shape in slightly different ways, which increases drift and makes the rule harder to trust.
+Scope: Request boundary and the shared validation contract or helper used by those handlers.
+Priority: P1
+Suggested Fix: Move the validation rule into one shared schema, form request, or helper, then have each handler call the same boundary check.
+```
+
+```text
+Refactor Tasks:
+[Refactor Task]
+Title: Share DTO mapping logic
+Reason: Multiple modules build the same response shape independently, which duplicates transformation rules and makes the contract drift over time.
+Scope: Response mapping layer and the callers that currently construct the same DTO shape.
+Priority: P2
+Suggested Fix: Extract the mapping into one shared DTO factory, serializer, or adapter, then reuse that transformation everywhere the shape is needed.
+```
+
+```text
+Refactor Tasks:
+[Refactor Task]
+Title: Centralize repeated domain policy
+Reason: The same approval or discount rule is enforced in multiple places, which risks inconsistent business behavior and makes the rule harder to change safely.
+Scope: Domain policy or application service and all call sites that currently reimplement the same rule.
+Priority: P1
+Suggested Fix: Move the policy into one shared domain service or policy object, then have every caller delegate to that single rule.
 ```

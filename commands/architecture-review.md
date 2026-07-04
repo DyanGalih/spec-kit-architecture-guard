@@ -145,6 +145,7 @@ Use these core principles to detect drift:
 - **Stable Abstractions**: Modules should depend on interfaces/abstractions, not internals.
 - **Isolation**: Data access, external APIs, and infrastructure must be isolated.
 - **Consistency**: Comparable endpoints or modules must use compatible patterns.
+- **DRY / Single Source of Truth**: Repeated business rules, validation, transformations, or orchestration should be centralized once and reused instead of copied across modules.
 - **Ponytail Pragmatism (YAGNI)**: Implementations must be minimal. No over-engineering, unnecessary abstractions, or future-proofing.
 - **Non-Blocking**: Identify drift without converting style preferences into hard failures.
 
@@ -155,9 +156,20 @@ Detect violations such as:
 - **Hallucinated Abstractions**: Plan mentions an abstraction (e.g., Repository) that is missing in code.
 - **Boundary Erosion**: Business logic leaking into entry points or UI.
 - **Tight Coupling**: Circular dependencies or cross-module leakage.
+- **Duplication Drift**: The same rule, validation, mapping, or workflow is implemented in multiple places instead of a shared boundary.
 - **Contract Mismatch**: Mismatch between API, UI, or service shapes.
 - **Ponytail Violation (Bloat)**: Code is over-engineered. It includes unnecessary boilerplate, "future-proofing", or bypasses standard library equivalents.
 - **Constitution Breach**: Any conflict with a "MUST" principle in the Constitution.
+
+**Duplication Drift Example**
+- Finding: Both `checkout/controller.ts` and `checkout/service.ts` calculate the same tax rule.
+- Evidence: Each file applies the same conditional logic for the same inputs.
+- Recommended Fix: Keep the rule in the shared service/domain boundary and make the controller delegate to it.
+
+**Common DRY Signals**
+- Repeated business rules, approvals, validation, DTO mapping, or orchestration across multiple layers.
+- One rule being implemented in more than one place instead of one shared source of truth.
+- Callers recreating a contract, transformation, or decision that already exists in a shared boundary.
 
 ## Review Procedure
 
@@ -336,9 +348,10 @@ Findings categorized by severity based on the active hygiene rules.
 1. **Critical Fixes**: Address Constitution and Security violations first.
 2. **Architecture Alignment**: Resolve boundary erosion and contract mismatches.
 3. **Code Quality**: Address SonarLint findings that map to architectural concerns (if any).
-4. **Durable Memory Preservation (Mandatory Check)**: If new architectural patterns, decisions, or repeatable lessons were identified, you **MUST automatically execute** the durable-memory capture flow immediately after providing the report. Do not just recommend it; let the formal capture flow propose entries and request user approval.
-5. **Next Step**: [e.g. Run `/speckit.security-review.branch` for security-first findings, or `/speckit.architecture-guard.architecture-apply` for architecture fixes]
-6. **Remediation**: [Concrete remediation direction for the top issues, or "None needed"]
+4. **DRY Alignment**: Centralize repeated business logic, validation, and mapping before duplicating it in another layer or module.
+5. **Durable Memory Preservation (Mandatory Check)**: If new architectural patterns, decisions, or repeatable lessons were identified, you **MUST automatically execute** the durable-memory capture flow immediately after providing the report. Do not just recommend it; let the formal capture flow propose entries and request user approval.
+6. **Next Step**: [e.g. Run `/speckit.security-review.branch` for security-first findings, or `/speckit.architecture-guard.architecture-apply` for architecture fixes]
+7. **Remediation**: [Concrete remediation direction for the top issues, or "None needed"]
 
 ## Framework Preset Guidance
 

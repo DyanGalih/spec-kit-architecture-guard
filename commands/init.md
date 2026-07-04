@@ -771,6 +771,7 @@ Examples:
 * response contracts
 * module ownership rules
 * framework-specific architecture patterns
+* DRY and single-source-of-truth rules for repeated business rules, approvals, validation, DTO mapping, transformations, and orchestration
 * temporary/scratch files MUST use `-temp` or `-test` suffixes for easier cleanup
 
 ---
@@ -963,5 +964,6 @@ It must NOT:
 * blindly enforce trends
 * automatically rewrite architecture direction
 * duplicate rules across constitutions
+* duplicate business rules, approvals, validation, DTO mapping, transformations, or orchestration across modules or layers
 
 The generated constitutions must reflect intentional engineering decisions.

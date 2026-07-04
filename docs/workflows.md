@@ -77,6 +77,8 @@ Choose the path that matches the repository state.
 4. Run `/speckit.architecture-guard.architecture-workflow`.
 5. Apply approved refactors into plan and task artifacts.
 
+If you are specifically cleaning up duplicated logic, follow the [DRY Cleanup Guide](dry-cleanup.md) after the brownfield mapping pass.
+
 ### Greenfield
 
 1. Install the extension.
@@ -86,4 +88,3 @@ Choose the path that matches the repository state.
 5. Apply approved refactors into plan and task artifacts.
 
 This keeps architecture concerns visible throughout the delivery lifecycle instead of concentrating them at the end.
-

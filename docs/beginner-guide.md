@@ -30,11 +30,12 @@ Choose the path that matches your repository.
 ### Brownfield
 
 1. Install Architecture Guard.
-2. Run `/speckit.architecture-guard.init-brownfield` to understand the existing codebase.
+2. Run `/speckit.architecture-guard.init-brownfield` for Brownfield Discovery + Verification on the existing codebase.
 3. Review the current-state findings.
 4. Run `/speckit.architecture-guard.architecture-review` or `/speckit.architecture-guard.architecture-workflow`.
 5. Review the findings and approve any useful refactors.
 6. Run `/speckit.architecture-guard.architecture-apply` if you want the plan and tasks updated.
+7. If you are specifically cleaning up duplicated logic, follow the [DRY Cleanup Guide](dry-cleanup.md) after the brownfield mapping pass.
 
 ### Greenfield
 

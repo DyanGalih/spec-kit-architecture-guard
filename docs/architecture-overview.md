@@ -17,6 +17,7 @@ It reviews specifications, plans, task lists, and implementations against your p
 The goal is to make architecture part of the workflow instead of something you only check at review time.
 
 See the Quick Start in the README for the brownfield and greenfield entrypoints.
+If you are specifically cleaning up duplicated logic, follow the [DRY Cleanup Guide](dry-cleanup.md) after the brownfield mapping pass.
 
 ## Why It’s Useful
 
@@ -27,6 +28,15 @@ Architecture Guard is helpful because it gives AI a smaller, better set of rules
 - drift becomes visible as refactor work instead of hidden technical debt
 - security and architecture checks happen in the workflow, not after the damage is done
 - the system stays framework-agnostic, so the same ideas work across Laravel, NestJS, Next.js, Django, and more
+
+## Best Features
+
+Architecture Guard stands out because it combines a few practical capabilities in one workflow:
+
+- **Ponytail Pragmatism:** Enforces the "lazy senior developer" mindset (YAGNI, minimal dependencies, one-liners) natively during implementation. *(Inspired by the [Ponytail Pragmatism Skill](https://github.com/DietrichGebert/ponytail))*
+- **DRY Cleanup Guidance:** Helps brownfield projects find duplicated business logic, validation, DTO mapping, and orchestration, then turn them into small refactor tasks instead of copy-paste drift.
+- **Brownfield Discovery + Verification:** Maps the current codebase, surfaces architectural drift early, and confirms approved refactors actually made it into the final work.
+- **Repository Hygiene Guard:** Automatically detects stray `*-copy.ts` drafts, orphaned code, and debug artifacts before they hit your main branch. [Learn more →](repository-hygiene.md)
 
 ## The Problem It Solves
 
@@ -158,4 +168,3 @@ Do not use Architecture Guard when the overhead would outweigh the value:
 - replacing benchmarking or profiling workflows
 
 If you can fully manage architecture mentally and the project is truly small, this extension may be unnecessary overhead.
-

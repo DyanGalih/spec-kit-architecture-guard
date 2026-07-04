@@ -2,18 +2,20 @@
 
 > Continuous architecture governance for AI-assisted development.
 
-[![Version](https://img.shields.io/badge/version-1.10.1-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.11.0-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Orchestration](https://img.shields.io/badge/role-governance--orchestrator-blue)](https://spec-kit.dev)
 
-**Architecture Guard** is a repository-native governance layer for Spec Kit that helps AI agents follow the architecture rules you already defined. It keeps architecture review visible during delivery instead of waiting until code review.
+**Architecture Guard** is a repository-native governance layer for Spec Kit that helps AI agents follow the architecture rules you already defined, surface DRY and boundary drift early, and keep architecture review visible during delivery instead of waiting until code review.
 
 ---
 
-✨ **NEW in v1.10.x: Built-in Pragmatism & Hygiene Guards!**  
-You no longer need to install separate agent skills for code minimalism or repository cleanliness—Architecture Guard now has them built directly into its orchestrated workflows:
+✨ **NEW in v1.11.0: Built-in Pragmatism, DRY, and Hygiene Guards!**  
+You no longer need to install separate agent skills for code minimalism, duplicated logic cleanup, or repository cleanliness—Architecture Guard now has them built directly into its orchestrated workflows:
 * **Ponytail Pragmatism:** Enforces the "lazy senior developer" mindset (YAGNI, minimal dependencies, one-liners) natively during implementation. *(Inspired by the [Ponytail Pragmatism Skill](https://github.com/DietrichGebert/ponytail))*
+* **DRY Cleanup Guidance:** Helps brownfield projects find duplicated business logic, validation, DTO mapping, and orchestration, then turn them into small refactor tasks instead of copy-paste drift.
+* **Brownfield Discovery + Verification:** Maps the current codebase, surfaces architectural drift early, and confirms approved refactors actually made it into the final work.
 * **Repository Hygiene Guard:** Automatically detects stray `*-copy.ts` drafts, orphaned code, and debug artifacts before they hit your main branch. [Learn more →](docs/repository-hygiene.md)
 
 ---
@@ -70,7 +72,7 @@ specify extension add architecture-guard
 Or directly from the release artifact:
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.10.1.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.11.0.zip
 ```
 
 2. Map the existing codebase
@@ -105,7 +107,7 @@ specify extension add architecture-guard
 Or directly from the release artifact:
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.10.1.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.11.0.zip
 ```
 
 2. Initialize your constitutions
@@ -156,6 +158,7 @@ spec-kit-architecture-guard/
     ├── governance-model.md      ← Constitution layers and delegation model
     ├── workflows.md             ← Governed planning, task, and implementation flows
     ├── reference-manual.md      ← Setup, commands, install, and validation details
+    ├── dry-cleanup.md           ← Brownfield DRY cleanup flow and duplication signals
     ├── repository-hygiene.md    ← Repository Hygiene rules and configuration
     └── release-notes.md         ← Change history and workflow updates
 ```
@@ -167,6 +170,7 @@ spec-kit-architecture-guard/
 - [Governance Model](docs/governance-model.md) - Layered constitutions and delegation behavior
 - [Workflows](docs/workflows.md) - Governed planning, tasks, implementation, and companion extension flows
 - [Reference Manual](docs/reference-manual.md) - Install, configure, validate, and command details
+- [DRY Cleanup Guide](docs/dry-cleanup.md) - Brownfield flow for finding and removing duplicated logic
 - [Repository Hygiene](docs/repository-hygiene.md) - Configuration and rules for the Repository Hygiene Guard
 - [Release Notes](docs/release-notes.md) - Recent workflow and README updates
 
@@ -190,4 +194,4 @@ This project strictly adheres to [Semantic Versioning (SemVer) 2.0.0](https://se
 ## Brownfield init
 
 See the Quick Start above for the brownfield entrypoint.
-
+If you are specifically cleaning up duplicated logic, follow the [DRY Cleanup Guide](docs/dry-cleanup.md) after the brownfield mapping pass.

@@ -56,6 +56,7 @@ Review any available:
 7. If a refactor is too large for the current scope, create a scoped task rather than expanding the whole plan.
 8. If an approved Constitution Update Proposal exists, reflect it as explicit follow-up work without auto-changing the Constitution itself.
 9. If the surrounding workflow emits a token-savings banner, leave it visible while applying the approved changes.
+10. When a refactor removes duplication, update the plan or tasks so the shared implementation remains the single source of truth and all callers are adjusted to use it.
 
 ## Write-Back Rules
 

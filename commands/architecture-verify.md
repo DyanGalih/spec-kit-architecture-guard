@@ -72,6 +72,12 @@ Build internal representations:
 - **Task-Boundary Map**: Associate each task with its intended architecture layer (Entry, Application, Domain, Data, External).
 - **Implementation Evidence**: For each completed task (`[x]`), scan referenced files for logic that addresses the task description.
 - **Contract Inventory**: Extract planned API/Data signatures from `plan.md`.
+- **Duplication Check**: Look for repeated business logic, validation, or transformation across files and confirm it has been centralized or explicitly justified.
+
+**Common DRY Signals**
+- Repeated business rules, approvals, validation, DTO mapping, or orchestration across multiple layers.
+- One rule being implemented in more than one place instead of one shared source of truth.
+- Callers recreating a contract, transformation, or decision that already exists in a shared boundary.
 
 ### 3. Verification Checks
 
@@ -83,6 +89,7 @@ Build internal representations:
 #### B. Boundary Integrity
 - **Layer Violation**: Logic from one layer (e.g., Database queries) appearing in another layer (e.g., Controllers/Entry).
 - **Dependency Drift**: New dependencies introduced that violate the architecture's "Stable Abstractions" principle.
+- **DRY Drift**: The same rule is implemented in multiple places instead of a shared source of truth.
 
 #### C. Constitution Compliance
 - **Rule Check**: Does the implementation violate any "MUST" rules in the `architecture_constitution.md`?
@@ -100,7 +107,7 @@ Build internal representations:
 ### 4. Severity Assignment
 
 - **CRITICAL**: Task marked done but implementation is missing; Constitution "MUST" violation; Boundary bypass (e.g., direct DB access from UI).
-- **HIGH**: Contract mismatch; Missing error-handling/edge-cases from spec; Major boundary erosion.
+- **HIGH**: Contract mismatch; Missing error-handling/edge-cases from spec; Major boundary erosion; repeated business rules with no shared extraction.
 - **MEDIUM**: Pattern drift; Task-referenced file exists but logic is incomplete.
 - **LOW**: Naming inconsistencies; Minor structure drift.
 
