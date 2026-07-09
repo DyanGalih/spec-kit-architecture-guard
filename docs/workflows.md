@@ -1,6 +1,23 @@
 # Workflows
 
-This document covers the governed planning, task, and implementation flows used by Architecture Guard.
+This document covers the governed discovery, specification, planning, task, and implementation flows used by Architecture Guard.
+
+## Governed Discovery Workflow
+
+Architecture Guard can orchestrate a brainstorming phase *before* a formal specification is written, helping new feature ideas align with existing architecture constraints from the very beginning.
+
+The orchestrated workflow is:
+
+1. Memory synthesis: scoped retrieval of historical decisions before broader file reads
+2. Implementation context: check the codebase for similar patterns (if requested)
+3. Interactive discussion: an architecture-aware chat to refine the idea
+4. Draft generation: output a clean feature draft to hand off to the specification phase
+
+### Example Orchestration
+
+```text
+/speckit.architecture-guard.governed-discover "I want a new feature..."
+```
 
 ## Governed Specification Workflow
 

@@ -167,6 +167,7 @@ This injects refactor tasks into `plan.md` and `tasks.md` so the AI has explicit
 | --- | --- | --- | --- |
 | `init-brownfield` | Setup | Current-state baseline, app root detection, boundary map, and brownfield notes | When the repository already contains application code and you need to understand the existing system first |
 | `init` | Setup | `.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md`, `.specify/memory/security_constitution.md` | Once at project start; rerun to refine standards |
+| `governed-discover` | Orchestration | Architecture-aware discovery brief with alignment notes, rejected options, assumptions, and handoff prompt | Use before specification when the feature idea needs discussion against existing architecture constraints |
 | `governed-spec` | Orchestration | Specification and Clarification with `flash-mem` synthesis first + security + architecture, plus auto-fix loop | Use when `flash-mem` and Security Review are installed to start from specification |
 | `architecture-workflow` | General Review | Violations, severity and priority, refactor tasks, evolution proposals | Entry point for end-to-end review; good for dashboards |
 | `architecture-review` | Validation | Cached-context alignment status, boundary issues, contract drift | After `/specify`, `/plan`, or `/implement` |
@@ -195,6 +196,9 @@ optimizer:
 - self-learning: reviews trigger the durable-memory capture alias, and the formal capture flow proposes entries and requests user approval
 - lower latency: reduces context window bloat by avoiding massive markdown file reads
 
+| Command | Phase | Optimizer-Aware Output | When To Use |
+| --- | --- | --- | --- |
+| `governed-discover` | Orchestration | Discovery brief with `flash-mem` synthesis first + architecture-aware discussion + governed-spec handoff | Use when companion extensions are installed and feature ideas should be shaped before specification |
 | `governed-spec` | Orchestration | Specification and Clarification with `flash-mem` synthesis first + security + architecture + auto-fix loop | Use when `flash-mem` and Security Review are installed to start from specification |
 | `governed-plan` | Orchestration | Plan with `flash-mem` synthesis first + security + architecture | Use when `flash-mem` and Security Review are installed |
 | `governed-tasks` | Orchestration | Tasks and Analysis with cached memory context + security + architecture refactors + auto-fix loop | Use when companion extensions are installed |

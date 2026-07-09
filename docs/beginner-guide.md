@@ -41,10 +41,11 @@ Choose the path that matches your repository.
 
 1. Install Architecture Guard.
 2. Run `/speckit.architecture-guard.init` to set up constitutions.
-3. Write or update your spec.
-4. Run `/speckit.architecture-guard.architecture-review` or `/speckit.architecture-guard.architecture-workflow`.
-5. Review the findings and approve any useful refactors.
-6. Run `/speckit.architecture-guard.architecture-apply` if you want the plan and tasks updated.
+3. Optionally run `/speckit.architecture-guard.governed-discover` to brainstorm and shape a feature idea against your architecture before writing a spec.
+4. Write or update your spec (or pass the discovery draft to `/speckit.architecture-guard.governed-spec`).
+5. Run `/speckit.architecture-guard.architecture-review` or `/speckit.architecture-guard.architecture-workflow`.
+6. Review the findings and approve any useful refactors.
+7. Run `/speckit.architecture-guard.architecture-apply` if you want the plan and tasks updated.
 
 
 ## What to remember

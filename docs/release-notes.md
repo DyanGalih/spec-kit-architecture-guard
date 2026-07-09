@@ -1,9 +1,21 @@
 # Release Notes
 
+## 1.12.0
+
+- Added the `governed-discover` orchestrator command to shape raw feature ideas into architecture-aware discovery briefs before formal specification.
+
 ## 1.11.0
 
 - Added DRY cleanup guidance across the architecture prompts and documentation so brownfield projects can more easily collapse duplicated business logic, validation, DTO mapping, and orchestration into one shared source of truth.
 - Added a dedicated DRY Cleanup Guide, linked it from the onboarding and reference docs, and aligned the README feature set around Ponytail Pragmatism, DRY Cleanup Guidance, Brownfield Discovery + Verification, and Repository Hygiene Guard.
+
+## 1.10.1
+
+- Add branch management to governed-spec flow
+
+## 1.10.0
+
+- Repository Hygiene Guard (Full Changelog: [v1.9.0...v1.10.0](https://github.com/DyanGalih/spec-kit-architecture-guard/compare/v1.9.0...v1.10.0))
 
 ## 1.9.0
 

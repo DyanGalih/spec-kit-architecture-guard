@@ -66,6 +66,7 @@ Think of it as a governance layer that sits between Spec Kit and implementation.
 
 | Phase | What Happens | Output |
 | --- | --- | --- |
+| Discovery | Architecture-aware brainstorming against constraints and existing patterns | Aligned feature draft with rejected options and open questions |
 | Specification | Reviews ownership, boundaries, contracts | Missing boundaries or unclear ownership |
 | Planning | Detects coupling and architecture drift | Warnings before implementation hardens |
 | Task Generation | Converts violations into structured refactor work | Prioritized refactor tasks |

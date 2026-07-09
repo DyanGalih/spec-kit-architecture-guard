@@ -3,7 +3,7 @@ schema_version: "1.0"
 extension:
   id: "architecture-guard"
   name: "Architecture Guard"
-  version: "1.11.0"
+  version: "1.12.0"
   description: "Framework-agnostic architecture review extension for validating implementation against governance and architecture constitutions, detecting architectural drift, and generating non-blocking refactor tasks."
   author: "DyanGalih"
   repository: "https://github.com/DyanGalih/spec-kit-architecture-guard"
@@ -41,6 +41,9 @@ hooks:
 
 provides:
   commands:
+    - name: "speckit.architecture-guard.governed-discover"
+      file: "commands/governed-discover.md"
+      description: "Facilitate an architecture-aware discussion to flesh out ideas before generating a formal specification."
     - name: "speckit.architecture-guard.governed-spec"
       file: "commands/governed-spec.md"
       description: "Orchestrate governed specification by chaining speckit.specify and speckit.clarify with architecture and memory context validation, plus an auto-fix loop."
