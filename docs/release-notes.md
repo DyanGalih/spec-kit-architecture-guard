@@ -1,5 +1,9 @@
 # Release Notes
 
+## 1.12.1
+
+- Fix SonarLint rules bundling issue by moving rules into the extension source directory so they are packaged correctly on install.
+
 ## 1.12.0
 
 - Added the `governed-discover` orchestrator command to shape raw feature ideas into architecture-aware discovery briefs before formal specification.
