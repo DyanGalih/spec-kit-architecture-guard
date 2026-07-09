@@ -194,7 +194,7 @@ Detect violations such as:
 
 This step runs code quality checks using bundled SonarLint rules. It is **optional** and complements architecture violations.
 The rules bundle is repository-native and IDE-agnostic, so it works the same in VS Code, Cursor, JetBrains, or CLI-only workflows.
-When the extension is installed, load the bundle from `.specify/extensions/architecture-guard/.github/sonar-rules/sonarlint-rules.json`.
+When the extension is installed, load the bundle from `.specify/extensions/architecture-guard/sonar-rules/sonarlint-rules.json`.
 
 ### Activation
 
@@ -220,7 +220,7 @@ When the extension is installed, load the bundle from `.specify/extensions/archi
 ### Procedure
 
 **If inline**:
-1. **Load Rules**: Read the installed extension bundle at `.specify/extensions/architecture-guard/.github/sonar-rules/sonarlint-rules.json` first; if running from the extension source checkout, use `.github/sonar-rules/sonarlint-rules.json`
+1. **Load Rules**: Read the installed extension bundle at `.specify/extensions/architecture-guard/sonar-rules/sonarlint-rules.json` first; if running from the extension source checkout, use `sonar-rules/sonarlint-rules.json`
 2. **Scan Changed Files**: Simulate or invoke SonarLint logic on `changed_files` list
 3. **Filter Results**: Keep only CRITICAL/HIGH severity findings related to complexity, coupling, structure
 4. **Map to Boundaries**: Correlate findings with architecture boundaries (Entry/App/Domain/Data/External)

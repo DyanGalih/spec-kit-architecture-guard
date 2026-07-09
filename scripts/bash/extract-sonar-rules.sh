@@ -18,7 +18,7 @@
 set -e
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-RULES_DIR="$REPO_ROOT/.github/sonar-rules"
+RULES_DIR="$REPO_ROOT/src/sonar-rules"
 RULES_FILE="$RULES_DIR/sonarlint-rules.json"
 MANIFEST_FILE="$RULES_DIR/rules-manifest.json"
 TEMP_RULES="/tmp/sonarlint-rules-raw.json"
@@ -97,11 +97,11 @@ echo ""
 # Git commit if requested and changes detected
 if [[ "$COMMIT_ON_CHANGE" == true ]]; then
   cd "$REPO_ROOT"
-  if git diff --quiet .github/sonar-rules/ 2>/dev/null; then
+  if git diff --quiet src/sonar-rules/ 2>/dev/null; then
     echo "✅ No changes to commit"
   else
     echo "📦 Committing changes..."
-    git add .github/sonar-rules/
+    git add src/sonar-rules/
     git commit -m "chore: update SonarLint rules bundle to $ARCH_COUNT architecture rules"
     echo "✅ Committed"
   fi
@@ -109,6 +109,6 @@ fi
 
 echo ""
 echo "💡 Next steps:"
-echo "   Review changes: git diff .github/sonar-rules/"
-echo "   Commit manually: git add .github/sonar-rules/ && git commit"
+echo "   Review changes: git diff src/sonar-rules/"
+echo "   Commit manually: git add src/sonar-rules/ && git commit"
 echo "   Or re-run with: $0 --commit"
