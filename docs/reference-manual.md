@@ -169,6 +169,7 @@ This injects refactor tasks into `plan.md` and `tasks.md` so the AI has explicit
 | `init` | Setup | `.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md`, `.specify/memory/security_constitution.md` | Once at project start; rerun to refine standards |
 | `governed-discover` | Orchestration | Architecture-aware discovery brief with alignment notes, rejected options, assumptions, and handoff prompt | Use before specification when the feature idea needs discussion against existing architecture constraints |
 | `governed-spec` | Orchestration | Specification and Clarification with `flash-mem` synthesis first + security + architecture, plus auto-fix loop | Use when `flash-mem` and Security Review are installed to start from specification |
+| `governed-delivery` | Orchestration | Resumable plan-to-tasks flow with memory preflight, plan gates, task reconciliation, and analysis | Recommended entry point after specification |
 | `architecture-workflow` | General Review | Violations, severity and priority, refactor tasks, evolution proposals | Entry point for end-to-end review; good for dashboards |
 | `architecture-review` | Validation | Cached-context alignment status, boundary issues, contract drift | After `/specify`, `/plan`, or `/implement` |
 | `violation-detection` | Detection | Drift summary, boundary violations, module coupling | Focus on specific architecture problems |
@@ -176,7 +177,11 @@ This injects refactor tasks into `plan.md` and `tasks.md` so the AI has explicit
 | `architecture-apply` | Implementation | After refactor decisions | Inject refactor tasks into `tasks.md` and `plan.md` using the approved review context |
 | `architecture-verify` | Verification | Task fulfillment report, gap analysis | Final gate after implementation to ensure all tasks are delivered, with cached memory context if available |
 
-## Optimizer-Aware Memory Flow
+### Ponytail Core
+
+All commands load `templates/ponytail_core.md`. The contract applies an ordered YAGNI-to-minimum-code ladder, requires root-cause caller tracing, preserves a correctness and safety floor, and requires a runnable check for non-trivial logic. Framework presets add vocabulary but cannot require a layer or dependency without repository evidence.
+
+# Optimizer-Aware Memory Flow
 
 Architecture Guard integrates with `flash-mem` as the runtime SQLite-backed optimizer to provide high-performance, token-efficient reviews. The legacy `memory-hub` name is reference-only and deprecated.
 
@@ -200,11 +205,12 @@ optimizer:
 | --- | --- | --- | --- |
 | `governed-discover` | Orchestration | Discovery brief with `flash-mem` synthesis first + architecture-aware discussion + governed-spec handoff | Use when companion extensions are installed and feature ideas should be shaped before specification |
 | `governed-spec` | Orchestration | Specification and Clarification with `flash-mem` synthesis first + security + architecture + auto-fix loop | Use when `flash-mem` and Security Review are installed to start from specification |
+| `governed-delivery` | Orchestration | Resumable plan-to-tasks flow with memory preflight, security and architecture gates, task reconciliation, and analysis | Suggested flow after specification; rerun safely to resume |
 | `governed-plan` | Orchestration | Plan with `flash-mem` synthesis first + security + architecture | Use when `flash-mem` and Security Review are installed |
 | `governed-tasks` | Orchestration | Tasks and Analysis with cached memory context + security + architecture refactors + auto-fix loop | Use when companion extensions are installed |
 | `governed-implement` | Orchestration | Implementation validation with cached memory governance context | Use for end-to-end implementation with governance |
 
-> Most projects use `architecture-workflow` or `architecture-review` directly. Orchestrator commands (`governed-*`) are advanced and optional when companion extensions are available.
+> Use `governed-delivery` as the suggested plan-to-tasks flow. Use `architecture-workflow` or `architecture-review` directly for standalone reviews; the individual `governed-plan` and `governed-tasks` commands remain available for targeted recovery.
 
 > `architecture-apply` targets `plan.md` and `tasks.md`. If architectural issues are found in the specification stage, refine the specification before generating a technical plan. When `flash-mem` is available, use the cached synthesis and approved review output before writing back.
 

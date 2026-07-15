@@ -7,6 +7,10 @@ scripts:
 
 # Architecture Verification
 
+## Ponytail Core Contract
+
+Before continuing, you **MUST** read and apply `.specify/extensions/architecture-guard/templates/ponytail_core.md`. In the extension source checkout, use `templates/ponytail_core.md`. Treat that shared contract as authoritative; phase-specific instructions may narrow its application but must not weaken its safety or verification floor.
+
 Validate that the implementation fulfills all tasks in `tasks.md` while adhering to the defined architecture boundaries and the **Architecture Constitution**. This command acts as a post-implementation gate.
 
 ## Flash-Mem-First Architecture Context Retrieval
@@ -96,7 +100,7 @@ Build internal representations:
 - **Pattern Match**: Does the code follow the mandated architectural patterns (e.g., DTOs, Repositories, Events)?
 
 #### D. Security Review on Implementation
-- If `spec-kit-security-review` is available, run `/speckit.security-review.branch` against the verified implementation.
+- If `security-review` (or compatibility alias `spec-kit-security-review`) is available, run `/speckit.security-review.branch` against the verified implementation.
 - If security findings are architecture-relevant, classify them as `Security-Architecture Conflict`.
 
 #### E. Repository Hygiene Validation

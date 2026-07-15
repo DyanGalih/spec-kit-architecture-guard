@@ -4,6 +4,10 @@ description: Run a single architecture workflow that prefers memory-first contex
 
 # Architecture Workflow Command
 
+## Ponytail Core Contract
+
+Before continuing, you **MUST** read and apply `.specify/extensions/architecture-guard/templates/ponytail_core.md`. In the extension source checkout, use `templates/ponytail_core.md`. Treat that shared contract as authoritative; phase-specific instructions may narrow its application but must not weaken its safety or verification floor.
+
 You are running `architecture-guard` as the single orchestration entry point for architecture review.
 
 Use this command when the user wants one pass that covers architecture review, memory-first context when available, Security Review handoff when available, and optional performance mode without manually chaining multiple commands.

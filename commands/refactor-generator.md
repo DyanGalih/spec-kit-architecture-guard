@@ -4,6 +4,10 @@ description: Convert architecture violations into non-blocking, structured refac
 
 # Refactor Generator Command
 
+## Ponytail Core Contract
+
+Before continuing, you **MUST** read and apply `.specify/extensions/architecture-guard/templates/ponytail_core.md`. In the extension source checkout, use `templates/ponytail_core.md`. Treat that shared contract as authoritative; phase-specific instructions may narrow its application but must not weaken its safety or verification floor.
+
 You are generating non-blocking refactor tasks for `architecture-guard`.
 
 Convert architecture violations into structured tasks that preserve delivery momentum while making architectural debt visible and actionable.
@@ -74,7 +78,7 @@ Use any available:
 Each task must:
 
 - Be non-blocking unless the Constitution explicitly says otherwise.
-- **Ponytail Pragmatism**: Apply the lazy senior developer mindset. Suggest the simplest, most minimal fix possible. Do not over-engineer the refactor. Use standard libraries where possible.
+- **Ponytail Core**: Choose the earliest viable decision-ladder rung and propose the smallest root-cause correction. Check all callers before extracting or changing shared behavior. Do not trade away the safety or verification floor for a smaller diff.
 - Prefer extracting repeated business rules, approvals, validation, DTO mapping, transformation, or orchestration into one shared source of truth instead of duplicating the same logic in multiple places.
 - Have a clear title.
 - Explain the architectural reason.
@@ -190,9 +194,12 @@ Refactor Tasks:
 [Refactor Task]
 Title:
 Reason:
+Consequence:
 Scope:
 Priority:
 Suggested Fix:
+Verification:
+Trade-off:
 ```
 
 If no tasks are needed:

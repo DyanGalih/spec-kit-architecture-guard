@@ -2,6 +2,18 @@
 
 This document covers the governed discovery, specification, planning, task, and implementation flows used by Architecture Guard.
 
+## Suggested Governed Delivery Workflow
+
+Use `governed-delivery` as the normal plan-to-tasks entry point:
+
+```text
+/speckit.architecture-guard.governed-delivery
+```
+
+The command retrieves Flash-Mem context when available, generates or reuses the plan, applies security and architecture plan gates, generates or reconciles tasks, and runs task security review, architecture refactor generation, and `/speckit.analyze`. It resumes from the first invalid phase and never generates tasks from a plan with unresolved P0 architecture or Critical security findings. It also loads the shared Ponytail Core contract so every resumed phase uses the same decision ladder, safety floor, root-cause rules, and verification expectations.
+
+The separate `governed-plan` and `governed-tasks` commands remain available for targeted recovery. If a plan changes materially, rerun both phases; if only tasks are defective, rerun `governed-tasks`.
+
 ## Governed Discovery Workflow
 
 Architecture Guard can orchestrate a brainstorming phase *before* a formal specification is written, helping new feature ideas align with existing architecture constraints from the very beginning.

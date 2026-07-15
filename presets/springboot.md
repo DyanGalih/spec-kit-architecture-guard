@@ -4,6 +4,17 @@ description: Apply Spring Boot-specific architecture conventions during architec
 
 # Architecture Guard — Spring Boot Architecture Adapter
 
+## Senior Engineering Lens
+
+Apply the framework mapping with senior judgment:
+
+- Treat directory names, layer counts, file length, and pattern names as signals, not proof. Confirm a concrete correctness, security, ownership, change-coupling, or operability cost before reporting a violation.
+- Start from the Constitution and patterns already working in the repository. Do not introduce a layer, library, DTO, store, repository, or service solely because this preset lists it.
+- Distinguish correctness requirements from maintainability advice. Security, trust-boundary validation, data integrity, and contract breaches may block; preference-level structure remains advisory.
+- For each finding, teach the reasoning: show evidence, name the violated boundary or principle, explain the likely failure mode, propose the smallest correction, and state how to verify it.
+- Evaluate tradeoffs that matter for the change, such as transaction scope, retries and idempotency, latency, state ownership, failure isolation, concurrency, and migration risk. Do not manufacture irrelevant categories.
+- Apply the shared Ponytail Core decision ladder and safety floor. Prefer native framework features and installed dependencies before proposing custom infrastructure.
+
 Use the core architecture review rules first. This adapter refines generic architecture concepts with **Spring Boot** conventions. It specifically focuses on Layered Architecture (Controller-Service-Repository), Dependency Injection (DI) discipline, and DTO isolation.
 
 ---
@@ -75,7 +86,7 @@ Detect when:
 Detect when:
 - A Controller method returns a class marked with `@Entity` directly.
 - A Controller method accepts an `@Entity` as a `@RequestBody`.
-- **Recommendation**: Map to a specialized **DTO** or **Record** using MapStruct or manual mapping.
+- **Recommendation**: Reuse the project's existing DTO or record mapping style. Prefer a small manual mapping when sufficient; do not add MapStruct solely for this correction.
 
 ### Fat Controllers
 
@@ -100,7 +111,7 @@ Detect when:
 
 Detect when:
 - A `@Service` or `@Component` maintains mutable instance variables (Beans are singletons by default and must be stateless).
-- Static utility classes are used for business logic that should be a Bean.
+- Static utilities hide stateful dependencies or mutable coordination. Pure stateless domain functions are acceptable and should not be converted to Beans without a lifecycle or dependency reason.
 
 ---
 

@@ -4,6 +4,10 @@ description: Run implementation with memory context, then review the produced im
 
 # Governed Implement Command
 
+## Ponytail Core Contract
+
+Before continuing, you **MUST** read and apply `.specify/extensions/architecture-guard/templates/ponytail_core.md`. In the extension source checkout, use `templates/ponytail_core.md`. Treat that shared contract as authoritative; phase-specific instructions may narrow its application but must not weaken its safety or verification floor.
+
 You are orchestrating the `governed-implement` workflow for `architecture-guard`.
 
 This command coordinates implementation and post-implementation review to ensure the output respects architectural, historical, and security constraints.
@@ -53,11 +57,11 @@ Provide a single command that ensures:
 
 Check for the availability of:
 - `flash-mem` MCP server
-- `spec-kit-security-review` extension
+- `security-review` (or compatibility alias `spec-kit-security-review`) extension
 
 **Detection Logic**:
 1. Detect `flash-mem` as an MCP-backed memory service in the current environment. Do not treat it as a Spec Kit extension or look for it in `.specify/extensions.yml`.
-2. Read `.specify/extensions.yml` and check the `installed` list for `spec-kit-security-review`. Fall back to checking for the extension directory in `.specify/extensions/` only if the YAML is missing or the list is empty.
+2. Read `.specify/extensions.yml` and check the `installed` list for `security-review` (or compatibility alias `spec-kit-security-review`). Fall back to checking for the extension directory in `.specify/extensions/` only if the YAML is missing or the list is empty.
 3. If either capability is missing, degrade gracefully by skipping only its respective steps.
 
 ### Step 2 — Flash-Mem MCP Context Retrieval (Optional)
@@ -79,16 +83,17 @@ If Flash-Mem is unavailable or the context is insufficient, continue with the re
 You must orchestrate the `/speckit.implement` (core implementation) workflow directly.
 
 **CRITICAL INSTRUCTION**: You must NOT just advise the user or stop here. You must perform the implementation by following the `tasks.md` breakdown:
-1. **Apply Ponytail Pragmatism**: Act as a "lazy senior developer." Write the absolute minimum code necessary. Strongly prefer one-line solutions, standard library methods, and native platform features over adding dependencies or creating new abstractions.
-   - Before adding new logic, check whether the rule, validation, or transformation already exists elsewhere and should be extracted into one shared implementation.
+1. **Apply Ponytail Core**: Trace the affected execution flow and apply the shared decision ladder in order. A one-line solution is preferred only when it is correct, readable, and reached after checking YAGNI, existing code, the standard library, native platform features, and installed dependencies.
+   - For fixes or shared behavior, search every caller and sibling path, then correct the owning implementation once when that is the true root cause.
+   - Preserve the contract safety floor and leave at least one runnable check for non-trivial logic.
 2. **Execute Tasks**: Run `/speckit.implement`. If `/speckit.implement` is not available as a registered command, fall back to inline implementation:
    - Read `specs/<feature>/tasks.md` and execute each unchecked task sequentially.
    - Read all applicable constitution files and any available Flash-Mem context before coding.
    - Perform the actual coding work (writing files, running tests) for each task, enforcing Ponytail minimalism.
    - Note in the Governance Summary that `/speckit.implement` was unavailable and implementation was performed inline.
 3. **Write Code**: Perform the actual coding work (writing files, running tests) required by the tasks.
-3. **Sync the tasks**: You MUST update `specs/<feature>/tasks.md` to mark completed tasks with `[x]`, check them off, and add any new subtasks discovered during implementation.
-4. The implementation MUST follow current tasks and context. Use Flash-Mem first when available. If Flash-Mem is unavailable or the retrieved context is insufficient, read the constitution files directly with your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
+4. **Sync the tasks**: You MUST update `specs/<feature>/tasks.md` to mark completed tasks with `[x]`, check them off, and add any new subtasks discovered during implementation.
+5. The implementation MUST follow current tasks and context. Use Flash-Mem first when available. If Flash-Mem is unavailable or the retrieved context is insufficient, read the constitution files directly with your file-reading tools (absolute or relative paths). Do not rely solely on workspace search or semantic indexers, as these files are often in `.gitignore`:
    - `specs/<feature>/tasks.md`
    - `.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md`, and `.specify/memory/security_constitution.md`.
    - `specs/<feature>/security-constraints.md` (if available).
@@ -98,7 +103,7 @@ NOTE: The core Spec Kit command is `speckit.implement`. Do not use `speckit.impl
 
 ### Step 4 — Security Review on Implementation
 
-IF `spec-kit-security-review` is available:
+IF `security-review` (or compatibility alias `spec-kit-security-review`) is available:
 1. **Execute Review**: Run `/speckit.security-review.branch` to review the produced implementation against security vulnerabilities.
 2. Check for: authorization bypass, missing validation, secret leakage, injection risk, and insecure data exposure.
 3. If security findings are architecture-relevant, classify them as `Security-Architecture Conflict` for the architecture review.

@@ -14,10 +14,14 @@
 
 > List the non-negotiable principles that shape engineering decisions.
 
-1. DRY (Don't Repeat Yourself): Core business logic, validation rules, and durable transformations must reside in a single source of truth.
-2. Prefer small, reviewable changes over large rewrites.
-3. Decisions with long-term impact must be documented.
-4. User-facing behavior must remain traceable to the feature specification.
+1. Understand the affected flow before changing it; small unexplained changes are not safe changes.
+2. Apply YAGNI, then reuse existing code, the standard library, native platform features, and installed dependencies before adding new code.
+3. DRY (Don't Repeat Yourself): Core business logic, validation rules, and durable transformations must reside in a single source of truth.
+4. Prefer deletion, boring solutions, fewer files, and small reviewable changes over abstraction or rewrites.
+5. Preserve trust-boundary validation, security, data-loss prevention, accessibility, and required external-system safeguards.
+6. Non-trivial logic must leave at least one runnable check behind.
+7. Decisions with long-term impact and deliberate simplification ceilings must be documented.
+8. User-facing behavior must remain traceable to the feature specification.
 
 ## Security Expectations
 

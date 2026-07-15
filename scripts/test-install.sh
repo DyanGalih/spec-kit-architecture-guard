@@ -23,6 +23,16 @@ assert_file_exists() {
   fi
 }
 
+assert_file_contains() {
+  TESTS=$((TESTS + 1))
+  if grep -q "$2" "$1"; then
+    echo -e "  ${GREEN}✓${NC} $3"
+  else
+    echo -e "  ${RED}✗${NC} $3 — pattern not found in: $1"
+    FAILURES=$((FAILURES + 1))
+  fi
+}
+
 # --- Test: Hub has required files ---
 echo ""
 echo "Test: Hub repo structure is valid"
@@ -32,8 +42,10 @@ assert_file_exists "$HUB_ROOT/README.md" "README.md exists at root"
 assert_file_exists "$HUB_ROOT/LICENSE" "LICENSE exists at root"
 assert_file_exists "$HUB_ROOT/templates/constitution.md" "governance constitution template exists"
 assert_file_exists "$HUB_ROOT/templates/architecture_constitution.md" "architecture constitution template exists"
+assert_file_exists "$HUB_ROOT/templates/ponytail_core.md" "Ponytail Core contract exists"
 
 EXPECTED_COMMANDS=(
+  "governed-delivery.md"
   "architecture-workflow.md"
   "architecture-review.md"
   "violation-detection.md"
@@ -43,6 +55,17 @@ EXPECTED_COMMANDS=(
 
 for cmd in "${EXPECTED_COMMANDS[@]}"; do
   assert_file_exists "$HUB_ROOT/commands/$cmd" "command file: $cmd"
+done
+
+echo ""
+echo "Test: Shared engineering contracts are wired"
+
+for cmd in "$HUB_ROOT"/commands/*.md; do
+  assert_file_contains "$cmd" "Ponytail Core Contract" "Ponytail Core: $(basename "$cmd")"
+done
+
+for preset in "$HUB_ROOT"/presets/*.md; do
+  assert_file_contains "$preset" "Senior Engineering Lens" "senior lens: $(basename "$preset")"
 done
 
 # --- Test: extension.yml references existing files ---

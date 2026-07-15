@@ -4,6 +4,17 @@ description: Apply React-specific architecture conventions during architecture r
 
 # Architecture Guard — React (Standalone) Architecture Adapter
 
+## Senior Engineering Lens
+
+Apply the framework mapping with senior judgment:
+
+- Treat directory names, layer counts, file length, and pattern names as signals, not proof. Confirm a concrete correctness, security, ownership, change-coupling, or operability cost before reporting a violation.
+- Start from the Constitution and patterns already working in the repository. Do not introduce a layer, library, DTO, store, repository, or service solely because this preset lists it.
+- Distinguish correctness requirements from maintainability advice. Security, trust-boundary validation, data integrity, and contract breaches may block; preference-level structure remains advisory.
+- For each finding, teach the reasoning: show evidence, name the violated boundary or principle, explain the likely failure mode, propose the smallest correction, and state how to verify it.
+- Evaluate tradeoffs that matter for the change, such as transaction scope, retries and idempotency, latency, state ownership, failure isolation, concurrency, and migration risk. Do not manufacture irrelevant categories.
+- Apply the shared Ponytail Core decision ladder and safety floor. Prefer native framework features and installed dependencies before proposing custom infrastructure.
+
 Use the core architecture review rules first. This adapter refines generic architecture concepts with **React (Standalone/Vite/CRA)** conventions. It specifically focuses on the separation of UI (Components) and Logic (Hooks/Services), preventing the "Fat Component" anti-pattern and enforcing clean state management.
 
 ---
@@ -74,7 +85,7 @@ When reviewing a React project, map generic architecture boundaries to React pri
 ### Fat Component (Logic Leakage)
 
 Detect when a component:
-- Contains more than 15 lines of business logic (calculations, complex filtering, multi-step workflows).
+- Owns business decisions, complex transformations, or multi-step workflows that change for reasons unrelated to rendering.
 - Directly uses `fetch` or `axios` inside a `useEffect` (this should be in a Service or Data hook).
 - Manually manages complex state that should be in a **Custom Hook** or a **Store**.
 
@@ -92,8 +103,8 @@ Detect when:
 ### Prop Drilling vs. Context
 
 Detect when:
-- A prop is passed through more than 3 levels of components without being used by the middle layers (Prop Drilling).
-- **Recommendation**: Consider using **Context API** or a **Zustand** store.
+- A value is repeatedly threaded through unrelated components, creating measurable change coupling or unclear ownership.
+- **Recommendation**: First consider composition or colocating state. Use an existing Context or store only when the value is genuinely shared and its update behavior fits that mechanism.
 
 ### Missing Data Fetching Abstraction [Focus: api]
 

@@ -2,7 +2,7 @@
 
 > Continuous architecture governance for AI-assisted development.
 
-[![Version](https://img.shields.io/badge/version-1.12.1-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.13.0-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Orchestration](https://img.shields.io/badge/role-governance--orchestrator-blue)](https://spec-kit.dev)
@@ -13,7 +13,7 @@
 
 ✨ **NEW in v1.12.0: Built-in Pragmatism, DRY, and Hygiene Guards!**  
 You no longer need to install separate agent skills for code minimalism, duplicated logic cleanup, or repository cleanliness—Architecture Guard now has them built directly into its orchestrated workflows:
-* **Ponytail Pragmatism:** Enforces the "lazy senior developer" mindset (YAGNI, minimal dependencies, one-liners) natively during implementation. *(Inspired by the [Ponytail Pragmatism Skill](https://github.com/DietrichGebert/ponytail))*
+* **Ponytail Core:** Applies one shared decision ladder across discovery, planning, tasks, implementation, refactoring, and review—including root-cause caller tracing, a safety floor, and runnable checks for non-trivial logic. *(Inspired by the [Ponytail Pragmatism Skill](https://github.com/DietrichGebert/ponytail))*
 * **DRY Cleanup Guidance:** Helps brownfield projects find duplicated business logic, validation, DTO mapping, and orchestration, then turn them into small refactor tasks instead of copy-paste drift.
 * **Brownfield Discovery + Verification:** Maps the current codebase, surfaces architectural drift early, and confirms approved refactors actually made it into the final work.
 * **Repository Hygiene Guard:** Automatically detects stray `*-copy.ts` drafts, orphaned code, and debug artifacts before they hit your main branch. [Learn more →](docs/repository-hygiene.md)
@@ -42,16 +42,40 @@ Architecture Guard uses a layered, reviewable workflow to keep architecture deci
 
 ## Why Use the Governed Workflows?
 
-Instead of running the raw Spec Kit commands (`/speckit.specify`, `/speckit.plan`, `/speckit.tasks`), you should use Architecture Guard's orchestrated commands (`governed-discover`, `governed-spec`, `governed-plan`, `governed-tasks`).
+Instead of manually chaining the raw Spec Kit commands (`/speckit.plan`, `/speckit.tasks`) and their reviews, use `/speckit.architecture-guard.governed-delivery` as the suggested plan-to-tasks flow. Use `governed-discover` and `governed-spec` before it when the feature still needs discovery or specification work.
 
 Using the governed orchestrators simplifies the upper Spec Kit flow by adding automatic layers of safety:
 1. **Shift-Left Discovery:** It can shape raw feature ideas through `governed-discover` before a formal specification exists.
 2. **Context-Aware:** It automatically queries `flash-mem` first to inject historical architectural decisions before generating any new outputs.
-3. **Unified Execution:** A single command runs the core Spec Kit generation (like `/speckit.specify` or `/speckit.tasks`), hands it off to Security Review, and then triggers the Architecture Guard.
+3. **Resumable Execution:** `governed-delivery` validates the plan before generating tasks and resumes from the first missing, stale, or blocked phase instead of recreating valid artifacts.
 4. **Analyst Auto-Fix Loops:** Rather than finding out your plan violates architecture at the end, the orchestrators use formal analysis (`/speckit.analyze`). If the analyst detects gaps, missing boundaries, or severities, the orchestrator automatically pauses and offers a loop to clarify and repair the artifacts instantly.
-5. **Ponytail Pragmatism:** The best feature of these workflows—they enforce a "lazy senior developer" mindset. This prevents over-engineering, minimizes external dependencies, and strictly enforces YAGNI (You Aren't Gonna Need It) during specification and implementation to keep your codebase lean.
+5. **Ponytail Core:** Every phase uses the same ordered decision ladder, root-cause rules, safety floor, and verification floor so minimalism does not become careless under-building.
 
-This helps ensure your specifications and tasks are explicitly validated *before* writing code, and implemented as simply as possible.
+This helps ensure your plan is stable before it is broken down into tasks, your tasks remain aligned when the plan changes, and implementation starts from reviewed artifacts.
+
+### Suggested Feature Delivery Flow
+
+```text
+governed-discover (optional)
+  → governed-spec (optional when spec.md already exists)
+  → governed-delivery
+      → flash-mem preflight
+      → plan generation or reuse
+      → security and architecture plan gate
+      → task generation or reconciliation
+      → security task review and architecture refactors
+      → speckit.analyze
+  → governed-implement
+  → architecture-verify
+```
+
+Run the recommended plan-to-tasks workflow with:
+
+```text
+/speckit.architecture-guard.governed-delivery
+```
+
+Rerunning the command is safe: it reuses accepted artifacts and resumes from the first invalid phase. P0 architecture findings and Critical security findings stop progression; advisory findings remain visible without blocking delivery.
 
 ---
 
@@ -73,7 +97,7 @@ specify extension add architecture-guard
 Or directly from the release artifact:
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.12.1.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.13.0.zip
 ```
 
 2. Map the existing codebase
@@ -82,16 +106,16 @@ specify extension add architecture-guard --from \
 /speckit.architecture-guard.init-brownfield
 ```
 
-3. Run an architecture review
+3. Run the suggested feature delivery flow
+
+```text
+/speckit.architecture-guard.governed-delivery
+```
+
+For a standalone review of existing work, use:
 
 ```text
 /speckit.architecture-guard.architecture-workflow
-```
-
-If violations appear, apply approved refactors:
-
-```text
-/speckit.architecture-guard.architecture-apply
 ```
 
 ### Greenfield Quick Start
@@ -108,7 +132,7 @@ specify extension add architecture-guard
 Or directly from the release artifact:
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.12.1.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.13.0.zip
 ```
 
 2. Initialize your constitutions
@@ -117,16 +141,16 @@ specify extension add architecture-guard --from \
 /speckit.architecture-guard.init
 ```
 
-3. Run an architecture review
+3. Run the suggested feature delivery flow
+
+```text
+/speckit.architecture-guard.governed-delivery
+```
+
+For a standalone review of existing work, use:
 
 ```text
 /speckit.architecture-guard.architecture-workflow
-```
-
-If violations appear, apply approved refactors:
-
-```text
-/speckit.architecture-guard.architecture-apply
 ```
 
 ---
@@ -137,6 +161,7 @@ If violations appear, apply approved refactors:
 | :--- | :--- | :--- |
 | **`/speckit.architecture-guard.init-brownfield`** | For existing codebases | Maps the current state, boundaries, and conventions before governance work. |
 | **`/speckit.architecture-guard.init`** | At project setup or when standards change | Creates or refines governance and architecture constitutions. |
+| **`/speckit.architecture-guard.governed-delivery`** | Recommended plan-to-tasks flow | Resumes from the first invalid phase, gates the plan, generates aligned tasks, and runs analysis. |
 | **`/speckit.architecture-guard.architecture-workflow`** | For an end-to-end review | Reviews specs, plans, tasks, and implementations for drift and refactors. |
 | **`/speckit.architecture-guard.governed-discover`** | Brainstorming Phase | Facilitate an architecture-aware discussion to flesh out ideas before generating a formal specification. |
 | **`/speckit.architecture-guard.governed-spec`** | Specification Phase | Orchestrates specify and clarify with architecture and memory context validation, plus an auto-fix loop. |
@@ -184,7 +209,7 @@ spec-kit-architecture-guard/
 - **Reviewable in Git**: the rules live in markdown files, not hidden state
 - **Architecture first**: the extension focuses on boundaries, ownership, and drift
 - **Companion-aware**: it can orchestrate other Spec Kit tools without depending on them
-- **Ponytail Pragmatism (YAGNI)**: baked-in "lazy senior developer" mindset to actively prevent bloat and over-engineering across all phases of delivery
+- **Ponytail Core**: one shared ladder prevents both over-building and unsafe under-building across every delivery phase
 
 ## Versioning Policy
 
@@ -197,3 +222,23 @@ This project strictly adheres to [Semantic Versioning (SemVer) 2.0.0](https://se
 
 See the Quick Start above for the brownfield entrypoint.
 If you are specifically cleaning up duplicated logic, follow the [DRY Cleanup Guide](docs/dry-cleanup.md) after the brownfield mapping pass.
+
+---
+
+## Legacy Manual Plan and Task Workflow
+
+The separate phase commands remain supported for targeted recovery, debugging, and teams that want manual approval between artifacts:
+
+```text
+/speckit.architecture-guard.governed-plan
+# Review or repair plan.md until no P0 architecture or Critical security findings remain.
+
+/speckit.architecture-guard.governed-tasks
+# Generate tasks only after the plan is accepted, then run security, refactor, and analysis checks.
+```
+
+Use the manual flow according to the source of the problem:
+
+- Plan problem: run `governed-plan`, then `governed-tasks` because the previous tasks may be stale.
+- Task-only problem: run `governed-tasks`.
+- Unknown or cross-phase problem: rerun `governed-delivery` and let it resume from the first invalid phase.

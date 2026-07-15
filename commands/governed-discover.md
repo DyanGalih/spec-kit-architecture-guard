@@ -4,6 +4,10 @@ description: Facilitate an architecture-aware discussion to flesh out ideas befo
 
 # Governed Discovery Command
 
+## Ponytail Core Contract
+
+Before continuing, you **MUST** read and apply `.specify/extensions/architecture-guard/templates/ponytail_core.md`. In the extension source checkout, use `templates/ponytail_core.md`. Treat that shared contract as authoritative; phase-specific instructions may narrow its application but must not weaken its safety or verification floor.
+
 You are orchestrating the `governed-discover` workflow for `architecture-guard`.
 
 This command coordinates an architecture-aware brainstorming and discovery phase before a formal specification is written. It helps ideas align with existing historical and architectural constraints, reducing drift early in the lifecycle while still leaving final validation to `governed-spec`.
@@ -40,11 +44,11 @@ Provide a single command that ensures:
 
 Check for the availability of:
 - `flash-mem` MCP server
-- `spec-kit-security-review` extension
+- `security-review` (or compatibility alias `spec-kit-security-review`) extension
 
 **Detection Logic**:
 1. Detect `flash-mem` as an MCP-backed memory service in the current environment.
-2. Read `.specify/extensions.yml` and check the `installed` list for `spec-kit-security-review`. If present, note it for downstream security flagging.
+2. Read `.specify/extensions.yml` and check the `installed` list for `security-review` (or compatibility alias `spec-kit-security-review`). If present, note it for downstream security flagging.
 3. If either capability is missing, degrade gracefully. Without `flash-mem`, rely on the local `.specify/memory/architecture_constitution.md` and `.specify/memory/security_constitution.md` files.
 
 ### Step 2 — Architecture Context Retrieval
@@ -67,7 +71,7 @@ Enter an interactive Q&A discussion with the user.
 
 If required questions remain unresolved, ask only the next necessary questions and do not produce the final handoff draft yet.
 
-If the user proposes a feature that touches authentication, authorization, PII, or data exposure, and `spec-kit-security-review` was detected in Step 1, flag the idea for downstream security review.
+If the user proposes a feature that touches authentication, authorization, PII, or data exposure, and `security-review` (or compatibility alias `spec-kit-security-review`) was detected in Step 1, flag the idea for downstream security review.
 
 ### Step 4.5 — Proactive Durable Memory Preservation
 

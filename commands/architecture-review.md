@@ -7,6 +7,10 @@ scripts:
 
 # Architecture Review Command
 
+## Ponytail Core Contract
+
+Before continuing, you **MUST** read and apply `.specify/extensions/architecture-guard/templates/ponytail_core.md`. In the extension source checkout, use `templates/ponytail_core.md`. Treat that shared contract as authoritative; phase-specific instructions may narrow its application but must not weaken its safety or verification floor.
+
 You are running `architecture-guard`, a framework-agnostic architecture review extension designed for high-integrity governance.
 
 ## Flash-Mem-First Architecture Context Retrieval
@@ -146,7 +150,7 @@ Use these core principles to detect drift:
 - **Isolation**: Data access, external APIs, and infrastructure must be isolated.
 - **Consistency**: Comparable endpoints or modules must use compatible patterns.
 - **DRY / Single Source of Truth**: Repeated business rules, validation, transformations, or orchestration should be centralized once and reused instead of copied across modules.
-- **Ponytail Pragmatism (YAGNI)**: Implementations must be minimal. No over-engineering, unnecessary abstractions, or future-proofing.
+- **Ponytail Pragmatism (YAGNI)**: Apply the shared decision ladder in order. Implementations must be minimal without weakening correctness, safety, accessibility, or verification.
 - **Non-Blocking**: Identify drift without converting style preferences into hard failures.
 
 ## Detection Scope
@@ -158,7 +162,9 @@ Detect violations such as:
 - **Tight Coupling**: Circular dependencies or cross-module leakage.
 - **Duplication Drift**: The same rule, validation, mapping, or workflow is implemented in multiple places instead of a shared boundary.
 - **Contract Mismatch**: Mismatch between API, UI, or service shapes.
-- **Ponytail Violation (Bloat)**: Code is over-engineered. It includes unnecessary boilerplate, "future-proofing", or bypasses standard library equivalents.
+- **Ponytail Violation (Bloat)**: Code is over-engineered, duplicates an existing capability, adds avoidable files or dependencies, includes unnecessary boilerplate or future-proofing, or bypasses a correct standard-library or native-platform feature.
+- **Ponytail Violation (Unsafe Simplification)**: A small diff removes required validation, authorization, data-loss prevention, accessibility, external-system safeguards, or verification.
+- **Root-Cause Miss**: A symptom is patched in one caller while sibling callers remain exposed to the same shared defect.
 - **Constitution Breach**: Any conflict with a "MUST" principle in the Constitution.
 
 **Duplication Drift Example**
@@ -182,7 +188,7 @@ Detect violations such as:
   - If `security-constraints.md` or `security_constitution.md` is breached, log it as a critical violation.
   - If a finding is primarily security-related and Security Review is available, route it to `/speckit.security-review.branch` instead of duplicating it here.
   - Cross-reference architecture decisions with security trust boundaries.
-7. **Ponytail Audit**: Act as a lazy senior developer. Scan the code for bloat, unnecessary abstractions, and missed opportunities to use the standard library. Flag over-engineering as a Ponytail Violation.
+7. **Ponytail Audit**: Apply both sides of the shared contract. Check for bloat and unsafe under-building; trace changed shared behavior to its callers; verify the earliest viable ladder rung was used; and confirm non-trivial logic has a runnable check.
 8. **Performance Scan (if mode=performance)**: Skip violations; focus on optimizations.
 8b. **Code Quality Scan (SonarLint)**: If `mode=architecture`, optionally scan for coupling/complexity violations.
 8c. **Repository Hygiene Scan**: Evaluate the repository against all hygiene rules loaded from `.specify/extensions/architecture-guard/hygiene-rules/*.md`. Apply exclusions and severity overrides defined in the project's `repository_hygiene` configuration.
@@ -304,7 +310,10 @@ Return only this structure:
 - **Title**: 
 - **Priority**: [Based on Severity]
 - **Reason**: 
+- **Consequence**:
 - **Suggested Fix**: 
+- **Verification**:
+- **Trade-off**:
 
 ---
 

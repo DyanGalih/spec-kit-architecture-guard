@@ -4,6 +4,17 @@ description: Apply Next.js-specific architecture conventions during architecture
 
 # Architecture Guard — Next.js Architecture Adapter
 
+## Senior Engineering Lens
+
+Apply the framework mapping with senior judgment:
+
+- Treat directory names, layer counts, file length, and pattern names as signals, not proof. Confirm a concrete correctness, security, ownership, change-coupling, or operability cost before reporting a violation.
+- Start from the Constitution and patterns already working in the repository. Do not introduce a layer, library, DTO, store, repository, or service solely because this preset lists it.
+- Distinguish correctness requirements from maintainability advice. Security, trust-boundary validation, data integrity, and contract breaches may block; preference-level structure remains advisory.
+- For each finding, teach the reasoning: show evidence, name the violated boundary or principle, explain the likely failure mode, propose the smallest correction, and state how to verify it.
+- Evaluate tradeoffs that matter for the change, such as transaction scope, retries and idempotency, latency, state ownership, failure isolation, concurrency, and migration risk. Do not manufacture irrelevant categories.
+- Apply the shared Ponytail Core decision ladder and safety floor. Prefer native framework features and installed dependencies before proposing custom infrastructure.
+
 Use the core architecture review rules first. This adapter refines generic architecture concepts with **Next.js (App Router)** conventions. It specifically focuses on the React Server Component (RSC) boundary, Server Action orchestration, and data fetching isolation.
 
 ---
@@ -85,14 +96,14 @@ Detect when:
 ### Server Action Responsibility
 
 Detect when:
-- Server Actions contain massive business workflows (they should delegate to a Service layer).
+- Server Actions own reused business decisions, transactions, or multi-step workflows that deserve an existing application or domain boundary; do not create a Service solely to shorten an otherwise cohesive action.
 - Server Actions are used for "data fetching" instead of RSCs (Server Actions are for mutations).
 - Server Actions lack proper error handling, leaking raw server errors to the client.
 
 ### Data Fetching Isolation [Focus: db]
 
 Detect when:
-- Components (RSC or Client) import database clients (Prisma/Drizzle) directly instead of using a Data Access Layer (DAL).
+- Client Components import database clients, or repeated/security-sensitive RSC queries lack a clear ownership boundary. A simple colocated server-only read is acceptable when it is not duplicated and does not leak data.
 - Database queries are duplicated across multiple `page.tsx` files instead of being in a shared `lib/data/` file.
 - `unstable_cache` is used without clear tags, making revalidation difficult.
 

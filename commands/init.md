@@ -4,6 +4,10 @@ description: Initialize or refine the project governance and architecture consti
 
 # Purpose
 
+## Ponytail Core Contract
+
+Before continuing, you **MUST** read and apply `.specify/extensions/architecture-guard/templates/ponytail_core.md`. In the extension source checkout, use `templates/ponytail_core.md`. Treat that shared contract as authoritative; phase-specific instructions may narrow its application but must not weaken its safety or verification floor.
+
 This command helps teams intentionally define:
 
 * engineering governance principles

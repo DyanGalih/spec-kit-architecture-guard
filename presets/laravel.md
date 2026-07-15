@@ -4,6 +4,17 @@ description: Apply Laravel-specific architecture conventions during architecture
 
 # Architecture Guard — Laravel Adapter
 
+## Senior Engineering Lens
+
+Apply the framework mapping with senior judgment:
+
+- Treat directory names, layer counts, file length, and pattern names as signals, not proof. Confirm a concrete correctness, security, ownership, change-coupling, or operability cost before reporting a violation.
+- Start from the Constitution and patterns already working in the repository. Do not introduce a layer, library, DTO, store, repository, or service solely because this preset lists it.
+- Distinguish correctness requirements from maintainability advice. Security, trust-boundary validation, data integrity, and contract breaches may block; preference-level structure remains advisory.
+- For each finding, teach the reasoning: show evidence, name the violated boundary or principle, explain the likely failure mode, propose the smallest correction, and state how to verify it.
+- Evaluate tradeoffs that matter for the change, such as transaction scope, retries and idempotency, latency, state ownership, failure isolation, concurrency, and migration risk. Do not manufacture irrelevant categories.
+- Apply the shared Ponytail Core decision ladder and safety floor. Prefer native framework features and installed dependencies before proposing custom infrastructure.
+
 Use the core architecture review rules first. This adapter refines generic architecture concepts with Laravel-specific conventions.
 
 Do not report a Laravel convention as a violation unless it conflicts with the Constitution or core architecture principles.
@@ -168,7 +179,7 @@ When the project uses Livewire, components are full-stack: a PHP class + a Blade
 
 - Components (`app/Livewire/`) should own UI state and user interactions
 - Business logic should still delegate to Actions, Services, or Jobs
-- Components should not become God components with 500+ lines of mixed business logic and rendering
+- Components should not mix unrelated UI state, business workflows, data access, and rendering responsibilities, regardless of line count
 - Each component should represent a single UI concern (form, table, modal, widget)
 
 **Detect when:**
@@ -190,8 +201,8 @@ When the project uses Livewire, components are full-stack: a PHP class + a Blade
 
 When Laravel is used as a REST API only (no Inertia, no Livewire, no Blade):
 
-- Controllers must return API Resources — never raw arrays or `->toArray()`
-- All routes should be in `routes/api.php` with Sanctum/Passport authentication
+- Controllers must return an explicit, stable response contract. Use existing API Resources when adopted; a small deliberate array is acceptable when it does not leak internal fields or duplicate mapping.
+- Keep API routes in the repository's established API routing boundary and apply the project's existing authentication mechanism where the endpoint requires authentication
 - No `view()` calls should exist in API controllers
 - Response shapes must be consistent and versioned
 
@@ -221,7 +232,7 @@ Detect when a controller:
 
 Detect when:
 
-- Controllers use inline `$request->validate()` with more than 3 rules
+- Inline validation is reused, contains authorization or domain decisions, or has become difficult to understand and test in the controller
 - The same validation rules are duplicated across controllers
 - Validation logic contains business rules (e.g., checking uniqueness across related tables with complex conditions)
 - API and web controllers validate the same entity differently without documented reason
@@ -251,7 +262,7 @@ Detect when:
 - Models directly call external services (HTTP, queue, mail) inside lifecycle hooks
 - Models use `boot()` or observers for business workflows that should be in Actions/Services
 - Queryable business logic lives outside scopes (e.g., complex `where` chains repeated in controllers)
-- Models grow beyond ~300 lines without using traits, scopes, or value objects to decompose
+- Models accumulate unrelated reasons to change; decompose only along an evidenced domain, query, casting, or lifecycle boundary
 
 **Acceptable in models:**
 - Relationships (`hasMany`, `belongsTo`, etc.)

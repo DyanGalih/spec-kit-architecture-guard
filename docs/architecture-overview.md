@@ -33,7 +33,7 @@ Architecture Guard is helpful because it gives AI a smaller, better set of rules
 
 Architecture Guard stands out because it combines a few practical capabilities in one workflow:
 
-- **Ponytail Pragmatism:** Enforces the "lazy senior developer" mindset (YAGNI, minimal dependencies, one-liners) natively during implementation. *(Inspired by the [Ponytail Pragmatism Skill](https://github.com/DietrichGebert/ponytail))*
+- **Ponytail Core:** Applies an ordered decision ladder, root-cause caller tracing, safety exceptions, and runnable verification across delivery phases. *(Inspired by the [Ponytail Pragmatism Skill](https://github.com/DietrichGebert/ponytail))*
 - **DRY Cleanup Guidance:** Helps brownfield projects find duplicated business logic, validation, DTO mapping, and orchestration, then turn them into small refactor tasks instead of copy-paste drift.
 - **Brownfield Discovery + Verification:** Maps the current codebase, surfaces architectural drift early, and confirms approved refactors actually made it into the final work.
 - **Repository Hygiene Guard:** Automatically detects stray `*-copy.ts` drafts, orphaned code, and debug artifacts before they hit your main branch. [Learn more →](repository-hygiene.md)

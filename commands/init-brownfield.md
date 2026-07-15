@@ -1,5 +1,9 @@
 # init-brownfield
 
+## Ponytail Core Contract
+
+Before continuing, you **MUST** read and apply `.specify/extensions/architecture-guard/templates/ponytail_core.md`. In the extension source checkout, use `templates/ponytail_core.md`. Treat that shared contract as authoritative; phase-specific instructions may narrow its application but must not weaken its safety or verification floor.
+
 Brownfield-first project initialization for existing codebases.
 
 Use this command when the repository already contains application code and you want to understand the current system before proposing structure, governance, or refactor work. After the current state is mapped, move to `/speckit.architecture-guard.init` if you need to define or refine constitutions before continuing into planning or implementation.

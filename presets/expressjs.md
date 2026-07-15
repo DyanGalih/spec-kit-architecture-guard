@@ -4,7 +4,18 @@ description: Apply Express-specific architecture conventions during architecture
 
 # Architecture Guard — Express.js Architecture Adapter
 
-Use the core architecture review rules first. This adapter refines generic architecture concepts with **Express.js** conventions. Since Express is unopinionated, this adapter enforces a standard **Controller-Service-Repository** pattern to prevent the common "Spaghetti Route" anti-pattern.
+## Senior Engineering Lens
+
+Apply the framework mapping with senior judgment:
+
+- Treat directory names, layer counts, file length, and pattern names as signals, not proof. Confirm a concrete correctness, security, ownership, change-coupling, or operability cost before reporting a violation.
+- Start from the Constitution and patterns already working in the repository. Do not introduce a layer, library, DTO, store, repository, or service solely because this preset lists it.
+- Distinguish correctness requirements from maintainability advice. Security, trust-boundary validation, data integrity, and contract breaches may block; preference-level structure remains advisory.
+- For each finding, teach the reasoning: show evidence, name the violated boundary or principle, explain the likely failure mode, propose the smallest correction, and state how to verify it.
+- Evaluate tradeoffs that matter for the change, such as transaction scope, retries and idempotency, latency, state ownership, failure isolation, concurrency, and migration risk. Do not manufacture irrelevant categories.
+- Apply the shared Ponytail Core decision ladder and safety floor. Prefer native framework features and installed dependencies before proposing custom infrastructure.
+
+Use the core architecture review rules first. This adapter refines generic architecture concepts with **Express.js** conventions. Because Express is unopinionated, this adapter recognizes Controller, Service, and Repository boundaries when the repository or feature complexity justifies them; it does not require all three layers for simple routes.
 
 ---
 
@@ -37,7 +48,7 @@ When reviewing an Express project, map generic architecture boundaries to Expres
 
 ### Application Boundary
 
-| Generic Concept | NestJS Equivalent (Context) |
+| Generic Concept | Express Equivalent |
 | --- | --- |
 | Shared logic coordination | Services (`src/services/`) |
 | Use case orchestration | Service classes or functions |
@@ -83,7 +94,7 @@ Detect when:
 
 Detect when:
 - Controllers use `try/catch` to manually send `res.status(500)` instead of calling `next(err)`.
-- **Recommendation**: Always use a centralized error handling middleware and pass errors via `next()`.
+- **Recommendation**: Prefer centralized error middleware when error translation is repeated or must stay contract-consistent. A small local handler is acceptable when it is the existing project convention and preserves the same contract.
 
 ### Middleware Responsibility
 

@@ -4,6 +4,10 @@ description: Detect framework-agnostic architecture violations in plans, tasks, 
 
 # Violation Detection Command
 
+## Ponytail Core Contract
+
+Before continuing, you **MUST** read and apply `.specify/extensions/architecture-guard/templates/ponytail_core.md`. In the extension source checkout, use `templates/ponytail_core.md`. Treat that shared contract as authoritative; phase-specific instructions may narrow its application but must not weaken its safety or verification floor.
+
 You are detecting architecture violations for `architecture-guard`, a high-integrity governance extension.
 
 Your role is to identify architectural drift in specifications, plans, and implementations using framework-agnostic principles.
@@ -89,7 +93,9 @@ Before analysis, build internal representations (do not output these):
 - **Intent Divergence**: Implementation deviates fundamentally from `spec.md` or `plan.md` intent.
 - **Hallucinated Abstractions**: Plan mentions an abstraction (e.g., Repository) that is missing in code.
 - **Spec-Code Mismatch**: Functional requirements from spec are implemented in the wrong architectural layer.
-- **Ponytail Violation (Bloat)**: Plan, tasks, or code include unnecessary boilerplate, "future-proofing", or bypass standard library equivalents.
+- **Ponytail Violation (Bloat)**: Plan, tasks, or code duplicate existing capability, add avoidable files or dependencies, include unnecessary boilerplate or future-proofing, or bypass a correct standard-library or native-platform feature.
+- **Ponytail Violation (Unsafe Simplification)**: Minimalism removes required validation, authorization, data-loss prevention, accessibility, external-system safeguards, or a runnable check for non-trivial logic.
+- **Root-Cause Miss**: A caller-specific patch leaves the same shared defect active in sibling paths.
 
 ### B. Boundaries & Layering
 - **Boundary Erosion**: Business logic leaking into Entry boundaries (Controllers/Handlers) or UI.
@@ -165,6 +171,10 @@ Violations:
   Description:
   Evidence:
   Principle:
+  Consequence:
+  Smallest Fix:
+  Verification:
+  Trade-off:
 ```
 
 If there are no violations:

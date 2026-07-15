@@ -4,6 +4,10 @@ description: Generate or validate implementation tasks with memory context, secu
 
 # Governed Tasks Command
 
+## Ponytail Core Contract
+
+Before continuing, you **MUST** read and apply `.specify/extensions/architecture-guard/templates/ponytail_core.md`. In the extension source checkout, use `templates/ponytail_core.md`. Treat that shared contract as authoritative; phase-specific instructions may narrow its application but must not weaken its safety or verification floor.
+
 You are orchestrating the `governed-tasks` workflow for `architecture-guard`.
 
 This command coordinates multiple extensions to ensure the task list respects architectural, historical, and security constraints before implementation begins.
@@ -55,11 +59,11 @@ Provide a single command that ensures:
 
 Check for the availability of:
 - `flash-mem` MCP server
-- `spec-kit-security-review` extension
+- `security-review` (or compatibility alias `spec-kit-security-review`) extension
 
 **Detection Logic**:
 1. Detect `flash-mem` as an MCP-backed memory service in the current environment. Do not treat it as a Spec Kit extension or look for it in `.specify/extensions.yml`.
-2. Read `.specify/extensions.yml` and check the `installed` list for `spec-kit-security-review`. Fall back to checking for the extension directory in `.specify/extensions/` only if the YAML is missing or the list is empty.
+2. Read `.specify/extensions.yml` and check the `installed` list for `security-review` (or compatibility alias `spec-kit-security-review`). Fall back to checking for the extension directory in `.specify/extensions/` only if the YAML is missing or the list is empty.
 3. If either capability is missing, degrade gracefully by skipping only its respective steps.
 
 ### Step 2 — Flash-Mem MCP Context Retrieval (Optional)
@@ -99,7 +103,7 @@ You must orchestrate the `/speckit.tasks` workflow directly.
 
 ### Step 4 — Security Review on Tasks
 
-IF `spec-kit-security-review` is available:
+IF `security-review` (or compatibility alias `spec-kit-security-review`) is available:
 1. **Execute Review**: Run `/speckit.security-review.tasks` to review the task list.
 2. Check for missing tasks related to:
     - Validation, authorization, and trust boundaries.
