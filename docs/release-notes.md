@@ -1,5 +1,11 @@
 # Release Notes
 
+## 1.13.1
+
+- Clarified the README, beginner guide, and workflow docs so `governed-discover` is clearly documented as the idea-stage entry point before `governed-spec` and `governed-delivery`.
+- Reworked the README quick-start and command directory so discovery, specification, delivery, implementation, and verification appear in the correct order.
+- Added a compact choose-your-path flow in the README to show when to start with discovery versus when to go straight to delivery.
+
 ## 1.13.0
 
 - Added `governed-delivery` as the suggested resumable plan-to-tasks workflow, with mandatory Flash-Mem preflight when available, architecture and applicable security plan gates, task staleness handling, and formal analysis.

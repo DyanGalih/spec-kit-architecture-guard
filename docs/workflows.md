@@ -4,17 +4,21 @@ This document covers the governed discovery, specification, planning, task, and 
 
 ## Suggested Governed Delivery Workflow
 
-Use `governed-delivery` as the normal plan-to-tasks entry point:
+Use `governed-delivery` once you already have a clear spec or a discovery draft that has been converted into a spec-ready direction:
 
 ```text
 /speckit.architecture-guard.governed-delivery
 ```
+
+If the work is still just an idea, request, or rough problem statement, start with `governed-discover` first and then `governed-spec` before delivery. That keeps the discovery and specification phases ahead of planning and task generation.
 
 The command retrieves Flash-Mem context when available, generates or reuses the plan, applies security and architecture plan gates, generates or reconciles tasks, and runs task security review, architecture refactor generation, and `/speckit.analyze`. It resumes from the first invalid phase and never generates tasks from a plan with unresolved P0 architecture or Critical security findings. It also loads the shared Ponytail Core contract so every resumed phase uses the same decision ladder, safety floor, root-cause rules, and verification expectations.
 
 The separate `governed-plan` and `governed-tasks` commands remain available for targeted recovery. If a plan changes materially, rerun both phases; if only tasks are defective, rerun `governed-tasks`.
 
 ## Governed Discovery Workflow
+
+Use `governed-discover` when the work starts as an idea, request, or rough problem statement and you need to turn it into a spec-ready direction. It is the right entry point before specification when you still need to explore options, test assumptions, or check the idea against the current architecture.
 
 Architecture Guard can orchestrate a brainstorming phase *before* a formal specification is written, helping new feature ideas align with existing architecture constraints from the very beginning.
 

@@ -2,7 +2,7 @@
 
 > Continuous architecture governance for AI-assisted development.
 
-[![Version](https://img.shields.io/badge/version-1.13.0-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.13.1-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Orchestration](https://img.shields.io/badge/role-governance--orchestrator-blue)](https://spec-kit.dev)
@@ -42,7 +42,32 @@ Architecture Guard uses a layered, reviewable workflow to keep architecture deci
 
 ## Why Use the Governed Workflows?
 
+```text
+idea or rough request
+  → governed-discover
+  → governed-spec
+  → governed-delivery
+  → governed-implement
+  → architecture-verify
+
+spec already exists
+  → governed-delivery
+  → governed-implement
+  → architecture-verify
+```
+
+
+
 Instead of manually chaining the raw Spec Kit commands (`/speckit.plan`, `/speckit.tasks`) and their reviews, use `/speckit.architecture-guard.governed-delivery` as the suggested plan-to-tasks flow. Use `governed-discover` and `governed-spec` before it when the feature still needs discovery or specification work.
+
+Use `governed-discover` when you have an idea, request, or rough problem statement but you do not yet have a stable spec. It is the right first step when:
+
+- you are still shaping the feature and want to explore options
+- you need to check the idea against existing architecture before writing a spec
+- you want to capture assumptions, risks, and rejected alternatives early
+- you are not ready to generate formal plan or task artifacts yet
+
+Skip `governed-discover` when the spec already exists and the only job left is to move through planning and tasks. In that case, go straight to `governed-delivery`.
 
 Using the governed orchestrators simplifies the upper Spec Kit flow by adding automatic layers of safety:
 1. **Shift-Left Discovery:** It can shape raw feature ideas through `governed-discover` before a formal specification exists.
@@ -51,7 +76,7 @@ Using the governed orchestrators simplifies the upper Spec Kit flow by adding au
 4. **Analyst Auto-Fix Loops:** Rather than finding out your plan violates architecture at the end, the orchestrators use formal analysis (`/speckit.analyze`). If the analyst detects gaps, missing boundaries, or severities, the orchestrator automatically pauses and offers a loop to clarify and repair the artifacts instantly.
 5. **Ponytail Core:** Every phase uses the same ordered decision ladder, root-cause rules, safety floor, and verification floor so minimalism does not become careless under-building.
 
-This helps ensure your plan is stable before it is broken down into tasks, your tasks remain aligned when the plan changes, and implementation starts from reviewed artifacts.
+This helps ensure your idea is shaped before planning, your plan is stable before it is broken down into tasks, your tasks remain aligned when the plan changes, and implementation starts from reviewed artifacts.
 
 ### Suggested Feature Delivery Flow
 
@@ -97,7 +122,7 @@ specify extension add architecture-guard
 Or directly from the release artifact:
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.13.0.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.13.1.zip
 ```
 
 2. Map the existing codebase
@@ -106,11 +131,13 @@ specify extension add architecture-guard --from \
 /speckit.architecture-guard.init-brownfield
 ```
 
-3. Run the suggested feature delivery flow
+3. If you are already starting from a clear spec, run the suggested feature delivery flow:
 
 ```text
 /speckit.architecture-guard.governed-delivery
 ```
+
+If you are still shaping the feature, run `/speckit.architecture-guard.governed-discover` first, then pass the resulting draft into `/speckit.architecture-guard.governed-spec` before delivery.
 
 For a standalone review of existing work, use:
 
@@ -132,7 +159,7 @@ specify extension add architecture-guard
 Or directly from the release artifact:
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.13.0.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.13.1.zip
 ```
 
 2. Initialize your constitutions
@@ -141,11 +168,13 @@ specify extension add architecture-guard --from \
 /speckit.architecture-guard.init
 ```
 
-3. Run the suggested feature delivery flow
+3. If you are already starting from a clear spec, run the suggested feature delivery flow:
 
 ```text
 /speckit.architecture-guard.governed-delivery
 ```
+
+If you are still shaping the feature, run `/speckit.architecture-guard.governed-discover` first, then pass the resulting draft into `/speckit.architecture-guard.governed-spec` before delivery.
 
 For a standalone review of existing work, use:
 
@@ -161,10 +190,10 @@ For a standalone review of existing work, use:
 | :--- | :--- | :--- |
 | **`/speckit.architecture-guard.init-brownfield`** | For existing codebases | Maps the current state, boundaries, and conventions before governance work. |
 | **`/speckit.architecture-guard.init`** | At project setup or when standards change | Creates or refines governance and architecture constitutions. |
-| **`/speckit.architecture-guard.governed-delivery`** | Recommended plan-to-tasks flow | Resumes from the first invalid phase, gates the plan, generates aligned tasks, and runs analysis. |
+| **`/speckit.architecture-guard.governed-discover`** | Idea-stage entry point | Shapes a rough request into a spec-ready direction before formal specification. |
+| **`/speckit.architecture-guard.governed-spec`** | Specification stage | Orchestrates specify and clarify with architecture and memory context validation, plus an auto-fix loop. |
+| **`/speckit.architecture-guard.governed-delivery`** | Delivery stage | Resumes from the first invalid phase, gates the plan, generates aligned tasks, and runs analysis. |
 | **`/speckit.architecture-guard.architecture-workflow`** | For an end-to-end review | Reviews specs, plans, tasks, and implementations for drift and refactors. |
-| **`/speckit.architecture-guard.governed-discover`** | Brainstorming Phase | Facilitate an architecture-aware discussion to flesh out ideas before generating a formal specification. |
-| **`/speckit.architecture-guard.governed-spec`** | Specification Phase | Orchestrates specify and clarify with architecture and memory context validation, plus an auto-fix loop. |
 | **`/speckit.architecture-guard.architecture-review`** | After `/specify`, `/plan`, or `/implement` | Checks a spec, plan, or implementation against architecture rules. |
 | **`/speckit.architecture-guard.refactor-generator`** | After violations are found | Converts violations into structured refactor tasks. |
 | **`/speckit.architecture-guard.architecture-apply`** | When refactors are approved | Injects approved architecture work into plans and tasks. |
