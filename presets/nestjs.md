@@ -1,8 +1,85 @@
 ---
-description: Apply NestJS-specific architecture conventions during architecture review.
+description: Apply NestJS-specific architecture conventions during initialization and architecture review.
 ---
 
 # Architecture Guard — NestJS Architecture Adapter
+
+## Init Interview
+
+Ask these questions sequentially after the NestJS preset is selected. Skip questions already resolved by existing constitution context.
+
+### Module Boundaries
+
+Ask:
+
+```text
+How strict should module boundaries be?
+```
+
+### Inter-Module Communication
+
+Ask:
+
+```text
+Should services communicate directly or through contracts/events?
+```
+
+### Validation Scope
+
+Ask:
+
+```text
+Should validation be global or scoped per controller/module?
+```
+
+### Application Pattern
+
+Ask:
+
+```text
+Which application pattern should NestJS modules follow?
+
+- Conventional Controller → Service → Repository
+- Use-case providers grouped by feature
+- CQRS commands, queries, and events
+- Hybrid based on module complexity
+- No enforced convention
+```
+
+### Dependency Injection
+
+Ask:
+
+```text
+How should provider dependencies and external integrations be represented?
+
+- Concrete providers with constructor injection
+- Interface-style injection tokens
+- Abstract classes as tokens
+- Dynamic modules for configurable infrastructure
+- Existing project convention
+```
+
+### Persistence Boundary
+
+Ask:
+
+```text
+How should database clients and repositories be owned by modules?
+
+- ORM client directly in feature services
+- Feature-owned repository providers
+- Shared infrastructure module with explicit exports
+- CQRS persistence adapters
+```
+
+### Async Infrastructure
+
+Ask:
+
+```text
+Which workflows should use queues, events, schedulers, or NestJS microservice transports?
+```
 
 ## Senior Engineering Lens
 

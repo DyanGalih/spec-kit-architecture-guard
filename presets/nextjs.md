@@ -1,8 +1,87 @@
 ---
-description: Apply Next.js-specific architecture conventions during architecture review.
+description: Apply Next.js-specific architecture conventions during initialization and architecture review.
 ---
 
 # Architecture Guard — Next.js Architecture Adapter
+
+## Init Interview
+
+Ask these questions sequentially after the Next.js preset is selected. Skip questions already resolved by existing constitution context.
+
+### Component Boundaries
+
+Ask:
+
+```text
+How should Server and Client Component boundaries be enforced?
+```
+
+### Server Action Delegation
+
+Ask:
+
+```text
+Should Server Actions delegate to domain or service layers?
+```
+
+### Server Action Validation
+
+Ask:
+
+```text
+How should Server Action inputs be validated?
+```
+
+### Application Organization
+
+Ask:
+
+```text
+How should application and domain logic be organized outside pages, layouts, Route Handlers, and Server Actions?
+
+- Feature-oriented modules
+- Services or use-case functions
+- Domain modules
+- Colocated logic for simple features
+- Hybrid based on complexity
+```
+
+### Data Access Boundary
+
+Ask:
+
+```text
+Where may database and external API access occur?
+
+- Server Components and server-only modules
+- Server Actions or Route Handlers delegating to services
+- Dedicated repositories or data-access modules
+- Hybrid with an explicit server-only boundary
+```
+
+### Dependency Wiring
+
+Ask:
+
+```text
+How should server-side dependencies be wired?
+
+- Explicit function parameters
+- Module factories
+- A project-adopted DI container
+- Direct imports for stateless infrastructure
+- No enforced convention
+```
+
+Do not introduce a DI container solely because other backend frameworks use one.
+
+### Background Infrastructure
+
+Ask:
+
+```text
+Which operations require a queue, workflow service, scheduled job, or external worker instead of a request-bound Server Action or Route Handler?
+```
 
 ## Senior Engineering Lens
 

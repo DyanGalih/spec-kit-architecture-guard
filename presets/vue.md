@@ -1,8 +1,73 @@
 ---
-description: Apply Vue-specific architecture conventions during architecture review.
+description: Apply Vue-specific architecture conventions during initialization and architecture review.
 ---
 
 # Architecture Guard — Vue (Standalone) Architecture Adapter
+
+## Init Interview
+
+Ask these questions sequentially after the Vue preset is selected. Skip questions already resolved by existing constitution context.
+
+### Composable Boundaries
+
+Ask:
+
+```text
+How should composables be organized and scoped?
+```
+
+### API Access
+
+Ask:
+
+```text
+How should API access be abstracted?
+```
+
+### Component Architecture
+
+Ask:
+
+```text
+How should presentation, feature orchestration, and reusable business logic be separated?
+
+- Components plus composables
+- Feature modules
+- Container and presentational components
+- Hybrid based on complexity
+```
+
+### Dependency Provisioning
+
+Ask:
+
+```text
+How should shared dependencies be provided?
+
+- Explicit imports
+- provide/inject
+- Composable factories
+- A project-adopted DI library
+- No enforced convention
+```
+
+Do not introduce a DI container solely to imitate a backend framework.
+
+### State and Data Ownership
+
+Ask:
+
+```text
+Which state belongs locally, in composables, in Pinia, or in server-state tooling?
+```
+
+### API Infrastructure
+
+Ask:
+
+```text
+How should API clients, caching, retries, authentication refresh, and error translation be centralized?
+```
 
 ## Senior Engineering Lens
 

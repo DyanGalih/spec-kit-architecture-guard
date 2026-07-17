@@ -1,8 +1,72 @@
 ---
-description: Apply Express-specific architecture conventions during architecture review.
+description: Apply Express-specific architecture conventions during initialization and architecture review.
 ---
 
 # Architecture Guard — Express.js Architecture Adapter
+
+## Init Interview
+
+Ask these questions sequentially after the Express preset is selected. Skip questions already resolved by existing constitution context.
+
+### Application Architecture
+
+Ask:
+
+```text
+How should the Express application be organized?
+
+- Routes → Controllers → Services
+- Routes → Controllers → Services → Repositories
+- Feature-oriented modules
+- Minimal route handlers for simple endpoints
+- Hybrid based on complexity
+```
+
+### Dependency Wiring
+
+Ask:
+
+```text
+How should dependencies be wired?
+
+- Explicit factory functions
+- Constructor injection
+- Request or application locals
+- A project-adopted DI container
+- Direct imports for stateless infrastructure
+```
+
+Express has no built-in DI container. Do not introduce one without a demonstrated lifecycle, substitution, or testing need.
+
+### Contracts and Validation
+
+Ask:
+
+```text
+Which schema system should validate requests and define API contracts?
+
+- Zod
+- Joi
+- express-validator
+- JSON Schema or OpenAPI
+- Existing project convention
+```
+
+### Persistence and Transactions
+
+Ask:
+
+```text
+Which ORM or database client is used, who owns queries, and where are transaction boundaries coordinated?
+```
+
+### Async Infrastructure
+
+Ask:
+
+```text
+Which work requires queues, workers, schedulers, or event processing outside the HTTP request?
+```
 
 ## Senior Engineering Lens
 

@@ -1,8 +1,66 @@
 ---
-description: Apply React-specific architecture conventions during architecture review.
+description: Apply React-specific architecture conventions during initialization and architecture review.
 ---
 
 # Architecture Guard — React (Standalone) Architecture Adapter
+
+## Init Interview
+
+Ask these questions sequentially after the standalone React preset is selected. Skip questions already resolved by existing constitution context.
+
+### Application Architecture
+
+Ask:
+
+```text
+How should the React application be organized?
+
+- Feature-oriented modules
+- Pages, components, hooks, and services
+- Container and presentational components
+- Domain-oriented frontend modules
+- Hybrid based on complexity
+```
+
+### Logic and Dependency Boundaries
+
+Ask:
+
+```text
+How should components access application logic and dependencies?
+
+- Custom hooks and explicit imports
+- Context providers
+- Factory functions with explicit parameters
+- A project-adopted DI library
+- No enforced convention
+```
+
+React has no built-in DI container. Prefer composition, hooks, context, or explicit parameters unless the project already demonstrates a container need.
+
+### State Ownership
+
+Ask:
+
+```text
+Which state belongs locally, in Context, in a client store, or in server-state tooling?
+```
+
+### API and Contract Infrastructure
+
+Ask:
+
+```text
+How should API clients, runtime validation, caching, retries, authentication refresh, and error translation be handled?
+```
+
+### Routing and Authorization
+
+Ask:
+
+```text
+Which router owns navigation, and how should route visibility differ from server-enforced authorization?
+```
 
 ## Senior Engineering Lens
 

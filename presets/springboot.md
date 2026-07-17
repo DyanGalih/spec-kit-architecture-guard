@@ -1,8 +1,70 @@
 ---
-description: Apply Spring Boot-specific architecture conventions during architecture review.
+description: Apply Spring Boot-specific architecture conventions during initialization and architecture review.
 ---
 
 # Architecture Guard — Spring Boot Architecture Adapter
+
+## Init Interview
+
+Ask these questions sequentially after the Spring Boot preset is selected. Skip questions already resolved by existing constitution context.
+
+### Application Architecture
+
+Ask:
+
+```text
+Which architecture should the Spring Boot application follow?
+
+- Conventional Controller → Service → Repository
+- Package-by-feature layered architecture
+- Hexagonal or Ports and Adapters
+- Domain-driven modular monolith
+- CQRS or event-driven modules
+- Hybrid based on complexity
+```
+
+### Dependency Injection
+
+Ask:
+
+```text
+How should dependencies be injected and configured?
+
+- Constructor injection with concrete beans
+- Constructor injection through interfaces or ports
+- Configuration classes with explicit @Bean methods
+- Existing project convention
+```
+
+### DTO and Mapping Strategy
+
+Ask:
+
+```text
+How should API DTOs, domain objects, and persistence entities be separated and mapped?
+
+- Manual mapping
+- Dedicated mapper classes
+- MapStruct
+- Records with explicit factories
+- No separation for approved simple internal CRUD
+```
+
+### Persistence and Transactions
+
+Ask:
+
+```text
+Which persistence abstraction is used, and which application or service methods own transaction boundaries?
+```
+
+### Security and Async Infrastructure
+
+Ask:
+
+```text
+How should Spring Security authorization be expressed, and which work belongs in events, messaging, @Async, or scheduled jobs?
+```
 
 ## Senior Engineering Lens
 

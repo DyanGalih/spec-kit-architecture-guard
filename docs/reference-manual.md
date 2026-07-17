@@ -181,6 +181,8 @@ This injects refactor tasks into `plan.md` and `tasks.md` so the AI has explicit
 
 All commands load `templates/ponytail_core.md`. The contract applies an ordered YAGNI-to-minimum-code ladder, requires root-cause caller tracing, preserves a correctness and safety floor, and requires a runnable check for non-trivial logic. Framework presets add vocabulary but cannot require a layer or dependency without repository evidence.
 
+See [Framework Presets](presets.md) for the supported built-in frameworks, init interview coverage, review boundaries, guardrails, and custom-preset structure.
+
 # Optimizer-Aware Memory Flow
 
 Architecture Guard integrates with `flash-mem` as the runtime SQLite-backed optimizer to provide high-performance, token-efficient reviews. The legacy `memory-hub` name is reference-only and deprecated.
@@ -230,6 +232,8 @@ specify extension add architecture-guard --from \
 ```
 
 ### Global Preset Usage
+
+Built-in presets are documented in [Framework Presets](presets.md). Use a global preset when the built-in adapter does not cover an organization-specific convention or an additional framework.
 
 If you manage multiple projects using the same framework (e.g., Laravel), you can create a global preset and link it to Architecture Guard for greenfield setups.
 

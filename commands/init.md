@@ -94,6 +94,7 @@ Examples:
 * NestJS → Controllers, Providers, DTOs, Modules
 * Next.js → Server Components, Server Actions, Zod
 * Nuxt → Composables, Pinia, server/api
+* React Native → Screens, hooks, navigation, device services, native modules
 
 ---
 
@@ -359,11 +360,12 @@ Examples:
 - Next.js 15 App Router
 - Nuxt 3
 - Express + React
+- React Native + Expo
 ```
 
 ### Framework Preset
 
-If the technology stack matches a built-in preset (e.g., Laravel, NestJS, Next.js, Nuxt.js, Django, Spring Boot, React, Vue, or Express), ask:
+If the technology stack matches a built-in preset (e.g., Laravel, NestJS, Next.js, Nuxt.js, Django, Spring Boot, React, React Native, Vue, or Express), ask:
 
 ```text
 Would you like to use the [Framework] Architecture Preset?
@@ -447,103 +449,21 @@ Focus on:
 
 ---
 
-# Framework-Specific Interview Logic
+# Framework Preset Interview
 
----
+Framework-specific questions belong to the selected preset, not this command.
 
-## Laravel
+When the user selects a built-in framework preset:
 
-Ask:
+1. Resolve its preset file from `.specify/extensions/architecture-guard/presets/[preset].md`. In the extension source checkout, use `presets/[preset].md`.
+2. Locate `## Init Interview` and read that section through the next level-two heading. Do not load unrelated review guidance solely to run the interview when the host can read a section selectively.
+3. Merge the preset questions into the matching generic interview phases. Ask them sequentially and only when relevant to the selected application type or an earlier answer; do not ask a generic and preset question twice when they seek the same decision.
+4. Record each answer as a framework-neutral architectural decision plus its selected framework implementation.
+5. If the preset has no `## Init Interview` section, continue with the generic phases below without inventing framework requirements.
 
-```text
-What application style are you using?
+Keep the normalized decisions portable, including use-case invocation style, DTO strategy, authorization strategy, validation, contracts, and boundary ownership. Package-specific options MUST remain inside the matching preset. Selecting a package records a convention; it does not authorize init to install dependencies.
 
-- REST API
-- Inertia
-- Livewire
-- API + SPA
-```
-
----
-
-Ask:
-
-```text
-Where should business logic live?
-
-- Services
-- Actions
-- Domain layer
-- Models
-- Hybrid
-```
-
----
-
-Ask:
-
-```text
-How should validation be handled?
-
-Examples:
-- Form Requests
-- DTO validation
-- inline validation
-```
-
----
-
-## NestJS
-
-Ask:
-
-```text
-How strict should module boundaries be?
-```
-
----
-
-Ask:
-
-```text
-Should services communicate directly or through contracts/events?
-```
-
----
-
-## Next.js
-
-Ask:
-
-```text
-How should Server and Client Component boundaries be enforced?
-```
-
----
-
-Ask:
-
-```text
-Should Server Actions delegate to domain/service layers?
-```
-
----
-
-## Nuxt / Vue
-
-Ask:
-
-```text
-How should composables be organized and scoped?
-```
-
----
-
-Ask:
-
-```text
-How should API access be abstracted?
-```
+If the user selects no enforced convention, preserve that choice and do not turn the preference into an architecture violation.
 
 ---
 
@@ -621,41 +541,9 @@ What is the standard response structure?
 
 ---
 
-## Framework-Specific Questions
+## Preset Contract Questions
 
-### Laravel + Inertia
-
-Ask:
-
-```text
-How should PHP → frontend contracts be protected?
-
-Examples:
-- DTOs
-- API Resources
-- TypeScript interfaces
-- explicit field mapping
-```
-
----
-
-### NestJS
-
-Ask:
-
-```text
-Should validation be global or scoped per controller/module?
-```
-
----
-
-### Next.js
-
-Ask:
-
-```text
-How should Server Action inputs be validated?
-```
+If the selected preset's `## Init Interview` includes contract or validation questions, ask them during this phase unless an earlier answer already resolves them. Do not ask the same question twice.
 
 ---
 
@@ -770,6 +658,9 @@ Examples:
 
 * controller/service boundaries
 * DTO requirements
+* use-case invocation style and its framework implementation, when selected
+* DTO strategy and its framework implementation, when selected
+* authorization strategy and its framework implementation, when selected
 * validation placement
 * async boundaries
 * response contracts
@@ -904,52 +795,9 @@ NEVER automatically modify either file.
 
 ---
 
-# Reference Patterns
+# Preset Reference Patterns
 
-These are guidance patterns.
-
-DO NOT automatically enforce them.
-
----
-
-## Laravel Reference Patterns
-
-* Thin Controllers
-* Form Requests for validation
-* Business logic in Services or Actions
-* Explicit frontend contracts for Inertia
-* Avoid leaking raw models to frontend
-* Separate HTTP entry layer from domain logic
-
----
-
-## NestJS Reference Patterns
-
-* Thin Controllers
-* Business logic in Services
-* Strong Module boundaries
-* DTO validation with ValidationPipe
-* Explicit imports/exports between modules
-
----
-
-## Next.js Reference Patterns
-
-* Clear Server vs Client boundaries
-* Server Components for data loading
-* Avoid heavy logic in Server Actions
-* Validate inputs using schemas
-* Prefer Server Actions over unnecessary API routes
-
----
-
-## Nuxt / Vue Reference Patterns
-
-* Thin API handlers
-* Organized composables
-* Controlled global state
-* Dedicated API abstraction layer
-* Middleware only for cross-cutting concerns
+Framework-specific reference patterns belong to the selected preset. Use them as optional guidance while interpreting interview answers, but do not automatically enforce them or copy unselected patterns into the Constitution.
 
 ---
 

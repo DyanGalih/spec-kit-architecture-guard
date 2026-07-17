@@ -18,6 +18,7 @@ The goal is to make architecture part of the workflow instead of something you o
 
 See the Quick Start in the README for the brownfield and greenfield entrypoints.
 If you are specifically cleaning up duplicated logic, follow the [DRY Cleanup Guide](dry-cleanup.md) after the brownfield mapping pass.
+For framework-specific initialization and review coverage, see [Framework Presets](presets.md).
 
 ## Why It’s Useful
 
@@ -27,7 +28,7 @@ Architecture Guard is helpful because it gives AI a smaller, better set of rules
 - architecture decisions stop living only in people’s heads
 - drift becomes visible as refactor work instead of hidden technical debt
 - security and architecture checks happen in the workflow, not after the damage is done
-- the system stays framework-agnostic, so the same ideas work across Laravel, NestJS, Next.js, Django, and more
+- the system stays framework-agnostic, so the same ideas work across Laravel, NestJS, Next.js, React Native, Django, and more
 
 ## Best Features
 

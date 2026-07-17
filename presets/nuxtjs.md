@@ -1,8 +1,65 @@
 ---
-description: Apply Nuxt-specific architecture conventions during architecture review.
+description: Apply Nuxt-specific architecture conventions during initialization and architecture review.
 ---
 
 # Architecture Guard — Nuxt.js Architecture Adapter
+
+## Init Interview
+
+Ask these questions sequentially after the Nuxt preset is selected. Skip questions already resolved by existing constitution context.
+
+### Composable Boundaries
+
+Ask:
+
+```text
+How should composables be organized and scoped?
+```
+
+### API Access
+
+Ask:
+
+```text
+How should API access be abstracted?
+```
+
+### Application Organization
+
+Ask:
+
+```text
+How should Nuxt application logic be divided among pages, components, composables, stores, and server modules?
+```
+
+### Dependency Provisioning
+
+Ask:
+
+```text
+How should shared clients and infrastructure dependencies be provided?
+
+- Nuxt plugins and injection
+- Explicit imports from server or client modules
+- Composable factories
+- Existing project convention
+```
+
+### State and Data Ownership
+
+Ask:
+
+```text
+Which state belongs in component state, composables, Pinia, useState, or server-side persistence?
+```
+
+### Server Infrastructure
+
+Ask:
+
+```text
+Where should database access, secrets, server integrations, caching, and background work live?
+```
 
 ## Senior Engineering Lens
 

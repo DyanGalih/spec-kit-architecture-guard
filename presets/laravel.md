@@ -1,8 +1,162 @@
 ---
-description: Apply Laravel-specific architecture conventions during architecture review.
+description: Apply Laravel-specific architecture conventions during initialization and architecture review.
 ---
 
 # Architecture Guard — Laravel Adapter
+
+## Init Interview
+
+Ask these questions sequentially after the Laravel preset is selected. Skip questions that are irrelevant to the application style or already answered by existing constitution context.
+
+### Application Style
+
+Ask:
+
+```text
+What application style are you using?
+
+- REST API
+- Inertia
+- Livewire
+- API + SPA
+```
+
+### Business Logic Placement
+
+Ask:
+
+```text
+Where should business logic live?
+
+- Services
+- Actions
+- Domain layer
+- Models
+- Hybrid
+```
+
+### Validation Strategy
+
+Ask:
+
+```text
+How should validation be handled?
+
+- Form Requests
+- DTO validation
+- Inline validation
+```
+
+### Use-Case Invocation Style
+
+Ask:
+
+```text
+How should single-purpose application operations be implemented?
+
+- Invokable Action classes (`__invoke`)
+- Named methods on Action classes
+- Multi-method Service classes
+- No enforced convention
+```
+
+Treat this as the use-case invocation style. Do not infer that every controller must be a single-action controller.
+
+### DTO Strategy
+
+Ask:
+
+```text
+How should DTOs be implemented?
+
+- spatie/laravel-data
+- Custom immutable PHP DTOs
+- Form Requests and API Resources only
+- No enforced DTO convention
+```
+
+Record the selected implementation, but do not install a package during init.
+
+### Authorization Strategy
+
+Ask:
+
+```text
+How should roles and permissions be implemented?
+
+- spatie/laravel-permission, with Gates or Policies for resource-level authorization where needed
+- Native Laravel Gates and Policies
+- Custom authorization implementation
+- Authentication only / authorization not currently required
+```
+
+Do not treat role and permission assignment as a replacement for resource-level authorization.
+
+### Inertia Contract Strategy
+
+If the application style is Inertia, ask:
+
+```text
+How should PHP → frontend contracts be protected?
+
+- DTOs
+- API Resources
+- TypeScript interfaces
+- Explicit field mapping
+```
+
+### Application Architecture
+
+Ask:
+
+```text
+How should the Laravel application be organized?
+
+- Standard Laravel MVC with thin controllers
+- MVC with Actions or Services for use cases
+- Domain-oriented or modular architecture
+- Hybrid based on feature complexity
+- No enforced convention
+```
+
+### Dependency Resolution
+
+Ask:
+
+```text
+How should application dependencies be resolved?
+
+- Constructor injection through Laravel's service container
+- Contracts bound to implementations in service providers
+- Facades for framework infrastructure and injection for application services
+- Existing project convention
+- No enforced convention
+```
+
+Do not require interfaces for every class. Bind contracts where substitution, boundary ownership, or testing requires them.
+
+### Persistence and Transactions
+
+Ask:
+
+```text
+How should persistence and transaction boundaries be handled?
+
+- Direct Eloquent in Actions or Services
+- Repository contracts
+- Query objects or scoped Eloquent queries
+- Hybrid based on query complexity
+
+Where should multi-write transactions be coordinated?
+```
+
+### Async Infrastructure
+
+Ask:
+
+```text
+Which work must use Jobs, events, listeners, or scheduled commands instead of blocking an HTTP request?
+```
 
 ## Senior Engineering Lens
 
@@ -52,7 +206,7 @@ When reviewing a Laravel project, map generic architecture boundaries to Laravel
 | Stable request shapes | Form Requests (`app/Http/Requests/`) |
 | Stable response shapes | API Resources (`app/Http/Resources/`) |
 | Shared interfaces | Contracts / Interfaces (`app/Contracts/` or inline) |
-| Data transfer objects | DTOs or Data classes (custom `app/Data/` or `app/DTOs/`) |
+| Data transfer objects | DTOs or Data classes (`spatie/laravel-data`, custom `app/Data/`, or `app/DTOs/`, when adopted) |
 | Event contracts | Event classes (`app/Events/`) |
 | Notification contracts | Notification classes (`app/Notifications/`) |
 | Mail contracts | Mailable classes (`app/Mail/`) |
@@ -62,6 +216,7 @@ When reviewing a Laravel project, map generic architecture boundaries to Laravel
 | Generic Concept | Laravel Equivalent |
 | --- | --- |
 | Use case coordination | Actions (`app/Actions/`) or Services (`app/Services/`) |
+| Single-purpose invocation | Invokable Actions (`__invoke`) or named Action methods, when adopted |
 | Multi-step workflows | Jobs, Pipelines, or Action chains |
 | Transaction coordination | Service or Action classes with `DB::transaction()` |
 
@@ -296,6 +451,52 @@ If the Constitution uses Actions (single-purpose classes):
 If the Constitution does NOT use Actions:
 
 - Do not flag Service classes that contain multi-method workflows
+
+### Action Invocation Style (When Adopted)
+
+If the Constitution selects invokable Actions:
+
+- Detect single-purpose Actions that expose unrelated public operation methods instead of the selected `__invoke()` entry point
+- Detect controllers that bypass the selected Action and duplicate its use-case orchestration
+- Do not require controllers themselves to be invokable unless the Constitution separately requires single-action controllers
+
+If the Constitution selects named Action methods, Services, or no enforced convention:
+
+- Do not flag an Action solely because it does not implement `__invoke()`
+
+### DTO Strategy (When Adopted)
+
+If the Constitution selects `spatie/laravel-data`:
+
+- Recognize Data classes as the selected DTO implementation for request, response, and boundary mapping
+- Detect equivalent boundary shapes that bypass the selected Data classes and create inconsistent or duplicated mapping
+- Reuse the package's validation and transformation capabilities when the Constitution assigns those responsibilities to Data classes
+
+If the Constitution selects custom immutable DTOs:
+
+- Recognize the documented custom DTO location and construction pattern
+- Detect mutable or ad hoc array contracts only when they conflict with that documented strategy
+
+If the Constitution selects Form Requests and API Resources only, or no enforced DTO convention:
+
+- Do not require `spatie/laravel-data` or custom DTO classes
+- Do not report the absence of a dedicated DTO package as a violation
+
+### Authorization Strategy (When Adopted) [Focus: security]
+
+If the Constitution selects `spatie/laravel-permission`:
+
+- Recognize package roles and permissions as the selected assignment and coarse-grained access-control mechanism
+- Use Gates or Policies for resource-level decisions when ownership, tenant boundaries, record state, or other contextual rules require them
+- Detect duplicated string-based role or permission checks that bypass the selected centralized mechanism
+- Do not assume a role or permission check alone proves authorization for a specific resource
+
+If the Constitution selects native Gates and Policies:
+
+- Detect authorization decisions duplicated in controllers, Actions, middleware, or views instead of the selected Gate or Policy
+- Do not require `spatie/laravel-permission`
+
+If the Constitution selects a custom implementation, review against its documented boundary and source of truth. If authorization is not currently required, do not invent permission requirements; still report concrete public-entrypoint or trust-boundary security risks through Security Review.
 
 ### Middleware Should Not Contain Business Logic
 
@@ -646,6 +847,9 @@ Laravel Conventions:
 - Response Shaping: [API Resources / Raw / Mixed] — [details]
 - Model Discipline: [Clean / Mixed / Fat] — [details]
 - Pattern Adoption: [Actions|Services|Repositories|Standard] — [per Constitution]
+- Action Invocation: [Invokable|Named Methods|Services|Not Enforced] — [per Constitution]
+- DTO Strategy: [Laravel Data|Custom DTOs|Requests and Resources|Not Enforced] — [details]
+- Authorization: [Laravel Permission|Gates and Policies|Custom|Not Required] — [details]
 - Boundary Compliance: [summary of boundary violations specific to Laravel]
 ```
 
@@ -658,6 +862,9 @@ This section supplements the core architecture review output. It does not replac
 - Do not flag standard Laravel conventions (Facades, helper functions, Eloquent) as violations unless the Constitution explicitly restricts them.
 - Do not require Repository pattern unless the Constitution adopts it.
 - Do not require Action pattern unless the Constitution adopts it.
+- Do not require invokable Actions unless the Constitution adopts that invocation style.
+- Do not require `spatie/laravel-data` or `spatie/laravel-permission` unless the Constitution adopts the corresponding package.
+- Treat package selection as an architecture convention, not authorization to install dependencies during init or review.
 - Do not flag simple CRUD controllers in small projects unless the Constitution requires thin controllers.
 - Do flag any pattern that conflicts with a documented Constitution rule, regardless of whether it's a Laravel convention.
 - The Constitution is always the final authority. This adapter provides Laravel context, not overrides.

@@ -2,7 +2,7 @@
 
 > Continuous architecture governance for AI-assisted development.
 
-[![Version](https://img.shields.io/badge/version-1.13.1-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.14.0-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Orchestration](https://img.shields.io/badge/role-governance--orchestrator-blue)](https://spec-kit.dev)
@@ -36,7 +36,13 @@ Architecture Guard uses a layered, reviewable workflow to keep architecture deci
 - drift becomes visible as refactor work instead of silent debt
 - smaller models get clearer rules to follow
 - architecture checks happen during delivery, not only at review time
-- the same ideas work across Laravel, NestJS, Next.js, Django, and more
+- the same ideas work across Laravel, NestJS, Next.js, React Native, Django, and more
+
+### Supported Framework Presets
+
+Architecture Guard includes presets for Django, Express.js, Laravel, NestJS, Next.js, Nuxt, React, React Native, Spring Boot, and Vue. Each preset provides framework-specific initialization questions, boundary mappings, review guidance, and non-enforcement guardrails.
+
+See [Framework Presets](docs/presets.md) for the complete comparison and custom-preset contract.
 
 ---
 
@@ -122,7 +128,7 @@ specify extension add architecture-guard
 Or directly from the release artifact:
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.13.1.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.14.0.zip
 ```
 
 2. Map the existing codebase
@@ -159,7 +165,7 @@ specify extension add architecture-guard
 Or directly from the release artifact:
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.13.1.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.14.0.zip
 ```
 
 2. Initialize your constitutions
@@ -214,6 +220,7 @@ spec-kit-architecture-guard/
     ├── governance-model.md      ← Constitution layers and delegation model
     ├── workflows.md             ← Governed discovery, specification, planning, task, and implementation flows
     ├── reference-manual.md      ← Setup, commands, install, and validation details
+    ├── presets.md               ← Supported framework presets and extension contract
     ├── dry-cleanup.md           ← Brownfield DRY cleanup flow and duplication signals
     ├── repository-hygiene.md    ← Repository Hygiene rules and configuration
     └── release-notes.md         ← Change history and workflow updates
@@ -226,6 +233,7 @@ spec-kit-architecture-guard/
 - [Governance Model](docs/governance-model.md) - Layered constitutions and delegation behavior
 - [Workflows](docs/workflows.md) - Governed discovery, specification, planning, tasks, implementation, and companion extension flows
 - [Reference Manual](docs/reference-manual.md) - Install, configure, validate, and command details
+- [Framework Presets](docs/presets.md) - Built-in preset comparison, selection guidance, and custom-preset contract
 - [DRY Cleanup Guide](docs/dry-cleanup.md) - Brownfield flow for finding and removing duplicated logic
 - [Repository Hygiene](docs/repository-hygiene.md) - Configuration and rules for the Repository Hygiene Guard
 - [Release Notes](docs/release-notes.md) - Recent workflow and README updates

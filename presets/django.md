@@ -1,8 +1,74 @@
 ---
-description: Apply Django-specific architecture conventions during architecture review.
+description: Apply Django-specific architecture conventions during initialization and architecture review.
 ---
 
 # Architecture Guard — Django Architecture Adapter
+
+## Init Interview
+
+Ask these questions sequentially after the Django preset is selected. Skip questions already resolved by existing constitution context.
+
+### Application Architecture
+
+Ask:
+
+```text
+How should Django applications be organized?
+
+- Conventional MVT with thin views
+- MVT with Services and Selectors
+- Domain-oriented apps
+- Modular project with explicit app boundaries
+- Hybrid based on complexity
+```
+
+### View Style and Contracts
+
+Ask:
+
+```text
+Which entry and contract patterns are used?
+
+- Function-based views with Forms
+- Class-based views with Forms or ModelForms
+- Django REST Framework with Serializers
+- Django Ninja or typed schemas
+- Mixed, with documented boundaries
+```
+
+### Dependency Wiring
+
+Ask:
+
+```text
+How should services and external integrations receive dependencies?
+
+- Explicit function or constructor parameters
+- Settings-backed factories
+- Direct imports for stable framework infrastructure
+- A project-adopted DI library
+- Existing project convention
+```
+
+Django does not require a DI container. Do not add one without a demonstrated lifecycle, substitution, or testing need.
+
+### Persistence and Transactions
+
+Ask:
+
+```text
+Should query logic live in custom QuerySets or Managers, Selectors, Services, or repositories?
+
+Where should multi-model transaction boundaries be coordinated?
+```
+
+### Async Infrastructure
+
+Ask:
+
+```text
+Which work must use Celery, Django Q, RQ, scheduled jobs, or another worker instead of blocking a request?
+```
 
 ## Senior Engineering Lens
 
