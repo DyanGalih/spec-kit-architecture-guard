@@ -2,7 +2,7 @@
 
 > Continuous architecture governance for AI-assisted development.
 
-[![Version](https://img.shields.io/badge/version-1.14.0-22c55e)](extension.yml)
+[![Version](https://img.shields.io/badge/version-1.15.0-22c55e)](extension.yml)
 [![Spec Kit](https://img.shields.io/badge/Spec%20Kit-compatible-2563eb)](https://spec-kit.dev)
 [![Non-blocking](https://img.shields.io/badge/style-non--blocking-10b981)](https://spec-kit.dev)
 [![Orchestration](https://img.shields.io/badge/role-governance--orchestrator-blue)](https://spec-kit.dev)
@@ -128,7 +128,7 @@ specify extension add architecture-guard
 Or directly from the release artifact:
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.14.0.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.15.0.zip
 ```
 
 2. Map the existing codebase
@@ -165,7 +165,7 @@ specify extension add architecture-guard
 Or directly from the release artifact:
 ```text
 specify extension add architecture-guard --from \
-  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.14.0.zip
+  https://github.com/DyanGalih/spec-kit-architecture-guard/archive/refs/tags/v1.15.0.zip
 ```
 
 2. Initialize your constitutions
@@ -196,6 +196,7 @@ For a standalone review of existing work, use:
 | :--- | :--- | :--- |
 | **`/speckit.architecture-guard.init-brownfield`** | For existing codebases | Maps the current state, boundaries, and conventions before governance work. |
 | **`/speckit.architecture-guard.init`** | At project setup or when standards change | Creates or refines governance and architecture constitutions. |
+| **`/speckit.architecture-guard.consolidate-specs`** | When budgeted context needs a fresh local fallback | Generates a compact, non-authoritative feature index with provenance and conflict reporting. |
 | **`/speckit.architecture-guard.governed-discover`** | Idea-stage entry point | Shapes a rough request into a spec-ready direction before formal specification. |
 | **`/speckit.architecture-guard.governed-spec`** | Specification stage | Orchestrates specify and clarify with architecture and memory context validation, plus an auto-fix loop. |
 | **`/speckit.architecture-guard.governed-delivery`** | Delivery stage | Resumes from the first invalid phase, gates the plan, generates aligned tasks, and runs analysis. |
@@ -204,6 +205,20 @@ For a standalone review of existing work, use:
 | **`/speckit.architecture-guard.refactor-generator`** | After violations are found | Converts violations into structured refactor tasks. |
 | **`/speckit.architecture-guard.architecture-apply`** | When refactors are approved | Injects approved architecture work into plans and tasks. |
 | **`/speckit.architecture-guard.architecture-verify`** | Final validation step | Checks whether the final work matches the approved tasks. |
+
+### Budgeted Architecture Context Retrieval
+
+For repositories with many historical feature specs, init can create `.specify/config/architecture_guard.yml` with `context.mode: budgeted`. The workflow always reads the active feature artifacts and constitutions first, then uses a bounded Flash-Mem summary search. It reads `specs/system_context.md` only when Flash-Mem is unavailable or insufficient, and opens individual historical specs only for named gaps or conflicts.
+
+`system_context.md` is an offline fallback index, not a canonical specification. Refresh it with:
+
+```text
+/speckit.architecture-guard.consolidate-specs
+```
+
+Budgeted mode can reduce repeated historical context in medium and large repositories, but savings depend on the project and must be measured; small repositories may see little benefit.
+
+Use the [Budgeted Context Benchmark](docs/context-budget-benchmark.md) before claiming verified token savings.
 
 ---
 

@@ -11,6 +11,10 @@ scripts:
 
 Before continuing, you **MUST** read and apply `.specify/extensions/architecture-guard/templates/ponytail_core.md`. In the extension source checkout, use `templates/ponytail_core.md`. Treat that shared contract as authoritative; phase-specific instructions may narrow its application but must not weaken its safety or verification floor.
 
+## Budgeted Context Contract
+
+Read and apply `.specify/extensions/architecture-guard/templates/budgeted_context.md` (or `templates/budgeted_context.md` in the extension source checkout). Available active `spec.md`, `plan.md`, `tasks.md`, security constraints, applicable constitutions, and relevant code evidence are authoritative. Use fallback provenance to open historical specs only for named review gaps.
+
 You are running `architecture-guard`, a framework-agnostic architecture review extension designed for high-integrity governance.
 
 ## Flash-Mem-First Architecture Context Retrieval
@@ -58,22 +62,27 @@ Throughout this command, complex analysis steps offer **optional sub-agent deleg
 
 **Syntax: `[OPTIONAL SUB-AGENT DELEGATION]`**
 
-When you see this marker in a step:
-- LLM assesses complexity: file count, lines of code, decision count, etc.
-- LLM decides: Handle inline (fast path) OR delegate to sub-agent (thorough path)
-- Inline preferred: Simple codebases, small changes, quick turnaround
-- Sub-agent preferred: Large codebases, complex analysis, refactors, deep synthesis
+When you see this marker in a step, evaluate these conditions:
+1. **Capability Gate:** Confirm that the intended sub-agent command is registered and callable. If it is unavailable, execute inline regardless of size and report the degraded path.
+2. **Trigger Condition:** When the capability is available, you **MUST** delegate to a sub-agent if:
+   - The number of changed files is $\ge 15$.
+   - OR the total diff size is $\ge 500$ lines of code.
+   - OR the Flash-Mem context contains $> 20$ memory documents.
+   - Otherwise, you **MUST** execute inline.
+3. **Override Command:** Explicit `--inline` or `--delegate` CLI flags override the auto-detection triggers above, but `--delegate` cannot bypass the capability gate.
+4. **Execution Syntax:** To delegate, call the sub-agent via the following pattern:
+   `/[extension_name].[sub_agent_command] --files=[comma_separated_file_list] --rules=[path_to_rules]`
+5. **Strict Handoff Template:** When spawning the sub-agent, you must format your invocation prompt exactly like this:
+   ```yaml
+   Task: Analyze code quality and boundary violations.
+   Target Files: [Comma-separated list of target files]
+   Rules File: .specify/memory/architecture_constitution.md
+   Context: [Brief summary of planning/implementation state]
+   Expected Output: JSON list of structured violations.
+   ```
 
-**Decision criteria:**
-- Inline: < 50 files AND < 10,000 lines
-- Sub-agent: ≥ 50 files OR ≥ 10,000 lines OR > 20 memory documents
-- LLM override: Explicit `--inline` or `--delegate` flags override auto-detection
+This pattern ensures that lower-tier models follow strict execution paths instead of failing on complex evaluations.
 
-**Sub-agents available when provided by the host environment or project:**
-- Memory synthesis sub-agent; the markdown-only fallback alias is only relevant when `flash-mem` is unavailable
-- Custom project commands such as `/analyze-sonar-violations` for SonarLint scanning
-
-This pattern enables flexibility: fast execution for typical PRs, powerful execution for large refactors.
 
 ---
 
@@ -211,17 +220,25 @@ When the extension is installed, load the bundle from `.specify/extensions/archi
 
 ### Scope-Based Delegation (Hybrid Model)
 
-**Inline Execution** (default for small codebases):
-- Changed files < 50 files
-- Total lines < 10,000
-- Process directly, no sub-agent
+**Capability Gate:** First confirm that `/analyze-sonar-violations` is registered and callable. If it is unavailable, execute inline regardless of size.
 
-**[OPTIONAL SUB-AGENT DELEGATION]**:
-- If changed files ≥ 50 OR total lines ≥ 10,000:
-  - Consider delegating to sub-agent for parallel rule scanning
-  - Suggested sub-agent: Custom `/analyze-sonar-violations` if the project defines it; otherwise use inline scanning
-  - Sub-agent benefits: Parallelized rule evaluation, detailed categorization
-  - LLM decides: Inline for fast path, sub-agent for thorough path
+**Trigger Condition:** When the capability is available, you **MUST** delegate to the sub-agent if:
+- Changed files is $\ge 15$.
+- OR total lines in diff is $\ge 500$.
+- Otherwise, you **MUST** execute inline.
+
+**Execution Syntax:**
+* Custom command: `/analyze-sonar-violations --files=[comma_separated_file_list] --rules=.specify/extensions/architecture-guard/sonar-rules/sonarlint-rules.json`.
+
+**Strict Handoff Template:**
+When delegating, write the sub-agent invocation prompt exactly like this:
+```yaml
+Task: Scan files against SonarLint rules.
+Target Files: [Comma-separated list of target files]
+Rules File: .specify/extensions/architecture-guard/sonar-rules/sonarlint-rules.json
+Expected Output: JSON list of CRITICAL/HIGH code quality violations mapped to architecture boundaries.
+```
+
 
 ### Procedure
 

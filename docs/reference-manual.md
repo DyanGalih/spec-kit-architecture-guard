@@ -167,6 +167,7 @@ This injects refactor tasks into `plan.md` and `tasks.md` so the AI has explicit
 | --- | --- | --- | --- |
 | `init-brownfield` | Setup | Current-state baseline, app root detection, boundary map, and brownfield notes | When the repository already contains application code and you need to understand the existing system first |
 | `init` | Setup | `.specify/memory/constitution.md`, `.specify/memory/architecture_constitution.md`, `.specify/memory/security_constitution.md` | Once at project start; rerun to refine standards |
+| `consolidate-specs` | Context maintenance | `specs/system_context.md` | Refresh the compact local fallback used only when Flash-Mem is unavailable or insufficient |
 | `governed-discover` | Orchestration | Architecture-aware discovery brief with alignment notes, rejected options, assumptions, and handoff prompt | Use before specification when the feature idea needs discussion against existing architecture constraints |
 | `governed-spec` | Orchestration | Specification and Clarification with `flash-mem` synthesis first + security + architecture, plus auto-fix loop | Use when `flash-mem` and Security Review are installed to start from specification |
 | `governed-delivery` | Orchestration | Resumable plan-to-tasks flow with memory preflight, plan gates, task reconciliation, and analysis | Recommended entry point after specification |
@@ -215,6 +216,30 @@ optimizer:
 > Use `governed-delivery` as the suggested plan-to-tasks flow. Use `architecture-workflow` or `architecture-review` directly for standalone reviews; the individual `governed-plan` and `governed-tasks` commands remain available for targeted recovery.
 
 > `architecture-apply` targets `plan.md` and `tasks.md`. If architectural issues are found in the specification stage, refine the specification before generating a technical plan. When `flash-mem` is available, use the cached synthesis and approved review output before writing back.
+
+## Budgeted Architecture Context Retrieval
+
+Create `.specify/config/architecture_guard.yml` from the bundled `templates/architecture_guard_config.yml`:
+
+```yaml
+schema_version: "1.0"
+
+context:
+  mode: budgeted
+  fallback_file: specs/system_context.md
+  stale_policy: regenerate
+  flash_mem:
+    initial_result_limit: 5
+    full_entry_limit: 3
+```
+
+Missing or invalid configuration preserves targeted Flash-Mem-first behavior. In budgeted mode, commands load mandatory active artifacts and constitutions, query at most five Flash-Mem summaries initially, and expand at most three full entries unless a named conflict requires more. A sufficient Flash-Mem result prevents `system_context.md` from loading.
+
+The fallback is stale when its manifest omits a current spec, lists a missing spec, a source is newer, current artifacts materially conflict, or freshness cannot be established. `regenerate` refreshes it through `consolidate-specs`; `targeted` skips it and opens only sources required for named gaps.
+
+This mode is designed to reduce repeated historical-spec context, not mandatory active-feature context. Verify savings with representative project workflows before describing them as an optimization.
+
+Use the [Budgeted Context Benchmark](context-budget-benchmark.md) for the required fixture profiles, scenarios, measurements, and acceptance criteria.
 
 ## Installation
 

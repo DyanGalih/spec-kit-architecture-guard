@@ -65,6 +65,20 @@ Architecture Guard detects these drifts early and converts them into structured,
 
 Think of it as a governance layer that sits between Spec Kit and implementation.
 
+When Budgeted Architecture Context Retrieval is enabled, context expands progressively:
+
+```text
+active feature artifacts + constitutions
+              ↓
+bounded Flash-Mem summaries and selected entries
+              ↓ only when insufficient
+specs/system_context.md
+              ↓ only for a named gap
+selected historical specs
+```
+
+The local system context is an offline fallback, not another default input and not a replacement specification. This avoids loading the same cross-feature material from both Flash-Mem and repository history. Actual savings depend on repository size and retrieval quality and must be benchmarked.
+
 | Phase | What Happens | Output |
 | --- | --- | --- |
 | Discovery | Architecture-aware brainstorming against constraints and existing patterns | Aligned feature draft with rejected options and open questions |

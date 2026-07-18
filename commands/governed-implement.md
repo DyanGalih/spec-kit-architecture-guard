@@ -8,6 +8,10 @@ description: Run implementation with memory context, then review the produced im
 
 Before continuing, you **MUST** read and apply `.specify/extensions/architecture-guard/templates/ponytail_core.md`. In the extension source checkout, use `templates/ponytail_core.md`. Treat that shared contract as authoritative; phase-specific instructions may narrow its application but must not weaken its safety or verification floor.
 
+## Budgeted Context Contract
+
+Read and apply `.specify/extensions/architecture-guard/templates/budgeted_context.md` (or `templates/budgeted_context.md` in the extension source checkout). The active feature's `tasks.md` is mandatory and authoritative; load its active `plan.md`, `spec.md`, and security constraints whenever a task lacks enough context. Flash-Mem and `system_context.md` may supplement but never replace active artifacts.
+
 You are orchestrating the `governed-implement` workflow for `architecture-guard`.
 
 This command coordinates implementation and post-implementation review to ensure the output respects architectural, historical, and security constraints.
@@ -71,10 +75,20 @@ When Flash-Mem is available, use it first to gather the most relevant architectu
 If Flash-Mem is unavailable or the context is insufficient, continue with the repository artifacts and constitution files available in the workspace.
 
 **[OPTIONAL SUB-AGENT DELEGATION]**
-- If the available Flash-Mem context is large or highly branched: Consider sub-agent support for synthesis
-- Sub-agent command: Use the memory synthesis sub-agent when the context is too broad for inline synthesis.
-- Sub-agent benefits: Faster traversal, better filtering, detailed synthesis
-- LLM decides: Inline for quick decisions, sub-agent for complex memory
+* **Capability Gate:** First confirm that `/speckit.subagent.synthesize` is registered and callable. If it is unavailable, execute inline regardless of size and report the degraded path.
+* **Trigger Condition:** When the capability is available, you **MUST** delegate memory retrieval and synthesis if:
+  - The Flash-Mem index contains $\ge 20$ memory documents.
+  - OR the project repository contains $\ge 15$ active ADRs/docs.
+  - Otherwise, you **MUST** execute inline.
+* **Execution Syntax:** Call the memory synthesis sub-agent via:
+  `/speckit.subagent.synthesize --context=implementation`
+* **Strict Handoff Template:** Format the sub-agent prompt exactly like this:
+  ```yaml
+  Task: Retrieve and synthesize relevant architecture constraints and ADRs.
+  Focus: Rules and conventions affecting codebase implementation.
+  Expected Output: Synthesized markdown summary of constraints to guide coding and refactoring.
+  ```
+
 
 ---
 

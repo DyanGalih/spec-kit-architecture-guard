@@ -33,6 +33,16 @@ assert_file_contains() {
   fi
 }
 
+assert_yaml_parses() {
+  TESTS=$((TESTS + 1))
+  if python3 -c 'import sys, yaml; yaml.safe_load(open(sys.argv[1], encoding="utf-8"))' "$1" >/dev/null 2>&1; then
+    echo -e "  ${GREEN}✓${NC} $2"
+  else
+    echo -e "  ${RED}✗${NC} $2 — YAML parse failed or Python PyYAML is unavailable: $1"
+    FAILURES=$((FAILURES + 1))
+  fi
+}
+
 # --- Test: Hub has required files ---
 echo ""
 echo "Test: Hub repo structure is valid"
@@ -43,6 +53,11 @@ assert_file_exists "$HUB_ROOT/LICENSE" "LICENSE exists at root"
 assert_file_exists "$HUB_ROOT/templates/constitution.md" "governance constitution template exists"
 assert_file_exists "$HUB_ROOT/templates/architecture_constitution.md" "architecture constitution template exists"
 assert_file_exists "$HUB_ROOT/templates/ponytail_core.md" "Ponytail Core contract exists"
+assert_file_exists "$HUB_ROOT/templates/budgeted_context.md" "budgeted context contract exists"
+assert_file_exists "$HUB_ROOT/templates/architecture_guard_config.yml" "Architecture Guard config template exists"
+assert_file_exists "$HUB_ROOT/scripts/create-context-budget-fixtures.sh" "context-budget fixture generator exists"
+assert_yaml_parses "$HUB_ROOT/extension.yml" "extension.yml parses"
+assert_yaml_parses "$HUB_ROOT/templates/architecture_guard_config.yml" "Architecture Guard config parses"
 
 EXPECTED_COMMANDS=(
   "governed-delivery.md"
@@ -51,6 +66,7 @@ EXPECTED_COMMANDS=(
   "violation-detection.md"
   "refactor-generator.md"
   "architecture-apply.md"
+  "consolidate-specs.md"
 )
 
 for cmd in "${EXPECTED_COMMANDS[@]}"; do
@@ -67,6 +83,28 @@ done
 for preset in "$HUB_ROOT"/presets/*.md; do
   assert_file_contains "$preset" "Senior Engineering Lens" "senior lens: $(basename "$preset")"
 done
+
+echo ""
+echo "Test: Budgeted context is wired to governed workflows"
+
+BUDGETED_COMMANDS=(
+  "governed-spec.md"
+  "governed-plan.md"
+  "governed-tasks.md"
+  "governed-delivery.md"
+  "governed-implement.md"
+  "architecture-review.md"
+  "architecture-verify.md"
+)
+
+for cmd in "${BUDGETED_COMMANDS[@]}"; do
+  assert_file_contains "$HUB_ROOT/commands/$cmd" "budgeted_context.md" "budgeted context: $cmd"
+done
+
+assert_file_contains "$HUB_ROOT/templates/budgeted_context.md" "Do not load the local fallback merely because budgeted mode is enabled" "Flash-Mem-success path skips local fallback"
+assert_file_contains "$HUB_ROOT/commands/consolidate-specs.md" "not a canonical specification" "fallback is non-authoritative"
+assert_file_contains "$HUB_ROOT/templates/budgeted_context.md" "Context Expansion" "context expansion is auditable"
+assert_file_contains "$HUB_ROOT/templates/architecture_guard_config.yml" "targeted skips it" "stale policy is unambiguous"
 
 # --- Test: extension.yml references existing files ---
 echo ""

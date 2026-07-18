@@ -8,6 +8,10 @@ description: Orchestrate a governed specification workflow that coordinates flas
 
 Before continuing, you **MUST** read and apply `.specify/extensions/architecture-guard/templates/ponytail_core.md`. In the extension source checkout, use `templates/ponytail_core.md`. Treat that shared contract as authoritative; phase-specific instructions may narrow its application but must not weaken its safety or verification floor.
 
+## Budgeted Context Contract
+
+Read and apply `.specify/extensions/architecture-guard/templates/budgeted_context.md` (or `templates/budgeted_context.md` in the extension source checkout). Applicable constitutions and the newly generated active `spec.md` are authoritative. Flash-Mem and `system_context.md` may supplement but never replace them.
+
 You are orchestrating the `governed-spec` workflow for `architecture-guard`.
 
 This command coordinates multiple extensions to ensure the initial specification respects architectural, historical, and security constraints, and provides a clear, validated foundation before planning begins.
@@ -98,6 +102,8 @@ If the specification process or architecture validation identified new architect
 
 Produce a final `Governed Specification Summary` outlining memory context, architectural review status, and any violations found.
 
+If `context.mode` is `budgeted` and `stale_policy` is `regenerate`, run `/speckit.architecture-guard.consolidate-specs` after the specification and clarification changes are complete. If the policy is `targeted`, report that the existing fallback is stale and do not load it until refreshed.
+
 ### Step 9 — Interactive Auto-Fix Loop
 
 If any architectural gaps, security boundary issues, or drift are detected in Step 5:
@@ -107,6 +113,7 @@ If any architectural gaps, security boundary issues, or drift are detected in St
    - Automatically rewrite `specs/<feature>/spec.md` to resolve the detected gaps.
    - Run the clarification process again to ensure no new ambiguities were introduced.
    - Present the clean result.
+   - Refresh `system_context.md` through `consolidate-specs` when budgeted mode uses the `regenerate` policy.
 
 ## Output Structure
 

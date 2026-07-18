@@ -1,5 +1,12 @@
 # Release Notes
 
+## 1.15.0
+
+- Added Budgeted Architecture Context Retrieval with bounded Flash-Mem expansion and mandatory active-feature authority.
+- Added `consolidate-specs` and the non-authoritative `specs/system_context.md` fallback contract.
+- Added project configuration, freshness handling, context-expansion reporting, benchmark fixtures, and a reproducible token benchmark protocol.
+- Made optional sub-agent delegation capability-gated so governed workflows fall back inline when companion commands are unavailable.
+
 ## 1.14.0
 
 - Moved framework-specific initialization questions into preset-owned `## Init Interview` sections while keeping `init` focused on generic orchestration and portable architecture decisions.

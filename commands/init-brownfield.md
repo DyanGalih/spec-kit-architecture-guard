@@ -20,6 +20,8 @@ Create a reliable current-state baseline before any architectural or delivery gu
 4. Capture known gaps between the current codebase and the desired governance model.
 5. Identify existing pragmatic patterns (Ponytail principles: YAGNI, standard library preference, minimal abstractions) to preserve in the constitution.
 6. Produce an initial brownfield plan instead of assuming a greenfield setup.
+7. Count and estimate the size of active `specs/**/spec.md` files, excluding generated or explicitly archived artifacts.
+8. Offer Budgeted Architecture Context Retrieval when repeated historical-spec loading is likely to be material.
 
 ## Good outputs
 
@@ -35,6 +37,9 @@ Create a reliable current-state baseline before any architectural or delivery gu
 - Treat existing code as the source of truth.
 - Keep the first pass lightweight and non-destructive.
 - Ask for confirmation before suggesting broad refactors.
+- Recommend targeted mode for small spec sets. For larger histories, explain that budgeted mode queries Flash-Mem first, loads `specs/system_context.md` only as an offline fallback, and never replaces active feature artifacts.
+- If the user wants budgeted mode, record the recommendation in the brownfield output and hand it to `/speckit.architecture-guard.init`. Do not create configuration or generate `system_context.md` during this non-destructive mapping pass.
+- Do not promise token savings before representative measurement and do not write operational settings into constitution files.
 
 ## When to use
 

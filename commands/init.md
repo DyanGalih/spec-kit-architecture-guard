@@ -21,6 +21,7 @@ This command generates or refines:
 * `.specify/memory/constitution.md`
 * `.specify/memory/architecture_constitution.md`
 * `.specify/memory/security_constitution.md`
+* optional `.specify/config/architecture_guard.yml` context-loading configuration
 
 ## Workflow Integration
 
@@ -196,6 +197,7 @@ completion: "Phase 1/3 (Framework + Team)"
 framework: [answer if provided]
 team_size: [answer if provided]
 technology_stack: [answer if provided]
+architecture_guard_context_mode: [targeted or budgeted if answered]
 # ... other captured answers
 ```
 
@@ -409,6 +411,30 @@ Examples:
 - Realtime platform
 - Background processing system
 ```
+
+---
+
+### Architecture Context Budget
+
+After the project shape is understood, ask:
+
+```text
+Would you like Budgeted Architecture Context Retrieval?
+
+- Targeted (default): preserve the existing Flash-Mem-first workflow.
+- Budgeted: cap initial Flash-Mem retrieval, use specs/system_context.md only when memory is unavailable or insufficient, and open historical specs only for named gaps.
+
+Budgeted mode is mainly useful when a repository has many historical feature specs. It does not replace active feature artifacts and does not guarantee savings until benchmarked on this project.
+```
+
+If the user selects Budgeted:
+
+1. Create `.specify/config/architecture_guard.yml` from `.specify/extensions/architecture-guard/templates/architecture_guard_config.yml` (or `templates/architecture_guard_config.yml` in the extension source checkout).
+2. Set `context.mode: budgeted`.
+3. Preserve the default retrieval limits unless the user explicitly requests different limits.
+4. If feature specs already exist, run `/speckit.architecture-guard.consolidate-specs` after constitution generation is complete.
+
+If the user selects Targeted or gives no answer, preserve existing behavior. Do not add operational context settings to any constitution.
 
 ---
 
@@ -727,6 +753,8 @@ Generate or refine:
 * `.specify/memory/constitution.md`
 * `.specify/memory/architecture_constitution.md`
 * `.specify/memory/security_constitution.md`
+
+When Budgeted Architecture Context Retrieval is selected, also generate `.specify/config/architecture_guard.yml`. Missing configuration means targeted mode, preserving backward compatibility.
 
 If the `flash-mem` MCP server is available, you MUST run the `update_project_summary` tool to reflect any major changes in architecture, boundaries, or governance rules in the project summary. If it is unavailable, rely on the repository files directly and continue without the sync step.
 
