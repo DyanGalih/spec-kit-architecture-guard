@@ -30,18 +30,22 @@ Provide a single command that ensures:
 
 Check for the availability of:
 - `flash-mem` MCP server
+- Memory MD local CLI
 - `security-review` (or compatibility alias `spec-kit-security-review`) extension
 
 **Detection Logic**:
-1. Detect `flash-mem` as an MCP-backed memory service in the current environment. Do not treat it as a Spec Kit extension or look for it in `.specify/extensions.yml`.
-2. Read `.specify/extensions.yml` and check the `installed` list for `security-review` (or compatibility alias `spec-kit-security-review`). Fall back to checking for the extension directory in `.specify/extensions/` only if the YAML is missing or the list is empty.
-3. If either capability is missing, degrade gracefully by skipping only its respective steps.
+1. Treat `flash-mem` as available only when its MCP tools are already exposed in the current environment. Do not treat it as a Spec Kit extension, look for it in `.specify/extensions.yml`, or repeatedly probe for hidden MCP/global-promotion capabilities.
+2. Check for the Memory MD runtime directly with `test -f .specify/extensions/memory-md/dist/bin/speckit-memory.js`. If present, invoke supported local operations with `node .specify/extensions/memory-md/dist/bin/speckit-memory.js <command>`. Do not use default `rg --files` to decide that this runtime is missing: `dist/` and `node_modules/` may be gitignored. If additional discovery is necessary, use `find` or `rg --files -uu`.
+3. Read `.specify/extensions.yml` and check the `installed` list for `security-review` (or compatibility alias `spec-kit-security-review`). Fall back to checking for the extension directory in `.specify/extensions/` only if the YAML is missing or the list is empty.
+4. If an optional capability is missing, degrade gracefully by skipping only its respective steps. A missing Flash-Mem MCP service does not make an available Memory MD CLI unavailable.
 
 ### Step 2 — Flash-Mem MCP Context Retrieval (Optional)
 
 When Flash-Mem is available, use it first to gather the most relevant architectural context before plan generation. Prefer summary-first context and only expand into repository files when needed.
 
 If Flash-Mem is unavailable or the context is insufficient, continue with the repository artifacts and constitution files available in the workspace.
+
+When Flash-Mem MCP is unavailable but the Memory MD CLI detected in Step 1 is present, use that CLI for supported local context preparation, search, or synthesis before falling back to repository artifacts. Inspect its help once when command syntax is needed; do not search for an MCP wrapper or a global/shared publication tool.
 
 **[OPTIONAL SUB-AGENT DELEGATION]**
 * **Capability Gate:** First confirm that `/speckit.subagent.synthesize` is registered and callable. If it is unavailable, execute inline regardless of size and report the degraded path.
@@ -107,8 +111,10 @@ Detect any `Security-Architecture Conflict` or architectural drift.
 ### Step 6 — Proactive Durable Memory Preservation
 
 If the planning process or architecture validation identified new architectural patterns, critical decisions, or repeatable lessons:
-1. **Proactive Execution**: You **MUST automatically execute** the durable-memory capture flow as the final action of this turn. Do not just recommend it; run the command.
-2. **Standard**: Do not silently write memory outside the capture flow; let the formal capture flow propose entries and handle user approval.
+1. **Capability Gate**: Use a Flash-Mem write tool only when that tool is already exposed in the current environment. Otherwise, if the Memory MD CLI detected in Step 1 supports the required local capture operation, use `node .specify/extensions/memory-md/dist/bin/speckit-memory.js <command>`.
+2. **Proactive Execution**: When either explicit capture path is available, you **MUST automatically execute** that durable-memory capture flow as the final action of this turn. Do not just recommend it; run the command.
+3. **Bounded Degradation**: Do not probe for Flash-Mem, `speckit_memory_share_lesson`, another MCP wrapper, or global/shared promotion when such a capability is not already exposed. Complete any available local capture or synthesis, report global promotion as unavailable, and finish the governed workflow.
+4. **Standard**: Do not silently write memory outside an available formal capture flow; let that flow propose entries and handle user approval when its interface requires approval.
 
 ### Step 7 — Generate Governance Summary
 
@@ -117,9 +123,9 @@ Produce a final `Governed Planning Summary` for the user.
 ## Graceful Degradation
 
 **Without Flash-Mem MCP**:
-- Skip Step 2 (Flash-Mem MCP Context Retrieval)
+- Use the detected Memory MD CLI for supported local preparation, search, or synthesis; otherwise skip Step 2
 - Continue to `/speckit.plan` directly
-- Assume no historical architecture constraints beyond Constitution
+- If neither memory path is available, assume no historical architecture constraints beyond Constitution
 - Plan-level review proceeds with Constitution + Architecture Guard only
 
 **Without Security Review**:
